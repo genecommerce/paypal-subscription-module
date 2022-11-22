@@ -3,7 +3,7 @@
     "description": "Enable products to be purchased as a subscription.",
     "type": "magento2-module",
     "license": "proprietary",
-    "version": "4.5.0",
+    "version": "2.0.0",
     "authors": [
         {
             "email": "hello@gene.co.uk",
