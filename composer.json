@@ -22,7 +22,7 @@
     ],
     "require": {
         "paypal/module-braintree-core": "*",
-        "magento/framework": "*",
+        "magento/framework": "103.0.*",
         "magento/module-customer": "101.0.*||102.0.*||^103.0.0",
         "magento/module-config": "101.0.*||101.1.*||^101.2.0",
         "magento/module-sales": "101.0.*||102.0.*||^102.1.0||^103",
