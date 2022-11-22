@@ -40,7 +40,7 @@
         "magento/module-theme": "100.2.*||101.0.*||^101.1.0",
         "magento/module-ui": "101.0.*||101.1.*||^101.2.0",
         "magento/module-store": "101.1.*",
-        "magento/module-catalog-inventory": "100.3.*",
+        "magento/module-catalog-inventory": "100.4.*",
         "magento/module-wishlist": "101.2.*",
         "magento/module-gift-message": "100.4.*",
         "magento/module-tax": "100.4.*",
