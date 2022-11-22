@@ -34,7 +34,7 @@
         "magento/module-user": "101.2.*",
         "magento/module-reports": "100.4.*",
         "magento/module-catalog": "102.0.*||103.0.*||^104.0.0",
-        "magento/module-configurable-product": "102.0.*||103.0.*||^104.0.0",
+        "magento/module-configurable-product": "100.2.*||100.3.*||^100.4.0",
         "magento/module-quote": "101.0.*||101.1.*||^101.2.0",
         "magento/module-paypal": "100.2.*||100.3.*||^101.0.0",
         "magento/module-theme": "100.2.*||101.0.*||^101.1.0",
