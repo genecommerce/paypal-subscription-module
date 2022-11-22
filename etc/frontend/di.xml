@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Prevent add-to-cart button showing on subscription-only products -->
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="CategoryView" type="PayPal\Subscription\Plugin\CategoryView" />
+    </type>
+    <type name="PayPal\Subscription\Plugin\CategoryView">
+        <arguments>
+            <argument name="actions" xsi:type="array">
+                <item name="catalog_category_view" xsi:type="string">catalog_category_view</item>
+                <item name="catalogsearch_result_index" xsi:type="string">catalogsearch_result_index</item>
+                <item name="cms_index_index" xsi:type="string">cms_index_index</item>
+                <item name="cms_page_view" xsi:type="string">cms_page_view</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="braintree_subscription_vault_config_provider"
+                      xsi:type="object">PayPal\Subscription\Model\Ui\Vault\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

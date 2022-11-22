@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Report -->
+    <type name="Magento\Reports\Model\ResourceModel\Refresh\Collection">
+        <plugin name="paypal_subscription_report" type="PayPal\Subscription\Plugin\Refresh\Collection" sortOrder="1" />
+    </type>
+    <type name="Magento\Reports\Controller\Adminhtml\Report\Statistics">
+        <arguments>
+            <argument name="reportTypes" xsi:type="array">
+                <item name="subscriptionreport" xsi:type="string">PayPal\Subscription\Model\ResourceModel\Report\Report</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- Product Attribute modifier -->
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="subscription_only" xsi:type="array">
+                    <item name="class" xsi:type="string">PayPal\Subscription\Ui\DataProvider\Product\Form\Modifier\SubscriptionOnly</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

@@ -1,0 +1,12 @@
+<?php
+    /** @var \Magento\Vault\Api\Data\PaymentTokenInterface $paymentToken */
+    $paymentToken = $block->getPayment() ?: null;
+    $tokenDetails = json_decode(
+        $paymentToken->getTokenDetails(),
+        true
+    );
+?>
+<?php if ($paymentToken !== null): ?>
+    <p><?= __('Card Ending') ?>: <?= $tokenDetails['maskedCC'] ?? 'N/A'  ?></p>
+    <p><?= __('Expiring On') ?>: <?= $tokenDetails['expirationDate'] ?? 'N/A'  ?></p>
+<?php endif; ?>

@@ -1,0 +1,52 @@
+<?php
+/**
+ * PayPal_Subscription Customer Subscription List
+ * @var PayPal\Subscription\Block\Customer\Index $block
+ * @var Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+/** @var \PayPal\Subscription\ViewModel\Customer\SubscriptionList $viewModel */
+$viewModel = $block->getViewModel();
+$serializedCheckoutConfig = $viewModel->getSubscriptionListJsonConfig();
+$newAddressForm = $escaper->escapeJs($block->getChildHtml('paypal_subscription_new_address_form'));
+
+$scriptString = <<<script
+        window.subscriptionsData = {$serializedCheckoutConfig};
+        window.subscriptionNewAddressForm = "$newAddressForm";
+script;
+?>
+
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+
+<div class="subscriptions-container" data-locale="<?= $escaper->escapeHtmlAttr($block->getLocale()) ?>">
+    <div id="subscriptions-list" class="subscriptions-list" data-bind="scope:'subscriptionsList'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <div id="cancelled-subscriptions-list" class="cancelled-subscriptions-list" data-bind="scope:'disabledSubscriptionsList'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#subscriptions-list": {
+            "Magento_Ui/js/core/app": {
+               "components": {
+                    "subscriptionsList": {
+                        "component": "customerSubscriptionList"
+                    }
+                }
+            }
+        },
+        "#cancelled-subscriptions-list": {
+            "Magento_Ui/js/core/app": {
+               "components": {
+                    "disabledSubscriptionsList": {
+                        "component": "customerDisabledSubscriptionList",
+                        "cancelledMessage": "<?= $escaper->escapeJs($block->getChildHtml('paypal.subscription.cancelled.content')); ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

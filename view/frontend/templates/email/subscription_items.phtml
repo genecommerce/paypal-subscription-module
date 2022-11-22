@@ -1,0 +1,40 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \PayPal\Subscription\Api\Data\SubscriptionItemInterface[] $items
+ * @var \PayPal\Subscription\ViewModel\Email $viewModel
+ */
+$items = $block->getItems() ?: [];
+$viewModel = $block->getViewModel();
+?>
+<?php if ($items !== []) : ?>
+    <table class="email-items">
+        <thead>
+        <tr>
+            <th class="item-info">
+                <?= $block->escapeHtml(__('Item')) ?>
+            </th>
+            <th class="item-qty">
+                <?= $block->escapeHtml(__('Qty')) ?>
+            </th>
+            <th class="item-price">
+                <?= $block->escapeHtml(__('Price')) ?>
+            </th>
+        </tr>
+        </thead>
+        <?php foreach ($items as $_item) : ?>
+            <tbody>
+            <tr>
+                <td class="item-info">
+                    <p class="product-name"><?= $block->escapeHtml($viewModel->getProductName($_item)) ?></p>
+                    <p class="sku"><?= $block->escapeHtml(__('SKU')) ?>: <?= $block->escapeHtml($_item->getSku()) ?></p>
+                </td>
+                <td class="item-qty"><?= (float) $_item->getQty() ?></td>
+                <td class="item-price">
+                    <?= /* @noEscape */ $viewModel->formatPrice($_item->getPrice()); ?>
+                </td>
+            </tr>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>

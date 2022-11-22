@@ -1,0 +1,19 @@
+<div class="product-container">
+    <div class="product">
+        <div class="product-image">
+            <img data-bind="attr: {'src': imageUrl, 'alt': imageAlt}"/>
+        </div>
+        <div class="product-info">
+            <p>
+                <strong data-bind="text: subscription().product.name"></strong>
+            </p>
+            <p data-bind="html: subscription().product.price"></p>
+            <!-- ko if: frequencyLabel -->
+                <span data-bind="i18n: 'Order Frequency: '"></span><span data-bind="html: frequencyLabel"></span>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- ko foreach: { data: elems, as: 'element' } -->
+    <!-- ko template: element.getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>

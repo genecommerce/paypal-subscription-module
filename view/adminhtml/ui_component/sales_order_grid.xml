@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="contains_subscription">
+            <settings>
+                <visible>true</visible>
+                <filter>select</filter>
+                <label translate="true">Contains Subscription</label>
+            </settings>
+        </column>
+        <column name="contains_subscription" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Contains Subscription</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

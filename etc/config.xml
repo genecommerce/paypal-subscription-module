@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <paypal_subscriptions>
+            <configuration>
+                <failed_payments>5</failed_payments>
+                <stock_failures_allowed>5</stock_failures_allowed>
+                <message_broker>1</message_broker>
+                <cron_schedule>0 0 * * *</cron_schedule>
+                <allowed_payment_methods>braintree,braintree_paypal,braintree_paypal_vault,braintree_cc_vault</allowed_payment_methods>
+            </configuration>
+            <email_configuration>
+                <release_reminder_timing>0</release_reminder_timing>
+            </email_configuration>
+        </paypal_subscriptions>
+    </default>
+</config>
