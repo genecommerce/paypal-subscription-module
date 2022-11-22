@@ -46,7 +46,7 @@
         "magento/module-tax": "100.4.*",
         "magento/module-eav": "102.1.*",
         "magento/module-instant-purchase": "100.4.*",
-        "magento/module-multishipping": "100.3.*"
+        "magento/module-multishipping": "100.4.*"
     },
     "require-dev": {
         "magento/magento-coding-standard": "^6.0",
