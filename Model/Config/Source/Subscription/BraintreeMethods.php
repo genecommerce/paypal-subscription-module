@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model\Config\Source\Subscription;
 
+use Magento\Payment\Model\Config\Source\Allmethods;
 use PayPal\Braintree\Model\Ui\ConfigProvider;
 
-class Allmethods extends \Magento\Payment\Model\Config\Source\Allmethods
+class BraintreeMethods extends Allmethods
 {
     /**
      * @return array

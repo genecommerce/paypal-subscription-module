@@ -47,7 +47,7 @@
                 </field>
                 <field id="allowed_payment_methods" translate="label comment" type="multiselect" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Allowed Payment Methods</label>
-                    <source_model>PayPal\Subscription\Model\Config\Source\Subscription\Allmethods</source_model>
+                    <source_model>PayPal\Subscription\Model\Config\Source\Subscription\BraintreeMethods</source_model>
                     <comment>Defines available payment methods for order with subscription product, all other payment methods will be disabled.</comment>
                     <config_path>paypal/subscriptions/allowed_payment_methods</config_path>
                     <depends>
