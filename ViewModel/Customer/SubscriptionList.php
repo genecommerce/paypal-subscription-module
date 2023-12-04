@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\ViewModel\Customer;
 
+use Magento\Bundle\Model\Option;
+use Magento\Bundle\Model\Product\Type;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Helper\Image as ImageHelper;
 use Magento\Catalog\Model\Product;
@@ -140,18 +142,18 @@ class SubscriptionList implements ArgumentInterface
      */
     public function getActiveSubscriptions(): array
     {
-        $cancelledSubscriptions = [];
+        $activeSubscriptions = [];
         try {
             $customerSubscriptions = $this->getCustomerSubscriptionsCollection();
             $customerSubscriptions->addFieldToFilter(
                 SubscriptionInterface::STATUS,
                 SubscriptionInterface::STATUS_ACTIVE
             );
-            $cancelledSubscriptions = $customerSubscriptions->getItems() ?: [];
+            $activeSubscriptions = $customerSubscriptions->getItems() ?: [];
         } catch (LocalizedException $e) {
             return [];
         }
-        return $cancelledSubscriptions;
+        return $activeSubscriptions;
     }
 
     /**
@@ -272,6 +274,7 @@ class SubscriptionList implements ArgumentInterface
 
     /**
      * @return string
+     * @throws LocalizedException
      */
     public function getSubscriptionListJsonConfig(): string {
         /** @var SubscriptionInterface[] $subscriptions */
@@ -323,19 +326,21 @@ class SubscriptionList implements ArgumentInterface
     }
 
     /**
-     * @param SubscriptionInterface|Subscription $subscription
-     * @return string
+     * @param SubscriptionInterface $subscription
+     * @return array
+     * @throws \Exception
      */
     private function getSubscriptionData(
         SubscriptionInterface $subscription
     ): array {
         $subscriptionData = $subscription->getData();
-        $subscriptionProduct = $subscription->getProduct();
+        $product = $subscription->getProduct();
         $subscriptionItem = $subscription->getSubscriptionItem();
         $subscriptionData['product'] = [
-            'name' => $subscriptionProduct->getName(),
-            'image' => $this->getProductImageUrl($subscriptionProduct),
-            'price' => $this->pricingHelper->currency($subscriptionItem->getPrice())
+            'name' => $product->getName(),
+            'image' => $this->getProductImageUrl($product),
+            'price' => $this->pricingHelper->currency($subscriptionItem->getPrice()),
+            'bundle_options' => $product->getTypeId() === Type::TYPE_CODE ? $this->getBundleOptionData($product) : []
         ];
         $subscriptionData[SubscriptionInterface::NEXT_RELEASE_DATE] = $this->formatDate(
             $subscription->getNextReleaseDate()
@@ -352,7 +357,7 @@ class SubscriptionList implements ArgumentInterface
             null;
         $subscriptionData['frequency_label'] = $this->getFrequencyOptionLabel(
             $subscription,
-            $subscriptionProduct
+            $product
         );
         $subscriptionData['available_frequencies'] = $this->getFrequencyProfileOptions($subscription);
         $subscriptionData['item'] = $subscriptionItem->getData();
@@ -555,5 +560,45 @@ class SubscriptionList implements ArgumentInterface
                 ->getUrl();
         }
         return $imageUrl;
+    }
+
+    /**
+     * @param ProductInterface $subscriptionProduct
+     * @return array
+     */
+    private function getBundleOptionData(ProductInterface $subscriptionProduct): array
+    {
+        $optionData = [];
+        if ($subscriptionProduct->getTypeId() !== Type::TYPE_CODE) {
+            return $optionData;
+        }
+
+        $typeInstance = $subscriptionProduct->getTypeInstance();
+        $optionMap = $typeInstance->getOptions($subscriptionProduct);
+        $bundleSelections = $typeInstance->getSelectionsCollection(
+            $typeInstance->getOptionsIds($subscriptionProduct),
+            $subscriptionProduct
+        );
+
+        if (empty($bundleSelections->getItems()) || $optionMap === null) {
+            return $optionData;
+        }
+
+        foreach ($bundleSelections->getItems() as $childData) {
+            $bundleOption = $optionMap[(int)$childData->getOptionId()] ?? null;
+            if (!$bundleOption instanceof Option) {
+                // No option grouping found.
+                continue;
+            }
+            // Group result by option title.
+            $optionData[$bundleOption->getTitle()][] = [
+                'quantity' => $childData->getData('selection_qty') ?? '',
+                'sku' => $childData->getSku(),
+                'name' => $childData->getName(),
+                'selection_price' => $childData->getData('selection_price_value') ?? ''
+            ];
+        }
+
+        return $optionData;
     }
 }
