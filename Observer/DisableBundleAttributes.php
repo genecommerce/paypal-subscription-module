@@ -11,9 +11,17 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use PayPal\Subscription\Helper\Data;
+use PayPal\Subscription\Model\ConfigurationInterface;
 
 class DisableBundleAttributes implements ObserverInterface
 {
+    /**
+     * @param ConfigurationInterface $configuration
+     */
+    public function __construct(private readonly ConfigurationInterface $configuration)
+    {
+    }
+
     /**
      * @param Observer $observer
      * @return void
@@ -22,7 +30,7 @@ class DisableBundleAttributes implements ObserverInterface
     public function execute(Observer $observer): void
     {
         $product = $observer->getData('product');
-        if (!$this->isProductBundle($product)) {
+        if ($this->configuration->getActive() === false || !$this->isProductBundle($product)) {
             return;
         }
 
