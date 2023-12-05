@@ -573,6 +573,7 @@ class SubscriptionList implements ArgumentInterface
             return $optionData;
         }
 
+        /** @var \Magento\Bundle\Model\Product\Type $typeInstance */
         $typeInstance = $subscriptionProduct->getTypeInstance();
         $optionMap = $typeInstance->getOptions($subscriptionProduct);
         $bundleSelections = $typeInstance->getSelectionsCollection(
