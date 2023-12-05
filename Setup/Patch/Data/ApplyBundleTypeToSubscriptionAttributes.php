@@ -57,7 +57,8 @@ class ApplyBundleTypeToSubscriptionAttributes implements DataPatchInterface
     {
         return [
             AddProductSubscriptionAttributes::class,
-            InstallRecommendedFrequencyAttributes::class
+            InstallRecommendedFrequencyAttributes::class,
+            UpdateProductSubscriptionAttributes::class
         ];
     }
 
