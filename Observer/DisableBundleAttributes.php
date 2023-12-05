@@ -29,7 +29,7 @@ class DisableBundleAttributes implements ObserverInterface
         if ((bool)$product->getData(Data::SUB_AVAILABLE) === true && !$this->bundleEligibleForSubscription($product)) {
             throw new CouldNotSaveException(__(
                 "Bundle configuration is not eligible for subscriptions.
-                 Please ensure bundle is fixed price and contains no 'User Defined' options."
+                 Please ensure bundle is fixed price, has one product per option and contains no user defined options."
             ));
         }
     }
@@ -44,7 +44,8 @@ class DisableBundleAttributes implements ObserverInterface
     }
 
     /**
-     * Return false if bundle is dynamically priced OR contains ANY options that are user defined.
+     * Return false IF bundle is dynamically priced OR bundle has more than one selection per option OR
+     * bundle contains ANY selections that are user defined === true.
      *
      * @param ProductInterface $product
      * @return bool
@@ -56,6 +57,9 @@ class DisableBundleAttributes implements ObserverInterface
         }
 
         foreach ($product->getData('bundle_selections_data') as $optionData) {
+            if (count($optionData) > 1) {
+                return false;
+            }
             foreach ($optionData as $selection) {
                 if ((bool)$selection['selection_can_change_qty'] === true) {
                     return false;
