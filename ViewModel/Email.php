@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\ViewModel;
 
+use Magento\Bundle\Model\Product\Type;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
@@ -11,9 +12,15 @@ use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\LayoutInterface;
 use Magento\Vault\Api\Data\PaymentTokenInterface;
 use PayPal\Subscription\Api\Data\SubscriptionItemInterface;
+use PayPal\Subscription\Helper\Data;
 
 class Email implements ArgumentInterface
 {
+    /**
+     * @var Data
+     */
+    private $subscriptionHelper;
+
     /**
      * @var LayoutInterface
      */
@@ -37,17 +44,20 @@ class Email implements ArgumentInterface
     /**
      * Email constructor.
      *
+     * @param Data $subscriptionHelper
      * @param LayoutInterface $layout
      * @param PricingHelper $pricingHelper
      * @param ProductRepositoryInterface $productRepository
      * @param array $paymentTokenRenderers
      */
     public function __construct(
+        Data $subscriptionHelper,
         LayoutInterface $layout,
         PricingHelper $pricingHelper,
         ProductRepositoryInterface $productRepository,
         array $paymentTokenRenderers = []
     ) {
+        $this->subscriptionHelper = $subscriptionHelper;
         $this->layout = $layout;
         $this->pricingHelper = $pricingHelper;
         $this->productRepository = $productRepository;
@@ -76,10 +86,9 @@ class Email implements ArgumentInterface
     public function getProductName(
         SubscriptionItemInterface $subscriptionItem
     ): string {
-        $sku = $subscriptionItem->getSku();
         $productName = '';
         try {
-            $product = $this->productRepository->get($sku);
+            $product = $this->productRepository->getById($subscriptionItem->getProductId());
             return $product->getName() ?: '';
         } catch (NoSuchEntityException $e) {
             return $productName;
@@ -113,5 +122,41 @@ class Email implements ArgumentInterface
             }
         }
         return $paymentTokenHtml;
+    }
+
+    /**
+     * @param SubscriptionItemInterface $subscriptionItem
+     * @return ?array
+     */
+    public function getBundleData(SubscriptionItemInterface $subscriptionItem): ?array
+    {
+        try {
+            $product = $this->productRepository->getById($subscriptionItem->getProductId());
+            $bundleData = $this->subscriptionHelper->getBundleData($product);
+            return empty($bundleData) ? null : $bundleData;
+        } catch (NoSuchEntityException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param array $selectionData
+     * @return string
+     */
+    public function getSelectionString(array $selectionData): string
+    {
+        if (empty($selectionData) ||
+            !isset(
+                $selectionData['quantity'],
+                $selectionData['sku'],
+                $selectionData['name'],
+                $selectionData['selection_price']
+            )
+        ) {
+            return '';
+        }
+
+        $price = $this->formatPrice((float)$selectionData['selection_price']);
+        return sprintf('%d x %s %s', (int)$selectionData['quantity'], $selectionData['name'], $price);
     }
 }

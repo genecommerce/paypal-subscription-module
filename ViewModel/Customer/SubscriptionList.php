@@ -340,7 +340,9 @@ class SubscriptionList implements ArgumentInterface
             'name' => $product->getName(),
             'image' => $this->getProductImageUrl($product),
             'price' => $this->pricingHelper->currency($subscriptionItem->getPrice()),
-            'bundle_options' => $product->getTypeId() === Type::TYPE_CODE ? $this->getBundleOptionData($product) : []
+            'bundle_options' => $product->getTypeId() === Type::TYPE_CODE ?
+                $this->subscriptionHelper->getBundleData($product) :
+                []
         ];
         $subscriptionData[SubscriptionInterface::NEXT_RELEASE_DATE] = $this->formatDate(
             $subscription->getNextReleaseDate()
@@ -560,46 +562,5 @@ class SubscriptionList implements ArgumentInterface
                 ->getUrl();
         }
         return $imageUrl;
-    }
-
-    /**
-     * @param ProductInterface $subscriptionProduct
-     * @return array
-     */
-    private function getBundleOptionData(ProductInterface $subscriptionProduct): array
-    {
-        $optionData = [];
-        if ($subscriptionProduct->getTypeId() !== Type::TYPE_CODE) {
-            return $optionData;
-        }
-
-        /** @var \Magento\Bundle\Model\Product\Type $typeInstance */
-        $typeInstance = $subscriptionProduct->getTypeInstance();
-        $optionMap = $typeInstance->getOptions($subscriptionProduct);
-        $bundleSelections = $typeInstance->getSelectionsCollection(
-            $typeInstance->getOptionsIds($subscriptionProduct),
-            $subscriptionProduct
-        );
-
-        if (empty($bundleSelections->getItems()) || $optionMap === null) {
-            return $optionData;
-        }
-
-        foreach ($bundleSelections->getItems() as $childData) {
-            $bundleOption = $optionMap[(int)$childData->getOptionId()] ?? null;
-            if (!$bundleOption instanceof Option) {
-                // No option grouping found.
-                continue;
-            }
-            // Group result by option title.
-            $optionData[$bundleOption->getTitle()][] = [
-                'quantity' => $childData->getData('selection_qty') ?? '',
-                'sku' => $childData->getSku(),
-                'name' => $childData->getName(),
-                'selection_price' => $childData->getData('selection_price_value') ?? ''
-            ];
-        }
-
-        return $optionData;
     }
 }

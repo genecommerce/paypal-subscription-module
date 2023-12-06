@@ -9,6 +9,9 @@ declare(strict_types=1);
 namespace PayPal\Subscription\Helper;
 
 use InvalidArgumentException;
+use Magento\Bundle\Model\Option;
+use Magento\Bundle\Model\Product\Type;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterface;
@@ -345,6 +348,45 @@ class Data extends AbstractHelper
     public function formatPrice(float $price)
     {
         return $this->pricingHelper->currency($price, true, false);
+    }
+
+    /**
+     * @param ProductInterface $subscriptionProduct
+     * @return array
+     */
+    public function getBundleData(ProductInterface $subscriptionProduct): array
+    {
+        $optionData = [];
+        if ($subscriptionProduct->getTypeId() !== Type::TYPE_CODE) {
+            return $optionData;
+        }
+
+        /** @var \Magento\Bundle\Model\Product\Type $typeInstance */
+        $typeInstance = $subscriptionProduct->getTypeInstance();
+        $optionMap = $typeInstance->getOptions($subscriptionProduct);
+        $bundleSelections = $typeInstance->getSelectionsCollection(
+            $typeInstance->getOptionsIds($subscriptionProduct),
+            $subscriptionProduct
+        );
+
+        if (empty($bundleSelections->getItems()) || $optionMap === null) {
+            return $optionData;
+        }
+
+        foreach ($bundleSelections->getItems() as $childData) {
+            $bundleOption = $optionMap[(int)$childData->getOptionId()] ?? null;
+            if (!$bundleOption instanceof Option) {
+                continue;
+            }
+            $optionData[$bundleOption->getTitle()][] = [
+                'quantity' => $childData->getData('selection_qty') ?? '',
+                'sku' => $childData->getSku(),
+                'name' => $childData->getName(),
+                'selection_price' => $childData->getData('selection_price_value') ?? ''
+            ];
+        }
+
+        return $optionData;
     }
 
     /**

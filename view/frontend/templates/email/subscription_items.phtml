@@ -24,16 +24,43 @@ $viewModel = $block->getViewModel();
         </thead>
         <?php foreach ($items as $_item) : ?>
             <tbody>
-            <tr>
-                <td class="item-info">
-                    <p class="product-name"><?= $block->escapeHtml($viewModel->getProductName($_item)) ?></p>
-                    <p class="sku"><?= $block->escapeHtml(__('SKU')) ?>: <?= $block->escapeHtml($_item->getSku()) ?></p>
-                </td>
-                <td class="item-qty"><?= (float) $_item->getQty() ?></td>
-                <td class="item-price">
-                    <?= /* @noEscape */ $viewModel->formatPrice($_item->getPrice()); ?>
-                </td>
-            </tr>
+            <?php if (!$bundleData = $viewModel->getBundleData($_item)) : ?>
+                <tr>
+                    <td class="item-info">
+                        <p class="product-name"><?= $block->escapeHtml($viewModel->getProductName($_item)) ?></p>
+                        <p class="sku"><?= $block->escapeHtml(__('SKU')) ?>: <?= $block->escapeHtml($_item->getSku()) ?></p>
+                    </td>
+                    <td class="item-qty"><?= (float) $_item->getQty() ?></td>
+                    <td class="item-price">
+                        <?= /* @noEscape */ $viewModel->formatPrice($_item->getPrice()); ?>
+                    </td>
+                </tr>
+            <?php else : ?>
+                <tr class="bundle-item bundle-parent">
+                    <td class="item-info">
+                        <p class="product-name"><?= $block->escapeHtml($viewModel->getProductName($_item)) ?></p>
+                        <p class="sku"><?= $block->escapeHtml(__('SKU')) ?>: <?= $block->escapeHtml($_item->getSku()) ?></p>
+                    </td>
+                    <td class="item-qty"><?= (float) $_item->getQty() ?></td>
+                    <td class="item-price">
+                        <?= /* @noEscape */ $viewModel->formatPrice($_item->getPrice()); ?>
+                    </td>
+                </tr>
+                <?php foreach ($bundleData as $optionTitle => $selectionData) : ?>
+                    <tr class="bundle-option-label">
+                        <td colspan="3">
+                            <strong><em><?= $block->escapeHtml($optionTitle) ?></em></strong>
+                        </td>
+                    </tr>
+                    <?php foreach ($selectionData as $selection) : ?>
+                        <tr class="bundle-item bundle-option-value">
+                            <td class="item-info" colspan="3">
+                                <p><?= $block->escapeHtml($viewModel->getSelectionString($selection)) ?></p>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         <?php endforeach; ?>
     </table>
