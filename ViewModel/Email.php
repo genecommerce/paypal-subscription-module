@@ -156,7 +156,11 @@ class Email implements ArgumentInterface
             return '';
         }
 
-        $price = $this->formatPrice((float)$selectionData['selection_price']);
-        return sprintf('%d x %s %s', (int)$selectionData['quantity'], $selectionData['name'], $price);
+        return sprintf(
+            '%d x %s %s',
+            (int)$selectionData['quantity'],
+            $selectionData['name'],
+            $selectionData['selection_price']
+        );
     }
 }

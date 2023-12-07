@@ -382,7 +382,7 @@ class Data extends AbstractHelper
                 'quantity' => $childData->getData('selection_qty') ?? '',
                 'sku' => $childData->getSku(),
                 'name' => $childData->getName(),
-                'selection_price' => $childData->getData('selection_price_value') ?? ''
+                'selection_price' =>  $this->formatPrice((float)$childData->getData('selection_price_value'))
             ];
         }
 
