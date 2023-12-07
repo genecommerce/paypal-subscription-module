@@ -26,7 +26,7 @@ define([
             url,
             {},
             false
-        ).success(function (response) {
+        ).done(function (response) {
 
             // Return Response
             return response;

@@ -41,6 +41,16 @@ define([
                 subscription: ko.observable(this.subscription())
             });
             layout([productControlsComponent]);
+        },
+
+        getSubscriptionOptions: function() {
+            var bundleOptions = this.subscription().product.bundle_options;
+            return Object.keys(bundleOptions).map(function(option) {
+                return {
+                    label: option,
+                    items: bundleOptions[option]
+                };
+            });
         }
     });
 });

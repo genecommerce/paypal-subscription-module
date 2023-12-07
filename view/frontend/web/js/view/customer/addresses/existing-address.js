@@ -57,7 +57,7 @@ define([
                 var address = Object.values(JSON.parse(response.billing_address));
                 addressBuilder.billingAddress(address);
 
-            }).error(function () {
+            }).fail(function () {
 
                 $('body').trigger('processStop');
                 that.message($t('Unable to update billing address, please try again.'));
@@ -84,7 +84,7 @@ define([
                 var address  = Object.values(response);
                 addressBuilder.shippingAddress(address);
 
-            }).error(function () {
+            }).fail(function () {
 
                 $('body').trigger('processStop');
                 that.message($t('Unable to update shipping address, please try again.'));
