@@ -89,7 +89,7 @@ class ApplyBundleTypeToSubscriptionAttributes implements DataPatchInterface
                 Product::ENTITY,
                 $attribute,
                 'apply_to',
-                'simple,configurable,downloadable,bundle'
+                'simple,configurable,downloadable,bundle,virtual'
             );
         }
     }
