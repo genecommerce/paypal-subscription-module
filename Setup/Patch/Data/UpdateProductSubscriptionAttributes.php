@@ -11,7 +11,7 @@ use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Zend_Validate_Exception;
+use Magento\Framework\Validator\ValidateException;
 
 /**
  * Class UpdateProductSubscriptionAttributes
@@ -73,7 +73,7 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
 
     /**
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
+     * @throws ValidateException
      */
     public function apply()
     {
