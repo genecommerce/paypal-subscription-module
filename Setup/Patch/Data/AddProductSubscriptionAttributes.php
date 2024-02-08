@@ -11,9 +11,9 @@ use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Validator\ValidateException;
 use PayPal\Subscription\Model\Config\Source\Subscription\FrequencyProfile;
 use PayPal\Subscription\Model\Config\Source\Subscription\PriceType;
-use Zend_Validate_Exception;
 
 /**
  * Class AddProductSubscriptionAttributes
@@ -72,7 +72,7 @@ class AddProductSubscriptionAttributes implements DataPatchInterface
 
     /**
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
+     * @throws ValidateException
      */
     public function apply()
     {
