@@ -90,32 +90,35 @@ define([
         sendNow: function () {
             var that = this;
             $("body").trigger('processStart');
-            sendOrderNow(
-                this.subscription().subscriptionId
-            ).error(function () {
-                $("body").trigger('processStop');
-                customerData.set('messages', {
-                    messages: [{
-                        text: 'Unable to send subscription now, please try again.',
-                        type: 'error'
-                    }]
+
+            sendOrderNow(this.subscription().subscriptionId)
+                .fail(function () {
+                    $("body").trigger('processStop');
+                    customerData.set('messages', {
+                        messages: [{
+                            text: 'Unable to send subscription now, please try again.',
+                            type: 'error'
+                        }]
+                    });
+                })
+                .done(function (response) {
+                    var nextReleaseDate = dateFormatter(response['next_release_date']),
+                        previousReleaseDate = response['previous_release_date'] || null;
+                    that.subscription().nextReleaseDate(nextReleaseDate);
+
+                    if (previousReleaseDate !== null) {
+                        previousReleaseDate = dateFormatter(previousReleaseDate);
+                        that.subscription().previousReleaseDate(previousReleaseDate);
+                    }
+
+                    $("body").trigger('processStop');
+                    customerData.set('messages', {
+                        messages: [{
+                            text: 'Subscription has been sent.',
+                            type: 'success'
+                        }]
+                    });
                 });
-            }).success(function (response) {
-                var nextReleaseDate = dateFormatter(response['next_release_date']),
-                    previousReleaseDate = response['previous_release_date'] || null;
-                that.subscription().nextReleaseDate(nextReleaseDate);
-                if (previousReleaseDate !== null) {
-                    previousReleaseDate = dateFormatter(previousReleaseDate);
-                    that.subscription().previousReleaseDate(previousReleaseDate);
-                }
-                $("body").trigger('processStop');
-                customerData.set('messages', {
-                    messages: [{
-                        text: 'Subscription has been sent.',
-                        type: 'success'
-                    }]
-                });
-            });
         },
 
         skipOrder: function () {
@@ -123,7 +126,7 @@ define([
             $("body").trigger('processStart');
             skipSubscriptionOrder(
                 this.subscription().subscriptionId
-            ).error(function () {
+            ).fail(function () {
                 $("body").trigger('processStop');
                 customerData.set('messages', {
                     messages: [{
@@ -131,7 +134,7 @@ define([
                         type: 'error'
                     }]
                 });
-            }).success(function (response) {
+            }).done(function (response) {
                 var nextReleaseDate = dateFormatter(response['next_release_date']);
                 that.subscription().nextReleaseDate(nextReleaseDate);
                 $("body").trigger('processStop');
@@ -150,7 +153,7 @@ define([
             setSubscriptionStatus(
                 this.subscription().subscriptionId,
                 3
-            ).error(function () {
+            ).fail(function () {
                 $("body").trigger('processStop');
                 customerData.set('messages', {
                     messages: [{
@@ -158,7 +161,7 @@ define([
                         type: 'error'
                     }]
                 });
-            }).success(function (subscription) {
+            }).done(function (subscription) {
                 that.handleCancelledSubsriptionListChanges(subscription);
                 $("body").trigger('processStop');
                 customerData.set('messages', {

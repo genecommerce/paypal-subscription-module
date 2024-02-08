@@ -81,7 +81,7 @@ define([
                     var address = Object.values(JSON.parse(response.billing_address));
                     addressBuilder.billingAddress(address);
 
-                }).error(function () {
+                }).fail(function () {
                     success = false;
                 })
             }
@@ -94,7 +94,7 @@ define([
                     var address  = Object.values(JSON.parse(response.shipping_address));
                     addressBuilder.shippingAddress(address);
 
-                }).error(function () {
+                }).fail(function () {
                     success = false;
                 })
             }
