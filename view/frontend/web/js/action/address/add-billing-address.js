@@ -25,7 +25,7 @@ define([
 
         return storage
             .put(url, JSON.stringify(address), false)
-            .success(function (response) {
+            .done(function (response) {
                 // Return Response
                 return response;
             });

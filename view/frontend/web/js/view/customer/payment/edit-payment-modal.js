@@ -93,7 +93,7 @@ define([
             var subscriptionId = this.subscription().subscriptionId;
             $('body').trigger('processStart');
             setPaymentMethod(subscriptionId, paymentMethodHash)
-                .success(function (response) {
+                .done(function (response) {
                     // Add address to the default addresses
                     customerData.set('messages', {
                         messages: [
@@ -104,7 +104,7 @@ define([
                         ]
                     });
                 })
-                .error(function () {
+                .fail(function () {
                     customerData.set('messages', {
                         messages: [
                             {

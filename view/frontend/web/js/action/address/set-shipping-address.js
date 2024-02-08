@@ -24,7 +24,7 @@ define([
          * @param {String} message
          */
 
-        return storage.put(url, {}, false).success(function (response) {
+        return storage.put(url, {}, false).done(function (response) {
             // Return Response
             return response;
         });

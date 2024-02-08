@@ -31,4 +31,7 @@
     <event name="payment_method_is_active">
         <observer name="paypal_subscription_active_payments" instance="PayPal\Subscription\Observer\PaymentActiveObserver" />
     </event>
+    <event name="catalog_product_save_before">
+        <observer name="paypal_subscription_disable_bundle_attributes" instance="PayPal\Subscription\Observer\DisableBundleAttributes" />
+    </event>
 </config>
