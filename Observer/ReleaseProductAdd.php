@@ -9,6 +9,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote\Item;
+use Magento\Tax\Api\TaxCalculationInterface;
 use Magento\Tax\Helper\Data as TaxHelper;
 use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 
@@ -16,9 +17,11 @@ class ReleaseProductAdd implements ObserverInterface
 {
     /**
      * @param TaxHelper $taxHelper
+     * @param TaxCalculationInterface $taxCalculation
      */
     public function __construct(
         private readonly TaxHelper $taxHelper,
+        private readonly TaxCalculationInterface $taxCalculation
     ) {}
 
     /**
@@ -51,9 +54,19 @@ class ReleaseProductAdd implements ObserverInterface
             $item->setCustomPrice($priceValue);
             $item->setOriginalCustomPrice($priceValue);
         } elseif ($priceType === SubscriptionHelper::DISCOUNT_PRICE) {
-            // Price set to quote item product is already subscription price
-            $subscriptionPrice = (float) $product->getPrice();
-            // TODO: Implement incl/excl tax
+            if ($this->taxHelper->priceIncludesTax($product->getStoreId())) {
+                // Subscription price need tax adding.
+                $rate = $this->taxCalculation->getCalculatedRate(
+                    $product->getTaxClassId(),
+                    $item->getQuote()->getCustomerId(),
+                    $product->getStoreId()
+                );
+                $taxAmount = ($rate / 100) * (float) $product->getPrice();
+                $subscriptionPrice = (float) $product->getPrice() + (float) $taxAmount;
+            } else {
+                // Price set to quote item product is already subscription price
+                $subscriptionPrice = (float) $product->getPrice();
+            }
             $item->setCustomPrice($subscriptionPrice);
             $item->setOriginalCustomPrice($subscriptionPrice);
         }
