@@ -43,29 +43,19 @@ class ReleaseProductAdd implements ObserverInterface
             throw new NotFoundException(__("Could not find product for quote item ID %1", $item->getItemId()));
         }
 
-        $priceType = $product->getData(SubscriptionHelper::SUB_PRICE_TYPE) !== null
-            ? (int) $product->getData(SubscriptionHelper::SUB_PRICE_TYPE)
-            : null;
-
-        if ($priceType === SubscriptionHelper::FIXED_PRICE) {
-            $item->setCustomPrice((float) $product->getPrice());
-            $item->setOriginalCustomPrice((float) $product->getPrice());
-        } elseif ($priceType === SubscriptionHelper::DISCOUNT_PRICE) {
-            if ($this->taxHelper->priceIncludesTax($product->getStoreId())) {
-                // Subscription price need tax adding.
-                $rate = $this->taxCalculation->getCalculatedRate(
-                    $product->getTaxClassId(),
-                    $item->getQuote()->getCustomerId(),
-                    $product->getStoreId()
-                );
-                $taxAmount = ($rate / 100) * (float) $product->getPrice();
-                $subscriptionPrice = (float) $product->getPrice() + (float) $taxAmount;
-            } else {
-                // Price set to quote item product is already subscription price
-                $subscriptionPrice = (float) $product->getPrice();
-            }
-            $item->setCustomPrice($subscriptionPrice);
-            $item->setOriginalCustomPrice($subscriptionPrice);
+        $subscriptionPrice = (float) $product->getPrice();
+        if ($this->taxHelper->priceIncludesTax($product->getStoreId())) {
+            // Subscription price need tax adding.
+            $rate = $this->taxCalculation->getCalculatedRate(
+                $product->getTaxClassId(),
+                $item->getQuote()->getCustomerId(),
+                $product->getStoreId()
+            );
+            $taxAmount = ($rate / 100) * (float) $product->getPrice();
+            $subscriptionPrice = (float) $product->getPrice() + (float) $taxAmount;
         }
+
+        $item->setCustomPrice($subscriptionPrice);
+        $item->setOriginalCustomPrice($subscriptionPrice);
     }
 }
