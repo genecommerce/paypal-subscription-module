@@ -46,13 +46,10 @@ class ReleaseProductAdd implements ObserverInterface
         $priceType = $product->getData(SubscriptionHelper::SUB_PRICE_TYPE) !== null
             ? (int) $product->getData(SubscriptionHelper::SUB_PRICE_TYPE)
             : null;
-        $priceValue = $product->getData(SubscriptionHelper::SUB_PRICE_VALUE) !== null
-            ? (float) $product->getData(SubscriptionHelper::SUB_PRICE_VALUE)
-            : null;
 
         if ($priceType === SubscriptionHelper::FIXED_PRICE) {
-            $item->setCustomPrice($priceValue);
-            $item->setOriginalCustomPrice($priceValue);
+            $item->setCustomPrice((float) $product->getPrice());
+            $item->setOriginalCustomPrice((float) $product->getPrice());
         } elseif ($priceType === SubscriptionHelper::DISCOUNT_PRICE) {
             if ($this->taxHelper->priceIncludesTax($product->getStoreId())) {
                 // Subscription price need tax adding.
