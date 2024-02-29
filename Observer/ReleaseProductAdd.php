@@ -11,7 +11,6 @@ use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote\Item;
 use Magento\Tax\Api\TaxCalculationInterface;
 use Magento\Tax\Helper\Data as TaxHelper;
-use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 
 class ReleaseProductAdd implements ObserverInterface
 {
@@ -43,6 +42,7 @@ class ReleaseProductAdd implements ObserverInterface
             throw new NotFoundException(__("Could not find product for quote item ID %1", $item->getItemId()));
         }
 
+        // Product price is taken from subscription price, meaning it is already inclusive of discount.
         $subscriptionPrice = (float) $product->getPrice();
         if ($this->taxHelper->priceIncludesTax($product->getStoreId())) {
             // Subscription price need tax adding.
@@ -52,7 +52,7 @@ class ReleaseProductAdd implements ObserverInterface
                 $product->getStoreId()
             );
             $taxAmount = ($rate / 100) * (float) $product->getPrice();
-            $subscriptionPrice = (float) $product->getPrice() + (float) $taxAmount;
+            $subscriptionPrice = (float) $product->getPrice() + $taxAmount;
         }
 
         $item->setCustomPrice($subscriptionPrice);
