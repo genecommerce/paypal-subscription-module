@@ -9,15 +9,16 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote\Item;
+use Magento\Tax\Helper\Data as TaxHelper;
 use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 
 class ReleaseProductAdd implements ObserverInterface
 {
     /**
-     * @param SubscriptionHelper $subscriptionHelper
+     * @param TaxHelper $taxHelper
      */
     public function __construct(
-        private readonly SubscriptionHelper $subscriptionHelper
+        private readonly TaxHelper $taxHelper,
     ) {}
 
     /**
@@ -50,12 +51,11 @@ class ReleaseProductAdd implements ObserverInterface
             $item->setCustomPrice($priceValue);
             $item->setOriginalCustomPrice($priceValue);
         } elseif ($priceType === SubscriptionHelper::DISCOUNT_PRICE) {
-            $discountedPrice = $this->subscriptionHelper->getDiscountedPrice(
-                $priceValue,
-                (float) $product->getPrice()
-            );
-            $item->setCustomPrice($discountedPrice);
-            $item->setOriginalCustomPrice($discountedPrice);
+            // Price set to quote item product is already subscription price
+            $subscriptionPrice = (float) $product->getPrice();
+            // TODO: Implement incl/excl tax
+            $item->setCustomPrice($subscriptionPrice);
+            $item->setOriginalCustomPrice($subscriptionPrice);
         }
     }
 }
