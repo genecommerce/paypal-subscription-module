@@ -34,7 +34,4 @@
     <event name="catalog_product_save_before">
         <observer name="paypal_subscription_disable_bundle_attributes" instance="PayPal\Subscription\Observer\DisableBundleAttributes" />
     </event>
-    <event name="sales_quote_add_item">
-        <observer name="paypal_subscription_release_product_add" instance="PayPal\Subscription\Observer\ReleaseProductAdd" />
-    </event>
 </config>
