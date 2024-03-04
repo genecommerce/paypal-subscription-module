@@ -186,6 +186,7 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
         $quote->setStore($store);
         $quote->setCustomer($customer);
         $quote->setIsActive(false);
+        $quote->setData('is_subscription_release', true);
         try {
             $this->addProductsToQuote(
                 $quote,
