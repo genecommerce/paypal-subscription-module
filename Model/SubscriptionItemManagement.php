@@ -44,7 +44,7 @@ class SubscriptionItemManagement implements SubscriptionItemManagementInterface
         $subscriptionItem = $this->subscriptionItem->create();
         $subscriptionItem->setSubscriptionId((int) $subscription->getId());
         $subscriptionItem->setSku($item->getSku());
-        $subscriptionItem->setPrice((float) $item->getPrice());
+        $subscriptionItem->setPrice((float) $item->getPriceInclTax());
         $subscriptionItem->setQty((int) $item->getQtyOrdered());
         $subscriptionItem->setProductId((int) $item->getProductId());
         $this->subscriptionItemRepository->save($subscriptionItem);
