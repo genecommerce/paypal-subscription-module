@@ -9,20 +9,9 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NotFoundException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote\Item;
-use Magento\Tax\Api\TaxCalculationInterface;
-use Magento\Tax\Helper\Data as TaxHelper;
 
 class ReleaseProductAdd implements ObserverInterface
 {
-    /**
-     * @param TaxHelper $taxHelper
-     * @param TaxCalculationInterface $taxCalculation
-     */
-    public function __construct(
-        private readonly TaxHelper $taxHelper,
-        private readonly TaxCalculationInterface $taxCalculation
-    ) {}
-
     /**
      * @inheritDoc
      */
