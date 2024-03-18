@@ -13,6 +13,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\InvoiceOrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
+use Magento\Store\Model\ScopeInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 
 class CreateSubscriptionOrder implements CreateSubscriptionOrderInterface
@@ -38,11 +39,13 @@ class CreateSubscriptionOrder implements CreateSubscriptionOrderInterface
      * @param InvoiceOrderInterface $invoiceOrder
      * @param CartManagementInterface $quoteManagement
      * @param OrderRepositoryInterface $orderRepository
+     * @param ConfigurationInterface $config
      */
     public function __construct(
         InvoiceOrderInterface $invoiceOrder,
         CartManagementInterface $quoteManagement,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        private readonly ConfigurationInterface $config
     ) {
         $this->invoiceOrder = $invoiceOrder;
         $this->quoteManagement = $quoteManagement;
@@ -104,6 +107,11 @@ class CreateSubscriptionOrder implements CreateSubscriptionOrderInterface
                     $subscription->getFailedPayments()+1
                 );
             }
+        }
+        if ($subscription instanceof SubscriptionInterface &&
+            $this->config->getAutoUpdatePrice(ScopeInterface::SCOPE_STORE, $order->getStoreId()) === true
+        ) {
+            $subscription->setOrderId((int) $order->getId());
         }
         return $order;
     }
