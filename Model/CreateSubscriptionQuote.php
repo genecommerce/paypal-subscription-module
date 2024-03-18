@@ -278,8 +278,8 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
                         if ($subscriptionPrice !== $productQuoteData[ProductInterface::PRICE]) {
                             $subscriptionItem->setPrice($subscriptionPrice);
                             $this->subscriptionItemRepository->save($subscriptionItem);
+                            $subscription->setData('price_changed', true);
                         }
-                        // TODO: TRIGGER PRICE CHANGE EMAIL
                     } else {
                         // Use existing subscription price.
                         $subscriptionPrice = $productQuoteData[ProductInterface::PRICE];

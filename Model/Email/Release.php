@@ -127,6 +127,24 @@ class Release extends Email
 
     /**
      * @param CustomerInterface $customer
+     * @param int $originalOrderId
+     * @param int $newOrderId
+     * @return array
+     */
+    public function priceChanged(CustomerInterface $customer, int $originalOrderId, int $newOrderId): array
+    {
+        $data = [
+            'customer_name' => sprintf(
+                '%1$s %2$s',
+                $customer->getFirstname(),
+                $customer->getLastname()
+            ),
+
+        ];
+    }
+
+    /**
+     * @param CustomerInterface $customer
      * @param SubscriptionInterface $subscription
      * @param string $reason
      * @return array

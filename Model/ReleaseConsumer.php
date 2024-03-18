@@ -137,6 +137,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
         }
         $quote = null;
         $errorMessage = null;
+        $originalOrderId = $subscription->getOrderId();
         try {
             $originalStockFailures = (int) $subscription->getStockFailures();
             $originalFailedPayments = (int) $subscription->getFailedPayments();
@@ -157,6 +158,11 @@ class ReleaseConsumer implements ReleaseConsumerInterface
                 $quote,
                 $subscription
             );
+            $priceChanged = (bool) $subscription->getData('price_changed');
+            if ($priceChanged === true) {
+                // Update original order ID with latest order.
+                $subscription->setOrderId($order->getId());
+            }
             $this->createRelease(
                 $subscription,
                 $order
@@ -165,6 +171,13 @@ class ReleaseConsumer implements ReleaseConsumerInterface
                 $this->releaseEmail->success(
                     $quote->getCustomer(),
                     $subscription
+                );
+            }
+            if ($priceChanged === true) {
+                $this->releaseEmail->priceChanged(
+                    $quote->getCustomer(),
+                    $originalOrderId,
+                    $order->getId()
                 );
             }
         } catch (LocalizedException | CommandException $e) {
