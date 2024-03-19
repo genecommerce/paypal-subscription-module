@@ -13,6 +13,7 @@ use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\Data\SubscriptionReleaseInterface;
@@ -87,6 +88,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     /**
      * ReleaseConsumer constructor
      *
+     * @param ConfigurationInterface $configuration
      * @param SubscriptionReleaseInterfaceFactory $subscriptionReleaseInterfaceFactory
      * @param SubscriptionReleaseResource $subscriptionReleaseResource
      * @param SubscriptionResource $subscriptionResource
@@ -97,6 +99,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
      * @param CreateSubscriptionOrderInterface $createSubscriptionOrder
      * @param State $appState
      * @param CustomerRepositoryInterface $customerRepository
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         ConfigurationInterface $configuration,
@@ -109,7 +112,8 @@ class ReleaseConsumer implements ReleaseConsumerInterface
         CreateSubscriptionQuoteInterface $createSubscriptionQuote,
         CreateSubscriptionOrderInterface $createSubscriptionOrder,
         State $appState,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        private readonly OrderRepositoryInterface $orderRepository
     ) {
         $this->configuration = $configuration;
         $this->subscriptionReleaseInterfaceFactory = $subscriptionReleaseInterfaceFactory;
@@ -161,7 +165,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
             $priceChanged = (bool) $subscription->getData('price_changed');
             if ($priceChanged === true) {
                 // Update original order ID with latest order.
-                $subscription->setOrderId($order->getId());
+                $subscription->setOrderId((int) $order->getId());
             }
             $this->createRelease(
                 $subscription,
@@ -176,8 +180,9 @@ class ReleaseConsumer implements ReleaseConsumerInterface
             if ($priceChanged === true) {
                 $this->releaseEmail->priceChanged(
                     $quote->getCustomer(),
-                    $originalOrderId,
-                    $order->getId()
+                    $subscription,
+                    $this->orderRepository->get($originalOrderId),
+                    $order
                 );
             }
         } catch (LocalizedException | CommandException $e) {

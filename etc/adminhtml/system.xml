@@ -98,6 +98,11 @@
                     <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>
+                <field id="price_changed" translate="label comment" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Price Changed Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
                 <field id="release_reminder_timing" translate="label comment" type="text" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Release Reminder Email Timing</label>
                     <comment>In days before release. If set to 0 the release reminder will be sent as the release is created. Any other number will be taken as days before the next release date.</comment>
