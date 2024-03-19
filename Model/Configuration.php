@@ -177,4 +177,16 @@ class Configuration implements ConfigurationInterface
             $scopeCode
         );
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAutoUpdatePrice(string $scopeType = ScopeInterface::SCOPE_STORE, $scopeCode = null): bool
+    {
+        return (bool) $this->scopeConfig->getValue(
+            self::AUTO_UPDATE_PRICE,
+            $scopeType,
+            $scopeCode
+        );
+    }
 }

@@ -54,4 +54,10 @@
               type="html"
               module="PayPal_Subscription"
               area="frontend"/>
+    <template id="paypal_subscriptions_email_configuration_price_changed"
+              label="Subscription Price Changed Email"
+              file="subscription_price_changed.html"
+              type="html"
+              module="PayPal_Subscription"
+              area="frontend"/>
 </config>

@@ -16,6 +16,7 @@ interface ConfigurationInterface
     public const ERROR_LOGGING_EMAIL_ENABLED = 'paypal_subscriptions/email_configuration/error_logging_emails_enabled';
     public const ERROR_LOGGING_EMAIL_RECIPIENTS = 'paypal_subscriptions/email_configuration/error_logging_emails_recipients';
     public const RELEASE_REMINDER_TIMING = 'paypal_subscriptions/email_configuration/release_reminder_timing';
+    public const AUTO_UPDATE_PRICE = 'paypal/subscriptions/auto_update_price';
 
     /**
      * Get Configuration value for Is Active
@@ -112,4 +113,13 @@ interface ConfigurationInterface
         string $scopeType = ScopeInterface::SCOPE_STORE,
         $scopeCode = null
     ): int;
+
+    /**
+     * Get Configuration value for auto update product prices.
+     *
+     * @param string $scopeType
+     * @param null $scopeCode
+     * @return bool
+     */
+    public function getAutoUpdatePrice(string $scopeType = ScopeInterface::SCOPE_STORE, $scopeCode = null): bool;
 }

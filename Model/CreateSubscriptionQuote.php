@@ -24,10 +24,13 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
+use PayPal\Subscription\Api\SubscriptionItemRepositoryInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\Data\SubscriptionItemInterface;
+use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 use PayPal\Subscription\Model\Payment\PaymentMethodPoolInterface;
 use PayPal\Subscription\Model\ResourceModel\SubscriptionItem\Collection as SubscriptionItemCollection;
 use PayPal\Subscription\Model\ResourceModel\SubscriptionItem\CollectionFactory as SubscriptionItemCollectionFactory;
@@ -122,6 +125,8 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
      * @param ProductRepositoryInterface $productRepository
      * @param Configurable $configurableType
      * @param DataObjectFactory $dataObjectFactory
+     * @param SubscriptionHelper $helper
+     * @param SubscriptionItemRepositoryInterface $subscriptionItemRepository
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -137,7 +142,9 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
         OrderRepositoryInterface $orderRepository,
         ProductRepositoryInterface $productRepository,
         Configurable $configurableType,
-        DataObjectFactory $dataObjectFactory
+        DataObjectFactory $dataObjectFactory,
+        private readonly SubscriptionHelper $helper,
+        private readonly SubscriptionItemRepositoryInterface $subscriptionItemRepository
     ) {
         $this->customerRepository = $customerRepository;
         $this->paymentMethodPool = $paymentMethodPool;
@@ -237,6 +244,7 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
     ): void {
         $subscriptionItemProductData = [];
         $productIds = [];
+        $autoUpdate = $this->configuration->getAutoUpdatePrice(ScopeInterface::SCOPE_STORE, $quote->getStoreId());
         foreach ($subscriptionItems as $subscriptionItem) {
             $productId = $subscriptionItem->getProductId();
             if (!in_array($productId, $productIds)) {
@@ -265,9 +273,18 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
                 $productQuoteData = $subscriptionItemProductData[$subscriptionItem->getId()] ?? null;
                 if ($product !== null &&
                     $productQuoteData !== null) {
-                    $product->setPrice(
-                        $productQuoteData[ProductInterface::PRICE]
-                    );
+                    if ($autoUpdate === true) {
+                        $subscriptionPrice = $this->getLatestSubscriptionPrice($product);
+                        if ($subscriptionPrice !== $productQuoteData[ProductInterface::PRICE]) {
+                            $subscriptionItem->setPrice($subscriptionPrice);
+                            $this->subscriptionItemRepository->save($subscriptionItem);
+                            $subscription->setData('price_changed', true);
+                        }
+                    } else {
+                        // Use existing subscription price.
+                        $subscriptionPrice = $productQuoteData[ProductInterface::PRICE];
+                    }
+                    $product->setPrice($subscriptionPrice);
                     if ($productQuoteData[ProductInterface::SKU] !== $product->getSku() &&
                         $product->getTypeId() === Configurable::TYPE_CODE) {
                         $this->addConfigProductToQuote(
@@ -395,5 +412,36 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
             $quote,
             $paymentData
         );
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @return float
+     * @throws LocalizedException
+     */
+    private function getLatestSubscriptionPrice(ProductInterface $product): float
+    {
+        $priceType = $product->getData(SubscriptionHelper::SUB_PRICE_TYPE) !== null
+            ? (int) $product->getData(SubscriptionHelper::SUB_PRICE_TYPE)
+            : null;
+        $priceValue = $product->getData(SubscriptionHelper::SUB_PRICE_VALUE) !== null
+            ? (float) $product->getData(SubscriptionHelper::SUB_PRICE_VALUE)
+            : null;
+
+        if ($priceValue === null) {
+            throw new LocalizedException(
+                __("Product %1 has no subscription price value defined", $product->getId())
+            );
+        }
+
+        if ($priceType === SubscriptionHelper::FIXED_PRICE) {
+            return $priceValue;
+        } elseif ($priceType === SubscriptionHelper::DISCOUNT_PRICE) {
+            $discountedPrice = $this->helper->getDiscountedPrice(
+                $priceValue,
+                (float) $product->getPrice()
+            );
+            return $discountedPrice;
+        }
     }
 }

@@ -13,6 +13,7 @@ use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\Data\SubscriptionReleaseInterface;
@@ -87,6 +88,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     /**
      * ReleaseConsumer constructor
      *
+     * @param ConfigurationInterface $configuration
      * @param SubscriptionReleaseInterfaceFactory $subscriptionReleaseInterfaceFactory
      * @param SubscriptionReleaseResource $subscriptionReleaseResource
      * @param SubscriptionResource $subscriptionResource
@@ -97,6 +99,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
      * @param CreateSubscriptionOrderInterface $createSubscriptionOrder
      * @param State $appState
      * @param CustomerRepositoryInterface $customerRepository
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         ConfigurationInterface $configuration,
@@ -109,7 +112,8 @@ class ReleaseConsumer implements ReleaseConsumerInterface
         CreateSubscriptionQuoteInterface $createSubscriptionQuote,
         CreateSubscriptionOrderInterface $createSubscriptionOrder,
         State $appState,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        private readonly OrderRepositoryInterface $orderRepository
     ) {
         $this->configuration = $configuration;
         $this->subscriptionReleaseInterfaceFactory = $subscriptionReleaseInterfaceFactory;
@@ -137,6 +141,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
         }
         $quote = null;
         $errorMessage = null;
+        $originalOrderId = $subscription->getOrderId();
         try {
             $originalStockFailures = (int) $subscription->getStockFailures();
             $originalFailedPayments = (int) $subscription->getFailedPayments();
@@ -157,6 +162,11 @@ class ReleaseConsumer implements ReleaseConsumerInterface
                 $quote,
                 $subscription
             );
+            $priceChanged = (bool) $subscription->getData('price_changed');
+            if ($priceChanged === true) {
+                // Update original order ID with latest order.
+                $subscription->setOrderId((int) $order->getId());
+            }
             $this->createRelease(
                 $subscription,
                 $order
@@ -165,6 +175,14 @@ class ReleaseConsumer implements ReleaseConsumerInterface
                 $this->releaseEmail->success(
                     $quote->getCustomer(),
                     $subscription
+                );
+            }
+            if ($priceChanged === true) {
+                $this->releaseEmail->priceChanged(
+                    $quote->getCustomer(),
+                    $subscription,
+                    $this->orderRepository->get($originalOrderId),
+                    $order
                 );
             }
         } catch (LocalizedException | CommandException $e) {
