@@ -274,7 +274,7 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
                 if ($product !== null &&
                     $productQuoteData !== null) {
                     if ($autoUpdate === true) {
-                        $subscriptionPrice = $this->getSubscriptionPrice($product);
+                        $subscriptionPrice = $this->getLatestSubscriptionPrice($product);
                         if ($subscriptionPrice !== $productQuoteData[ProductInterface::PRICE]) {
                             $subscriptionItem->setPrice($subscriptionPrice);
                             $this->subscriptionItemRepository->save($subscriptionItem);
@@ -419,7 +419,7 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
      * @return float
      * @throws LocalizedException
      */
-    private function getSubscriptionPrice(ProductInterface $product): float
+    private function getLatestSubscriptionPrice(ProductInterface $product): float
     {
         $priceType = $product->getData(SubscriptionHelper::SUB_PRICE_TYPE) !== null
             ? (int) $product->getData(SubscriptionHelper::SUB_PRICE_TYPE)
