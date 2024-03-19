@@ -18,7 +18,6 @@
             </configuration>
             <email_configuration>
                 <release_reminder_timing>0</release_reminder_timing>
-                <release_reminder_timing>0</release_reminder_timing>
             </email_configuration>
         </paypal_subscriptions>
     </default>
