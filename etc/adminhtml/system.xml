@@ -54,6 +54,12 @@
                         <field id="active">1</field>
                     </depends>
                 </field>
+                <field id="auto_update_price" translate="label" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Automatically Update Product Prices</label>
+                    <comment>If enabled, subscription orders will always use the current price information set to the product. If disabled, subscription orders will always use the original subscription price value</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>paypal/subscriptions/auto_update_price</config_path>
+                </field>
             </group>
             <group id="email_configuration" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Email Configuration</label>
@@ -89,6 +95,11 @@
                 </field>
                 <field id="release_reminder" translate="label comment" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Release Reminder Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="price_changed" translate="label comment" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Price Changed Email Template</label>
                     <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>
