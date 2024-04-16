@@ -117,6 +117,12 @@
         </arguments>
     </type>
 
+    <type name="PayPal\Subscription\Cron\Release">
+        <arguments>
+            <argument name="logger" xsi:type="object">PayPal\Subscription\Model\Logger</argument>
+        </arguments>
+    </type>
+
     <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
         <arguments>
             <argument name="columns" xsi:type="array">

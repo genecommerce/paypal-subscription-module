@@ -38,6 +38,7 @@
         <column xsi:type="timestamp" name="updated_at" nullable="false" on_update="true" default="CURRENT_TIMESTAMP" comment="Updated at"/>
         <column xsi:type="int" name="stock_failures" padding="10" unsigned="true" nullable="false" comment="Stock failures" />
         <column xsi:type="int" name="failed_payments" padding="10" unsigned="true" nullable="false" comment="Payment failures" />
+        <column xsi:type="tinyint" name="reminder_email_sent" comment="Has reminder email been sent?" default="0"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id"/>
         </constraint>

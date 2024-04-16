@@ -522,4 +522,24 @@ class Subscription extends AbstractModel implements SubscriptionInterface
             $stockFailures
         );
     }
+
+    /**
+     * @return bool
+     */
+    public function getReminderEmailSent(): bool
+    {
+        return (bool) $this->getData(self::REMINDER_EMAIL_SENT);
+    }
+
+    /**
+     * @param bool $emailSent
+     * @return SubscriptionInterface
+     */
+    public function setReminderEmailSent(bool $emailSent): SubscriptionInterface
+    {
+        return $this->setData(
+            self::REMINDER_EMAIL_SENT,
+            $emailSent
+        );
+    }
 }

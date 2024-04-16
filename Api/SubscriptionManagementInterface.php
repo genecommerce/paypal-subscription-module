@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Api;
 
+use PayPal\Subscription\Api\Data\SubscriptionInterface;
+
 /**
  * @api
  */
@@ -124,10 +126,12 @@ interface SubscriptionManagementInterface
      *
      * @param string $from
      * @param string $to
-     * @return \PayPal\Subscription\Api\Data\SubscriptionInterface[]
+     * @param bool|null $emailReminder
+     * @return SubscriptionInterface[]
      */
     public function collectReleases(
         string $from,
-        string $to
+        string $to,
+        ?bool $emailReminder = null
     ): array;
 }
