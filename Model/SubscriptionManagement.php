@@ -504,7 +504,7 @@ class SubscriptionManagement implements SubscriptionManagementInterface
             $filterEmailReminder = $this->filterBuilder
                 ->setField(SubscriptionInterface::REMINDER_EMAIL_SENT)
                 ->setConditionType('eq')
-                ->setValue($emailReminder)
+                ->setValue((int) $emailReminder)
                 ->create();
             $filterEmailReminder = $this->filterGroupBuilder
                 ->addFilter($filterEmailReminder)

@@ -120,9 +120,11 @@ class Release
             );
             foreach ($releases as $release) {
                 $this->releaseConsumer->execute($release);
-                // Latest release successfully generated, set email reminder flag to false for next release.
-                $release->setReminderEmailSent(false);
-                $this->subscriptionRepository->save($release);
+                if ($release->getReminderEmailSent() === true) {
+                    // Latest release successfully generated, set email reminder flag to false for next release.
+                    $release->setReminderEmailSent(false);
+                    $this->subscriptionRepository->save($release);
+                }
             }
         } catch (\Exception $exception) {
             $this->handleException($exception, "An error occurred during release generation");
