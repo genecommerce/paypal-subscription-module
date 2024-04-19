@@ -12,7 +12,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\PublisherInterface;
 use PayPal\Subscription\Api\SubscriptionRepositoryInterface;
 use PayPal\Subscription\Cron\Release;
-use PayPal\Subscription\Model\Config\Source\Subscription\MessageBroker;
 use PayPal\Subscription\Model\ConfigurationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -85,9 +84,6 @@ class ReleaseSubscriptionCommand extends Command
 
         try {
             $configuredMessageBroker = $this->configuration->getMessageBroker();
-            $topic = $configuredMessageBroker === MessageBroker::RABBIT_MQ_BROKER_CONFIG_VALUE ?
-                Release::TOPIC_NAME :
-                Release::TOPIC_NAME_DB;
             $subscription = $this->subscriptionRepository->getById(
                 (int) $input->getOption('id')
             );

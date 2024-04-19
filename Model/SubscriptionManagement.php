@@ -463,11 +463,13 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     /**
      * @param string $from
      * @param string $to
+     * @param bool|null $emailReminder
      * @return SubscriptionInterface[]
      */
     public function collectReleases(
         string $from,
-        string $to
+        string $to,
+        ?bool $emailReminder = null
     ): array {
         $filterFrom = $this->filterBuilder
             ->setField(SubscriptionInterface::NEXT_RELEASE_DATE)
@@ -493,11 +495,23 @@ class SubscriptionManagement implements SubscriptionManagementInterface
         $filterGroupStatus = $this->filterGroupBuilder
             ->addFilter($filterStatus)
             ->create();
-        $this->searchCriteriaBuilder->setFilterGroups([
+        $filterGroups = [
             $filterGroupFrom,
             $filterGroupTo,
             $filterGroupStatus
-        ]);
+        ];
+        if ($emailReminder !== null && is_bool($emailReminder)) {
+            $filterEmailReminder = $this->filterBuilder
+                ->setField(SubscriptionInterface::REMINDER_EMAIL_SENT)
+                ->setConditionType('eq')
+                ->setValue((int) $emailReminder)
+                ->create();
+            $filterEmailReminder = $this->filterGroupBuilder
+                ->addFilter($filterEmailReminder)
+                ->create();
+            $filterGroups[] = $filterEmailReminder;
+        }
+        $this->searchCriteriaBuilder->setFilterGroups($filterGroups);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         return $this->subscriptionRepository->getList(
             $searchCriteria
