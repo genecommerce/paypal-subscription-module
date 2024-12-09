@@ -23,6 +23,18 @@ class ExistingPublicHash
     }
 
     /**
+     * Error occurs when the vaulted token has been saved with token details including customer ID:
+     * @see \PayPal\Braintree\Model\Adapter\PaymentMethod\BraintreePaymentTokenAdapter::getTokenDetails
+     *
+     * During order placement, Braintree responds with gateway token information which is then persisted to vault token.
+     * During the order process, the public hash is then generated dynamically and stored against this token.
+     *
+     * When the public hash for this token is generated dynamically, the customer ID is NOT included in the token detail
+     * @see \PayPal\Braintree\Gateway\Response\VaultDetailsHandler::getVaultPaymentToken
+     *
+     * This results in a different public hash value being generated for an existing gateway token.
+     * Fix here ensures we use existing public hash for stored token during save.
+     *
      * @param Subject $subject
      * @param PaymentTokenInterface $token
      * @param OrderPaymentInterface $payment
