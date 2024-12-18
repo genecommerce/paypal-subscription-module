@@ -199,4 +199,7 @@
         <plugin name="DisableInstantButton"
                 type="PayPal\Subscription\Plugin\DisableInstantButton"/>
     </type>
+    <type name="Magento\Vault\Api\PaymentTokenManagementInterface">
+        <plugin name="paypal_existing_public_hash" type="PayPal\Subscription\Plugin\Braintree\ExistingPublicHash"/>
+    </type>
 </config>
