@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Check and disable "Save for later" checkbox on payment step in checkout if cart contains any subscription items 
 - Add message to tooltip for user
+- Create plugin to prevent following integrity constraint violation during order placement when vaulted token has been created via customer account page
 
 ## [3.3.0] - 2024-04-16
 ### Added
