@@ -81,6 +81,7 @@ class ExistingPublicHash
         PaymentTokenInterface $token,
         PaymentTokenInterface $existingToken
     ): bool {
-        return $token->getPaymentMethodCode() === $existingToken->getPaymentMethodCode() && in_array($token->getPaymentMethodCode(), self::PAYMENT_METHOD_CODES);
+        return $token->getPaymentMethodCode() === $existingToken->getPaymentMethodCode()
+            && in_array($token->getPaymentMethodCode(), self::PAYMENT_METHOD_CODES);
     }
 }
