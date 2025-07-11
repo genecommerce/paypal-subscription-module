@@ -8,42 +8,48 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Api;
 
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use PayPal\Subscription\Api\Data\FrequencyProfileInterface;
+use PayPal\Subscription\Api\Data\FrequencyProfileSearchResultInterface;
+
 /**
  * Interface FrequencyProfileRepositoryInterface
  */
 interface FrequencyProfileRepositoryInterface
 {
     /**
-     * Get frequency profile by Id
+     * Get frequency profile by ID
      *
      * @param int $frequencyProfileId
-     * @return \PayPal\Subscription\Api\Data\FrequencyProfileInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return FrequencyProfileInterface
+     * @throws NoSuchEntityException
      */
-    public function getById(int $frequencyProfileId);
+    public function getById(int $frequencyProfileId): FrequencyProfileInterface;
 
     /**
      * Get list of frequency profile
      *
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \PayPal\Subscription\Api\Data\FrequencyProfileSearchResultInterface
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return FrequencyProfileSearchResultInterface
      */
-    public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria);
+    public function getList(SearchCriteriaInterface $searchCriteria): FrequencyProfileSearchResultInterface;
 
     /**
      * Save frequency profile
      *
-     * @param \PayPal\Subscription\Api\Data\FrequencyProfileInterface $frequencyProfile
-     * @return \PayPal\Subscription\Api\Data\FrequencyProfileInterface
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @param FrequencyProfileInterface $frequencyProfile
+     * @return FrequencyProfileInterface
+     * @throws CouldNotSaveException
      */
-    public function save(\PayPal\Subscription\Api\Data\FrequencyProfileInterface $frequencyProfile);
+    public function save(FrequencyProfileInterface $frequencyProfile): FrequencyProfileInterface;
 
     /**
      * Delete frequency profile
      *
-     * @param \PayPal\Subscription\Api\Data\FrequencyProfileInterface $frequencyProfile
+     * @param FrequencyProfileInterface $frequencyProfile
      * @return void
      */
-    public function delete(\PayPal\Subscription\Api\Data\FrequencyProfileInterface $frequencyProfile);
+    public function delete(FrequencyProfileInterface $frequencyProfile): void;
 }

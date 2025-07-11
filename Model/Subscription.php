@@ -60,6 +60,7 @@ class Subscription extends AbstractModel implements SubscriptionInterface
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
+     * @throws LocalizedException
      */
     public function __construct(
         Context $context,
@@ -68,8 +69,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
         ProductRepositoryInterface $productRepository,
         SubscriptionHistoryInterfaceFactory $subscriptionHistoryFactory,
         SubscriptionHistoryRepositoryInterface $subscriptionHistoryRepository,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct(
@@ -87,6 +88,7 @@ class Subscription extends AbstractModel implements SubscriptionInterface
 
     /**
      * @return void
+     * @throws LocalizedException
      */
     protected function _construct(): void
     {
