@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model;
 
+use DateMalformedStringException;
 use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Customer\Helper\Address;
 use Magento\Customer\Model\ResourceModel\AddressRepository;
@@ -151,7 +152,7 @@ class SubscriptionManagement implements SubscriptionManagementInterface
         OrderInterface $order,
         OrderItemInterface $item,
         int $frequency,
-        int $frequencyProfileId = null
+        ?int $frequencyProfileId = null
     ): SubscriptionInterface {
         $subscription = $this->createSubscription(
             $order,
@@ -169,14 +170,14 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     /**
      * @param OrderInterface $order
      * @param int $frequency
-     * @param null $frequencyProfileId
+     * @param int|null $frequencyProfileId
      * @return SubscriptionInterface
      * @throws LocalizedException
      */
     public function createSubscription(
         OrderInterface $order,
         int $frequency,
-        $frequencyProfileId = null
+        ?int $frequencyProfileId = null
     ): SubscriptionInterface {
         if (!$order->getCustomerId()) {
             throw new LocalizedException(__('Customer ID missing.'));
@@ -232,7 +233,7 @@ class SubscriptionManagement implements SubscriptionManagementInterface
      * @param int $frequency
      * @return SubscriptionInterface
      * @throws AlreadyExistsException
-     * @throws LocalizedException
+     * @throws LocalizedException|DateMalformedStringException
      */
     public function changeFrequency(
         int $customerId,

@@ -6,14 +6,12 @@ namespace PayPal\Subscription\Model;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
-use Magento\Framework\App\State;
 use Magento\Framework\Api\SearchResults;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterfaceFactory;
-use PayPal\Subscription\Api\Data\SubscriptionSearchResultInterface;
 use PayPal\Subscription\Api\Data\SubscriptionSearchResultInterfaceFactory;
 use PayPal\Subscription\Api\SubscriptionRepositoryInterface;
 use PayPal\Subscription\Model\ResourceModel\Subscription as SubscriptionResource;
@@ -23,43 +21,19 @@ use PayPal\Subscription\Model\ResourceModel\Subscription\CollectionFactory;
 class SubscriptionRepository implements SubscriptionRepositoryInterface
 {
     /**
-     * @var SubscriptionInterfaceFactory
-     */
-    private $subscriptionFactory;
-
-    /**
-     * @var SubscriptionResource
-     */
-    private $subscriptionResource;
-
-    /**
-     * @var ResourceModel\Subscription\CollectionFactory
-     */
-    private $collectionFactory;
-
-    /**
-     * @var SubscriptionSearchResultInterfaceFactory
-     */
-    private $searchResultFactory;
-
-    /**
      * SubscriptionRepository constructor.
      *
      * @param SubscriptionInterfaceFactory $subscriptionFactory
      * @param SubscriptionResource $subscriptionResource
-     * @param ResourceModel\Subscription\CollectionFactory $collectionFactory
+     * @param CollectionFactory $collectionFactory
      * @param SubscriptionSearchResultInterfaceFactory $searchResultFactory
      */
     public function __construct(
-        SubscriptionInterfaceFactory $subscriptionFactory,
-        SubscriptionResource $subscriptionResource,
-        CollectionFactory $collectionFactory,
-        SubscriptionSearchResultInterfaceFactory $searchResultFactory
+        private readonly SubscriptionInterfaceFactory $subscriptionFactory,
+        private readonly SubscriptionResource $subscriptionResource,
+        private readonly CollectionFactory $collectionFactory,
+        private readonly SubscriptionSearchResultInterfaceFactory $searchResultFactory
     ) {
-        $this->subscriptionFactory = $subscriptionFactory;
-        $this->subscriptionResource = $subscriptionResource;
-        $this->collectionFactory = $collectionFactory;
-        $this->searchResultFactory = $searchResultFactory;
     }
 
     /**
@@ -85,7 +59,7 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
      * @return SubscriptionInterface|Subscription
      * @throws NoSuchEntityException
      */
-    public function getByOrderId(int $orderId)
+    public function getByOrderId(int $orderId): SubscriptionInterface|Subscription
     {
         $collection = $this->collectionFactory->create();
         $collection->addFieldToFilter(SubscriptionInterface::ORDER_ID, $orderId);
@@ -159,8 +133,10 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
-    private function addFiltersToCollection(SearchCriteriaInterface $searchCriteria, Collection $collection)
-    {
+    private function addFiltersToCollection(
+        SearchCriteriaInterface $searchCriteria,
+        Collection $collection
+    ): void {
         foreach ($searchCriteria->getFilterGroups() as $filterGroup) {
             $fields = $conditions = [];
             foreach ($filterGroup->getFilters() as $filter) {
@@ -175,8 +151,10 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
-    private function addSortOrdersToCollection(SearchCriteriaInterface $searchCriteria, Collection $collection)
-    {
+    private function addSortOrdersToCollection(
+        SearchCriteriaInterface $searchCriteria,
+        Collection $collection
+    ): void {
         if ($searchCriteria->getSortOrders()) {
             foreach ($searchCriteria->getSortOrders() as $sortOrder) {
                 $direction = $sortOrder->getDirection() === SortOrder::SORT_ASC ? 'asc' : 'desc';
@@ -189,8 +167,10 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
-    private function addPagingToCollection(SearchCriteriaInterface $searchCriteria, Collection $collection)
-    {
+    private function addPagingToCollection(
+        SearchCriteriaInterface $searchCriteria,
+        Collection $collection
+    ): void {
         $collection->setPageSize($searchCriteria->getPageSize());
         $collection->setCurPage($searchCriteria->getCurrentPage());
     }
@@ -200,8 +180,10 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
      * @param Collection $collection
      * @return SearchResults
      */
-    private function buildSearchResult(SearchCriteriaInterface $searchCriteria, Collection $collection)
-    {
+    private function buildSearchResult(
+        SearchCriteriaInterface $searchCriteria,
+        Collection $collection
+    ): SearchResults {
         $searchResults = $this->searchResultFactory->create();
         $searchResults->setSearchCriteria($searchCriteria);
         $searchResults->setItems($collection->getItems());
