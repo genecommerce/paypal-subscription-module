@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0] - 2025-08-20
+### Added
+- PHP 8.4 Support
+- Amended logic for handling whether card should be stored or not
+- Fixed incorrect publish hash issue for existing vault token for Braintree PayPal (braintree_paypal).
+
 ## [3.4.0] - 2024-12-18
 ### Added
 - Check and disable "Save for later" checkbox on payment step in checkout if cart contains any subscription items 
