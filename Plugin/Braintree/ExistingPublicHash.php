@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 declare(strict_types=1);
 
 namespace PayPal\Subscription\Plugin\Braintree;
@@ -14,6 +10,11 @@ use Psr\Log\LoggerInterface;
 
 class ExistingPublicHash
 {
+    private const PAYMENT_METHOD_CODES = [
+        'braintree',
+        'braintree_paypal'
+    ];
+
     /**
      * @param LoggerInterface $logger
      */
@@ -66,12 +67,17 @@ class ExistingPublicHash
     }
 
     /**
+     * Check tokens are either braintree or braintree_paypal
+     *
      * @param PaymentTokenInterface $token
      * @param PaymentTokenInterface $existingToken
      * @return bool
      */
-    private function tokensAreBraintree(PaymentTokenInterface $token, PaymentTokenInterface $existingToken): bool
-    {
-        return $token->getPaymentMethodCode() === 'braintree' && $existingToken->getPaymentMethodCode() === 'braintree';
+    private function tokensAreBraintree(
+        PaymentTokenInterface $token,
+        PaymentTokenInterface $existingToken
+    ): bool {
+        return $token->getPaymentMethodCode() === $existingToken->getPaymentMethodCode()
+            && in_array($token->getPaymentMethodCode(), self::PAYMENT_METHOD_CODES);
     }
 }

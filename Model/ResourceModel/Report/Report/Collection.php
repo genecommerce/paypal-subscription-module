@@ -14,6 +14,7 @@ use Magento\Framework\Data\Collection\EntityFactory;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Select;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Sales\Model\ResourceModel\Report;
 use Magento\Store\Model\Store;
@@ -30,14 +31,14 @@ class Collection extends Report\Collection\AbstractCollection
      *
      * @var array
      */
-    private $selectedColumns = [];
+    private array $selectedColumns = [];
 
     /**
      * Tables per period
      *
      * @var array
      */
-    protected $tableForPeriod = [
+    protected array $tableForPeriod = [
         'daily'   => 'paypal_subs_report_aggregated_daily',
         'monthly' => 'paypal_subs_report_aggregated_monthly',
         'yearly'  => 'paypal_subs_report_aggregated_yearly',
@@ -49,7 +50,7 @@ class Collection extends Report\Collection\AbstractCollection
      * @param FetchStrategyInterface $fetchStrategy
      * @param ManagerInterface $eventManager
      * @param Report $resource
-     * @param AdapterInterface $connection
+     * @param AdapterInterface|null $connection
      */
     public function __construct(
         EntityFactory $entityFactory,
@@ -57,7 +58,7 @@ class Collection extends Report\Collection\AbstractCollection
         FetchStrategyInterface $fetchStrategy,
         ManagerInterface $eventManager,
         Report $resource,
-        AdapterInterface $connection = null
+        ?AdapterInterface $connection = null
     ) {
         $resource->init($this->getTableByAggregationPeriod('daily'));
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $resource, $connection);
@@ -68,7 +69,7 @@ class Collection extends Report\Collection\AbstractCollection
      *
      * @return string
      */
-    protected function getOrderedField()
+    protected function getOrderedField(): string
     {
         return 'num_subscriptions';
     }
@@ -120,7 +121,7 @@ class Collection extends Report\Collection\AbstractCollection
      * @param string $from
      * @param string $to
      * @return Select
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     protected function _makeBoundarySelect($from, $to): Select
     {
@@ -241,7 +242,7 @@ class Collection extends Report\Collection\AbstractCollection
      * but before adding unions and calculating totals
      *
      * @return $this|AbstractCollection
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      * @throws \Zend_Db_Select_Exception
      * @throws \Exception
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)

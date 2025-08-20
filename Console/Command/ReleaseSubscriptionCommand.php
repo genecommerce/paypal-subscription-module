@@ -21,21 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReleaseSubscriptionCommand extends Command
 {
     /**
-     * @var SubscriptionRepositoryInterface
-     */
-    private $subscriptionRepository;
-
-    /**
-     * @var PublisherInterface
-     */
-    private $publisher;
-
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * ReleaseSubscriptionCommand constructor.
      *
      * @param SubscriptionRepositoryInterface $subscriptionRepository
@@ -44,15 +29,12 @@ class ReleaseSubscriptionCommand extends Command
      * @param string|null $name
      */
     public function __construct(
-        SubscriptionRepositoryInterface $subscriptionRepository,
-        PublisherInterface $publisher,
-        ConfigurationInterface $configuration,
-        string $name = null
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly PublisherInterface $publisher,
+        private readonly ConfigurationInterface $configuration,
+        ?string $name = null
     ) {
         parent::__construct($name);
-        $this->subscriptionRepository = $subscriptionRepository;
-        $this->publisher = $publisher;
-        $this->configuration = $configuration;
     }
 
     /**
