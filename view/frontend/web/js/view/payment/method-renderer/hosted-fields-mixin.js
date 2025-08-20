@@ -26,15 +26,6 @@ define([], function () {
              */
             cartContainsSubscriptions: function () {
                 return quoteItemData.some(item => item.is_subscription === "1");
-            },
-
-            /**
-             * @returns {Bool}
-             */
-            savePaymentCheckbox: function () {
-                var isActivePaymentTokenEnabler = this.vaultEnabler.isActivePaymentTokenEnabler();
-                // Set checkbox as checked if cart contains any subscriptions.
-                return this.cartContainsSubscriptions() === true ? true : isActivePaymentTokenEnabler;
             }
         });
     };
