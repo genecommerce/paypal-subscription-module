@@ -9,6 +9,7 @@ use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote;
@@ -129,7 +130,12 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     }
 
     /**
+     * Process subscription release
+     *
      * @param SubscriptionInterface $subscription
+     * @throws AlreadyExistsException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute(
         SubscriptionInterface $subscription
@@ -292,6 +298,8 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     }
 
     /**
+     * Create subscription release
+     *
      * @param SubscriptionInterface $subscription
      * @param Order $order
      * @throws LocalizedException

@@ -27,21 +27,17 @@ use Zend_Db_Expr;
 class Collection extends Report\Collection\AbstractCollection
 {
     /**
-     * Selected columns
-     *
      * @var array
      */
     private array $selectedColumns = [];
 
     /**
-     * Tables per period
-     *
      * @var array
      */
     protected array $tableForPeriod = [
-        'daily'   => 'paypal_subs_report_aggregated_daily',
+        'daily' => 'paypal_subs_report_aggregated_daily',
         'monthly' => 'paypal_subs_report_aggregated_monthly',
-        'yearly'  => 'paypal_subs_report_aggregated_yearly',
+        'yearly' => 'paypal_subs_report_aggregated_yearly'
     ];
 
     /**

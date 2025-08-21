@@ -21,10 +21,6 @@ use PayPal\Subscription\Model\Email\Subscription as SubscriptionEmail;
 use PayPal\Subscription\ViewModel\PaymentDetails;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Release
- * @package PayPal\Subscription\Model\Email
- */
 class Release extends Email
 {
     public const TEMPLATE_FAILURE = 'paypal_subscriptions_email_configuration_release_failure';
@@ -85,7 +81,8 @@ class Release extends Email
     }
 
     /**
-     * @param CartInterface $quote
+     * Send subscription release success email
+     *
      * @param CustomerInterface $customer
      * @param SubscriptionInterface $subscription
      * @return array
@@ -132,6 +129,8 @@ class Release extends Email
     }
 
     /**
+     * Send price changed email
+     *
      * @param CustomerInterface $customer
      * @param SubscriptionInterface $subscription
      * @param OrderInterface $originalOrder
@@ -169,6 +168,8 @@ class Release extends Email
     }
 
     /**
+     * Send subscription release failure email
+     *
      * @param CustomerInterface $customer
      * @param SubscriptionInterface $subscription
      * @param string $reason
@@ -208,6 +209,8 @@ class Release extends Email
     }
 
     /**
+     * Send subscription release failure email to admin
+     *
      * @param string $reason
      * @param SubscriptionInterface $subscription
      * @return array
@@ -232,6 +235,8 @@ class Release extends Email
     }
 
     /**
+     * Get custom email template
+     *
      * @return string
      */
     private function getCustomTemplate(): string
@@ -244,6 +249,8 @@ class Release extends Email
     }
 
     /**
+     * Get custom admin email template
+     *
      * @return string
      */
     private function getCustomAdminTemplate(): string

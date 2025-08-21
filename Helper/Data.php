@@ -191,16 +191,16 @@ class Data extends AbstractHelper
     {
         return $this->serializer->serialize(
             [
-                'firstname' => !is_null($address) ? $address->getFirstname() : '',
-                'lastname' => !is_null($address) ? $address->getLastname() : '',
-                'company' => !is_null($address) ? $address->getCompany() : '',
-                'street' => !is_null($address) ? $address->getStreet() : '',
-                'city' => !is_null($address) ? $address->getCity() : '',
-                'region' => !is_null($address) ? $address->getRegion() : '',
-                'region_id' => !is_null($address) ? $address->getRegionId() : '',
-                'postcode' => !is_null($address) ? $address->getPostcode() : '',
-                'country_id' => !is_null($address) ? $address->getCountryId() : '',
-                'telephone' => !is_null($address) ? $address->getTelephone() : '',
+                'firstname' => $address !== null ? $address->getFirstname() : '',
+                'lastname' => $address !== null ? $address->getLastname() : '',
+                'company' => $address !== null ? $address->getCompany() : '',
+                'street' => $address !== null ? $address->getStreet() : '',
+                'city' => $address !== null ? $address->getCity() : '',
+                'region' => $address !== null ? $address->getRegion() : '',
+                'region_id' => $address !== null ? $address->getRegionId() : '',
+                'postcode' => $address !== null ? $address->getPostcode() : '',
+                'country_id' => $address !== null ? $address->getCountryId() : '',
+                'telephone' => $address !== null ? $address->getTelephone() : '',
             ]
         );
     }
@@ -215,7 +215,7 @@ class Data extends AbstractHelper
     {
         try {
             $address = $this->serializer->unserialize($address);
-            if($address['telephone']) {
+            if ($address['telephone']) {
                 $address['telephone'] = 'T: ' . $address['telephone'];
             }
             unset($address['region_id']);
@@ -270,7 +270,7 @@ class Data extends AbstractHelper
     /**
      * Get Status Label from value
      *
-     * @param $status
+     * @param int $status
      * @return string
      */
     public function getStatusLabel($status): string
@@ -351,6 +351,8 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get bundle data
+     *
      * @param ProductInterface $subscriptionProduct
      * @return array
      */
@@ -361,7 +363,7 @@ class Data extends AbstractHelper
             return $optionData;
         }
 
-        /** @var \Magento\Bundle\Model\Product\Type $typeInstance */
+        /** @var Type $typeInstance */
         $typeInstance = $subscriptionProduct->getTypeInstance();
         $optionMap = $typeInstance->getOptions($subscriptionProduct);
         $bundleSelections = $typeInstance->getSelectionsCollection(

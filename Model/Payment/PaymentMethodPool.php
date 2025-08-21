@@ -12,7 +12,7 @@ class PaymentMethodPool implements PaymentMethodPoolInterface
     /**
      * @var SubscriptionPaymentInterface[]
      */
-    private $paymentMethodPool;
+    private array $paymentMethodPool;
 
     /**
      * PaymentMethodPool constructor
@@ -37,7 +37,7 @@ class PaymentMethodPool implements PaymentMethodPoolInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAvailablePayments(): array
     {
@@ -53,7 +53,7 @@ class PaymentMethodPool implements PaymentMethodPoolInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getByPaymentMethod(
         string $paymentMethod

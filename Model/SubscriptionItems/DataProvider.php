@@ -69,6 +69,8 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
+     * Get data
+     *
      * @return array
      */
     public function getData(): array

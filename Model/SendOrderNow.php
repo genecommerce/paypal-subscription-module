@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model;
 
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\PublisherInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\SendOrderNowInterface;
@@ -46,7 +45,7 @@ class SendOrderNow implements SendOrderNowInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(
         int $subscriptionId,

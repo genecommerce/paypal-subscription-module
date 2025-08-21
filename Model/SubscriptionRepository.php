@@ -37,6 +37,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Get by ID
+     *
      * @param int $subscriptionId
      * @return SubscriptionInterface
      * @throws NoSuchEntityException
@@ -55,6 +57,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Get by Order ID
+     *
      * @param int $orderId
      * @return SubscriptionInterface|Subscription
      * @throws NoSuchEntityException
@@ -72,6 +76,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Get customer subscription
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @return SubscriptionInterface
@@ -93,6 +99,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Get list
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @return SearchResults
      */
@@ -108,6 +116,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Save subscription
+     *
      * @param SubscriptionInterface $subscription
      * @return SubscriptionInterface
      * @throws AlreadyExistsException
@@ -120,6 +130,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Delete subscription
+     *
      * @param SubscriptionInterface $subscription
      * @return void
      * @throws Exception
@@ -130,6 +142,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Add filters to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -148,6 +162,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Add sort orders to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -164,6 +180,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Add paging to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -176,6 +194,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
     }
 
     /**
+     * Build search result
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      * @return SearchResults

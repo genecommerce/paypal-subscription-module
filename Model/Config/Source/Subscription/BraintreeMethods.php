@@ -10,6 +10,8 @@ use PayPal\Braintree\Model\Ui\ConfigProvider;
 class BraintreeMethods extends Allmethods
 {
     /**
+     * Retrieve Braintree methods
+     *
      * @return array
      */
     public function toOptionArray(): array

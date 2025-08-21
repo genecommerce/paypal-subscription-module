@@ -8,6 +8,9 @@ use Magento\Framework\Flag;
 
 class ReleaseCronRunningFlag extends Flag implements ReleaseCronRunningFlagInterface
 {
+    /**
+     * @var string
+     */
     protected $_flagCode = 'subscriptions.release.cron.running';
 
     private const IS_RUNNING_KEY = 'is_running';

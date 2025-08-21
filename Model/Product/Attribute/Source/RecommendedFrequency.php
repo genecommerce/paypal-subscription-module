@@ -48,7 +48,7 @@ class RecommendedFrequency extends AbstractSource
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAllOptions(): array
     {
