@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\ViewModel\Cart;
 
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -33,6 +34,11 @@ class Item implements ArgumentInterface
      * @var PricingHelper
      */
     private $pricingHelper;
+
+    /**
+     * @var Product|null
+     */
+    private ?Product $product = null;
 
     /**
      * Item constructor.
@@ -117,7 +123,7 @@ class Item implements ArgumentInterface
      * Get selected frequency
      *
      * @param QuoteItem $item
-     * @param $option
+     * @param array $option
      * @return bool
      */
     public function getSelectedFrequency(QuoteItem $item, $option): bool

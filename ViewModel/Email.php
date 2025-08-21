@@ -127,6 +127,8 @@ class Email implements ArgumentInterface
     }
 
     /**
+     * Get bundle data
+     *
      * @param SubscriptionItemInterface $subscriptionItem
      * @return ?array
      */

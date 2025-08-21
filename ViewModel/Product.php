@@ -182,7 +182,8 @@ class Product implements ArgumentInterface
      *
      * @return string
      */
-    public function getSaving(): string {
+    public function getSaving(): string
+    {
         if (!$this->product) {
             $this->product = $this->registry->registry('current_product');
         }
