@@ -14,7 +14,7 @@ abstract class AbstractBraintreePayment implements SubscriptionPaymentInterface
     /**
      * @var BraintreeAdapter
      */
-    protected $braintreeAdapter;
+    protected BraintreeAdapter $braintreeAdapter;
 
     /**
      * AbstractBraintreePayment constructor.
@@ -27,7 +27,7 @@ abstract class AbstractBraintreePayment implements SubscriptionPaymentInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(
         CartInterface $quote,
@@ -42,9 +42,16 @@ abstract class AbstractBraintreePayment implements SubscriptionPaymentInterface
         $quotePayment->setAdditionalInformation($this->getAdditionalInformation($paymentData));
     }
 
+    /**
+     * Get payment method code
+     *
+     * @return string
+     */
     abstract public function getPaymentMethodCode(): string;
 
     /**
+     * Get payment additional information
+     *
      * @param array $paymentData
      * @return array
      */

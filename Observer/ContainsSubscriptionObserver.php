@@ -27,6 +27,8 @@ class ContainsSubscriptionObserver implements ObserverInterface
     }
 
     /**
+     * Check whether product is subscription or not
+     *
      * @param Observer $observer
      * @throws \Exception
      * @return void

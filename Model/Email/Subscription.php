@@ -116,6 +116,8 @@ class Subscription extends Email
     }
 
     /**
+     * Send new subscription email
+     *
      * @param SubscriptionInterface $subscription
      * @param CustomerInterface $customer
      * @return array
@@ -166,12 +168,13 @@ class Subscription extends Email
     }
 
     /**
+     * Send update subscription email
+     *
      * @param SubscriptionInterface $subscription
      * @param CustomerInterface $customer
      * @param array $updated
      * @return array
-     * @throws InputException
-     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function update(
         SubscriptionInterface $subscription,
@@ -260,7 +263,10 @@ class Subscription extends Email
     }
 
     /**
+     * Skipped subscription email
+     *
      * @param SubscriptionInterface $subscription
+     * @param CustomerInterface $customer
      * @return void
      */
     public function skippedSubscription(
@@ -299,6 +305,8 @@ class Subscription extends Email
     }
 
     /**
+     * Get subscribed frequency label
+     *
      * @param SubscriptionItemInterface[] $items
      * @param int $frequency
      * @return string
@@ -318,6 +326,8 @@ class Subscription extends Email
     }
 
     /**
+     * Get subscription items
+     *
      * @param int $subscriptionId
      * @return array
      */

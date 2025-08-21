@@ -14,7 +14,7 @@ class CheckCustomerLoginObserver implements ObserverInterface
     /**
      * @var SubscriptionHelper
      */
-    private $subscriptionHelper;
+    private SubscriptionHelper $subscriptionHelper;
 
     /**
      * CheckCustomerLoginObserver constructor.
@@ -27,6 +27,8 @@ class CheckCustomerLoginObserver implements ObserverInterface
     }
 
     /**
+     * Check customer is logged in
+     *
      * @param Observer $observer
      * @return $this
      */

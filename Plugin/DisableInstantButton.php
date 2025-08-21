@@ -21,6 +21,8 @@ class DisableInstantButton
         $this->registry = $registry;
     }
     /**
+     * Disable instant button for subscription product
+     *
      * @param Button $subject
      * @param bool $result
      * @return bool

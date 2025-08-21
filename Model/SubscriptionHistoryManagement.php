@@ -39,6 +39,8 @@ class SubscriptionHistoryManagement implements SubscriptionHistoryManagementInte
     }
 
     /**
+     * Record customer history
+     *
      * @param UserInterface $customer
      * @param SubscriptionInterface $subscription
      * @param string $action
@@ -64,6 +66,8 @@ class SubscriptionHistoryManagement implements SubscriptionHistoryManagementInte
     }
 
     /**
+     * Record admin history
+     *
      * @param UserInterface $admin
      * @param SubscriptionInterface $subscription
      * @param string $action

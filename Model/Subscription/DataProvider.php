@@ -120,6 +120,8 @@ class DataProvider extends AbstractDataProvider
     }
 
     /**
+     * Get data
+     *
      * @return array
      * @throws NoSuchEntityException
      */
@@ -219,13 +221,13 @@ class DataProvider extends AbstractDataProvider
     /**
      * Return Friendly Customer label for Payment method
      *
-     * @param $method
-     * @param $details
+     * @param string $method
+     * @param array $details
      * @return string
      */
     private function getFriendlyPaymentMethod(
-        $method,
-        $details
+        string $method,
+        array $details
     ): string {
         $methodType = $this->paymentMethodTypeResolver->execute($method);
         $label = '';

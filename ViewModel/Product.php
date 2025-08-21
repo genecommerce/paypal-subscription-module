@@ -59,6 +59,8 @@ class Product implements ArgumentInterface
      * @param FrequencyProfileRepositoryInterface $frequencyProfile
      * @param SerializerInterface $serializer
      * @param SubscriptionHelper $subscriptionHelper
+     * @param PricingHelper $pricingHelper
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         Registry $registry,
@@ -77,6 +79,8 @@ class Product implements ArgumentInterface
     }
 
     /**
+     * Is subscription available?
+     *
      * @return bool
      */
     public function isSubscriptionAvailable(): bool
@@ -88,6 +92,8 @@ class Product implements ArgumentInterface
     }
 
     /**
+     * Is product subscription only?
+     *
      * @return bool
      */
     public function isSubscriptionOnly(): bool
@@ -101,6 +107,7 @@ class Product implements ArgumentInterface
     /**
      * 0 - Fixed Price e.g 9.99
      * 1 - Discount off of base price e.g. 75% off 10.00 is 2.50
+     *
      * @return int|null
      */
     public function getSubscriptionPriceType(): ?int
@@ -114,6 +121,8 @@ class Product implements ArgumentInterface
     }
 
     /**
+     * Get subscription price value
+     *
      * @return float|null
      */
     public function getSubscriptionPriceValue(): ?float
@@ -155,6 +164,7 @@ class Product implements ArgumentInterface
 
     /**
      * Returns the percentage saved
+     *
      * @return float
      */
     public function getPercentageSaved(): float
@@ -169,9 +179,11 @@ class Product implements ArgumentInterface
 
     /**
      * Returns the saving amount for a user.
+     *
      * @return string
      */
-    public function getSaving(): string {
+    public function getSaving(): string
+    {
         if (!$this->product) {
             $this->product = $this->registry->registry('current_product');
         }
@@ -193,6 +205,8 @@ class Product implements ArgumentInterface
     }
 
     /**
+     * Get frequency profile ID
+     *
      * @return int
      */
     public function getFrequencyProfileId(): int
@@ -205,6 +219,8 @@ class Product implements ArgumentInterface
     }
 
     /**
+     * Get frequency profile options
+     *
      * @return array
      */
     public function getFrequencyProfileOptions(): array
@@ -252,7 +268,7 @@ class Product implements ArgumentInterface
     /**
      * Return Recommended Frequency if set
      *
-     * @return int|null
+     * @return array
      */
     public function getRecommendedFrequencyOption(): array
     {

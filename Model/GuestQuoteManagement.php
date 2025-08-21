@@ -45,6 +45,8 @@ class GuestQuoteManagement implements GuestQuoteManagementInterface
     }
 
     /**
+     * Change frequency
+     *
      * @param string $cartId
      * @param int $quoteItemId
      * @param int $frequency
