@@ -18,7 +18,10 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Reports\Controller\Adminhtml\Report\Sales;
 use PayPal\Subscription\Block\Adminhtml\Sales\Report\Grid;
 
-class ExportSubscriptionReportExcel extends Sales implements ActionInterface, HttpGetActionInterface, HttpPostActionInterface
+class ExportSubscriptionReportExcel extends Sales implements
+    ActionInterface,
+    HttpGetActionInterface,
+    HttpPostActionInterface
 {
     /**
      * Export subscription report excel
@@ -32,6 +35,10 @@ class ExportSubscriptionReportExcel extends Sales implements ActionInterface, Ht
         $grid = $this->_view->getLayout()->createBlock(Grid::class);
         $this->_initReportAction($grid);
 
-        return $this->_fileFactory->create($fileName, $grid->getExcelFile($fileName), DirectoryList::VAR_DIR);
+        return $this->_fileFactory->create(
+            $fileName,
+            $grid->getExcelFile($fileName),
+            DirectoryList::VAR_DIR
+        );
     }
 }
