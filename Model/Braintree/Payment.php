@@ -84,7 +84,7 @@ class Payment implements BraintreePaymentInterface
     }
 
     /**
-     * change new payment method
+     * Change new payment method
      *
      * @param int $customerId
      * @param int $subscriptionId

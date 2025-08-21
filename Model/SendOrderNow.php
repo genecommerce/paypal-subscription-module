@@ -30,7 +30,7 @@ class SendOrderNow implements SendOrderNowInterface
     /**
      * SkipNextSubscriptionOrder constructor
      *
-     * @param ConfigurationInterface $configuration,
+     * @param ConfigurationInterface $configuration
      * @param PublisherInterface $publisher
      * @param SubscriptionRepositoryInterface $subscriptionRepository
      */

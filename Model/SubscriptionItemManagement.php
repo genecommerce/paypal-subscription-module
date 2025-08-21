@@ -36,7 +36,7 @@ class SubscriptionItemManagement implements SubscriptionItemManagementInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function createSubscriptionItem(SubscriptionInterface $subscription, OrderItemInterface $item)
     {

@@ -17,10 +17,6 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class Email
- * @package PayPal\Subscription\Model
- */
 class Email
 {
     /**
@@ -88,6 +84,8 @@ class Email
     }
 
     /**
+     * Get scope config
+     *
      * @return ScopeConfigInterface
      */
     public function getScopeConfig(): ScopeConfigInterface
@@ -96,9 +94,11 @@ class Email
     }
 
     /**
+     * Send email
+     *
      * @param array $data
      * @param CustomerInterface $customer
-     * @param $template
+     * @param string $template
      * @return array
      */
     public function sendEmail(
@@ -128,8 +128,10 @@ class Email
     }
 
     /**
+     * Send admin email
+     *
      * @param array $data
-     * @param $template
+     * @param string $template
      * @return array
      */
     public function sendEmailAdmin(array $data, $template): array
@@ -160,17 +162,19 @@ class Email
     }
 
     /**
+     * Send emails to multiple recipients
+     *
      * @param array $data
      * @param array $emailAddresses
      * @param CustomerInterface $customer
-     * @param $template
+     * @param string $template
      * @return array
      */
     public function sendMultipleRecipientsEmail(
         array $data,
         array $emailAddresses,
         CustomerInterface $customer,
-        $template
+        string $template
     ): array {
         try {
             $transportBuilder = $this->buildTransport(
@@ -193,8 +197,10 @@ class Email
     }
 
     /**
+     * Build transport
+     *
      * @param array $data
-     * @param $template
+     * @param string $template
      * @return TransportBuilder
      * @throws MailException
      * @throws NoSuchEntityException
