@@ -36,7 +36,7 @@ class QuoteAddressResolver implements QuoteAddressResolverInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(
         SubscriptionInterface $subscription,
