@@ -33,6 +33,8 @@ class PaymentActiveObserver implements ObserverInterface
     }
 
     /**
+     * Get active subscription payment
+     *
      * @param Observer $observer
      * @return void
      */

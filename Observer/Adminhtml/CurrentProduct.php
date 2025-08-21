@@ -26,6 +26,8 @@ class CurrentProduct implements ObserverInterface
     }
 
     /**
+     * Set current product
+     *
      * @param Observer $observer
      * @return void
      */
