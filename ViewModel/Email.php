@@ -65,6 +65,8 @@ class Email implements ArgumentInterface
     }
 
     /**
+     * Format price
+     *
      * @param float $price
      * @return string
      */
@@ -140,6 +142,8 @@ class Email implements ArgumentInterface
     }
 
     /**
+     * Get selection string
+     *
      * @param array $selectionData
      * @return string
      */
