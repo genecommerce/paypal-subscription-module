@@ -11,9 +11,11 @@ $serializedCheckoutConfig = $viewModel->getSubscriptionListJsonConfig();
 $newAddressForm = $escaper->escapeJs($block->getChildHtml('paypal_subscription_new_address_form'));
 
 $scriptString = <<<script
-        window.subscriptionsData = {$serializedCheckoutConfig};
-        window.subscriptionNewAddressForm = "$newAddressForm";
+    window.subscriptionsData = {$serializedCheckoutConfig};
+    window.subscriptionNewAddressForm = "$newAddressForm";
 script;
+
+// @codingStandardsIgnoreFile
 ?>
 
 <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
@@ -22,7 +24,9 @@ script;
     <div id="subscriptions-list" class="subscriptions-list" data-bind="scope:'subscriptionsList'">
         <!-- ko template: getTemplate() --><!-- /ko -->
     </div>
-    <div id="cancelled-subscriptions-list" class="cancelled-subscriptions-list" data-bind="scope:'disabledSubscriptionsList'">
+    <div id="cancelled-subscriptions-list"
+         class="cancelled-subscriptions-list"
+         data-bind="scope:'disabledSubscriptionsList'">
         <!-- ko template: getTemplate() --><!-- /ko -->
     </div>
 </div>
@@ -43,7 +47,7 @@ script;
                "components": {
                     "disabledSubscriptionsList": {
                         "component": "customerDisabledSubscriptionList",
-                        "cancelledMessage": "<?= $escaper->escapeJs($block->getChildHtml('paypal.subscription.cancelled.content')); ?>"
+                        "cancelledMessage":"<?= $escaper->escapeJs($block->getChildHtml('paypal.subscription.cancelled.content')); ?>"
                     }
                 }
             }

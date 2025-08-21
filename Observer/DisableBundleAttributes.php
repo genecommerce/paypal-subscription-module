@@ -23,6 +23,8 @@ class DisableBundleAttributes implements ObserverInterface
     }
 
     /**
+     * Disable bundle attributes
+     *
      * @param Observer $observer
      * @return void
      * @throws CouldNotSaveException
@@ -43,6 +45,8 @@ class DisableBundleAttributes implements ObserverInterface
     }
 
     /**
+     * Is product bundle
+     *
      * @param ProductInterface|null $product
      * @return bool
      */
@@ -53,7 +57,8 @@ class DisableBundleAttributes implements ObserverInterface
 
     /**
      * Return false IF bundle is dynamically priced OR bundle has more than one selection per option OR
-     * bundle contains ANY selections that are user defined === true.
+     *
+     * Bundle contains ANY selections that are user defined === true.
      *
      * @param ProductInterface $product
      * @return bool

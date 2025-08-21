@@ -10,27 +10,21 @@ use PayPal\Subscription\Model\Config\Source\Subscription\MessageBroker;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-
-    /**
      * Configuration constructor
      *
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        ScopeConfigInterface $scopeConfig
+        private readonly ScopeConfigInterface $scopeConfig
     ) {
-        $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getActive(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): bool {
         return (bool) $this->scopeConfig->getValue(
             self::ACTIVE_CONFIG_PATH,
@@ -40,11 +34,11 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getMessageBroker(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): int {
         $messageBrokerConfigValue = $this->scopeConfig->getValue(
             self::MESSAGE_BROKER_CONFIG_PATH,
@@ -57,11 +51,11 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getStockFailuresAllowed(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): ?int {
         $stockFailuresAllowed = $this->scopeConfig->getValue(
             self::STOCK_FAILURES_ALLOWED_CONFIG_PATH,
@@ -74,11 +68,11 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getFailedPaymentsAllowed(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): ?int {
         $failedPaymentsAllowed = $this->scopeConfig->getValue(
             self::FAILED_PAYMENTS_ALLOWED_CONFIG_PATH,
@@ -91,11 +85,11 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getReleaseShippingMethod(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): ?string {
         $releaseShippingMethod = $this->scopeConfig->getValue(
             self::RELEASE_SHIPPING_METHOD_CONFIG_PATH,
@@ -107,9 +101,16 @@ class Configuration implements ConfigurationInterface
             (string) $releaseShippingMethod;
     }
 
+    /**
+     * Get allowed payment methods
+     *
+     * @param string $scopeType
+     * @param string|null $scopeCode
+     * @return string|null
+     */
     public function getAllowedPaymentMethods(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): ?string {
         $allowedPaymentMethods = $this->scopeConfig->getValue(
             self::ALLOWED_PAYMENT_METHODS_CONFIG_PATH,
@@ -125,12 +126,12 @@ class Configuration implements ConfigurationInterface
      * Get Configuration value for whether Error Logging emails are enabled
      *
      * @param string $scopeType
-     * @param null $scopeCode
+     * @param string|null $scopeCode
      * @return bool
      */
     public function getErrorLoggingEmailsEnabled(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): bool {
         return (bool) $this->scopeConfig->getValue(
             self::ERROR_LOGGING_EMAIL_ENABLED,
@@ -143,12 +144,12 @@ class Configuration implements ConfigurationInterface
      * Get Configuration value for Error Logging emails recipients
      *
      * @param string $scopeType
-     * @param null $scopeCode
+     * @param string|null $scopeCode
      * @return string|null
      */
     public function getErrorLoggingEmailsRecipients(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): ?string {
         $errorLoggingRecipients = $this->scopeConfig->getValue(
             self::ERROR_LOGGING_EMAIL_RECIPIENTS,
@@ -164,12 +165,12 @@ class Configuration implements ConfigurationInterface
      * Get Configuration value for Release reminder email timing
      *
      * @param string $scopeType
-     * @param null $scopeCode
+     * @param string|null $scopeCode
      * @return int
      */
     public function getReleaseReminderEmailTiming(
         string $scopeType = ScopeInterface::SCOPE_STORE,
-        $scopeCode = null
+        ?string $scopeCode = null
     ): int {
         return (int) $this->scopeConfig->getValue(
             self::RELEASE_REMINDER_TIMING,
@@ -181,8 +182,10 @@ class Configuration implements ConfigurationInterface
     /**
      * @inheritDoc
      */
-    public function getAutoUpdatePrice(string $scopeType = ScopeInterface::SCOPE_STORE, $scopeCode = null): bool
-    {
+    public function getAutoUpdatePrice(
+        string $scopeType = ScopeInterface::SCOPE_STORE,
+        ?string $scopeCode = null
+    ): bool {
         return (bool) $this->scopeConfig->getValue(
             self::AUTO_UPDATE_PRICE,
             $scopeType,

@@ -6,6 +6,8 @@ namespace PayPal\Subscription\Plugin;
 use Magento\Catalog\Model\Product;
 use Magento\Checkout\CustomerData\DefaultItem as Subject;
 use Magento\Checkout\Model\Session;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use PayPal\Subscription\Api\Data\FrequencyProfileInterface;
 use PayPal\Subscription\Api\FrequencyProfileRepositoryInterface;
@@ -64,9 +66,13 @@ class CartItemData
     }
 
     /**
+     * Get item data
+     *
      * @param Subject $subject
      * @param array $result
      * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function afterGetItemData(
         Subject $subject,

@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Cron;
 
+use Exception;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use PayPal\Subscription\Api\SubscriptionManagementInterface;
 use PayPal\Subscription\Api\SubscriptionRepositoryInterface;
 use PayPal\Subscription\Model\ConfigurationInterface;
@@ -63,7 +65,6 @@ class Release
      */
     private $subscriptionRepository;
 
-
     /**
      * Release constructor
      *
@@ -99,8 +100,8 @@ class Release
     /**
      * Release the subscriptions via cron
      *
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute(): void
     {
@@ -126,7 +127,7 @@ class Release
                     $this->subscriptionRepository->save($release);
                 }
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->handleException($exception, "An error occurred during release generation");
         }
         $reminderTiming = $this->configuration->getReleaseReminderEmailTiming();
@@ -159,7 +160,7 @@ class Release
                     $subscriptionsForReleaseReminderEmail->setReminderEmailSent(true);
                     $this->subscriptionRepository->save($subscriptionsForReleaseReminderEmail);
                 }
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->handleException($exception, "An error occurred during reminder email generation");
             }
         }
@@ -169,11 +170,11 @@ class Release
     /**
      * Log error, remove running flag and throw exception to ensure cron listed as failure in cron_schedule table.
      *
-     * @param \Exception $exception
+     * @param Exception $exception
      * @param string $logMessage
-     * @throws \Exception
+     * @throws Exception
      */
-    private function handleException(\Exception $exception, string $logMessage)
+    private function handleException(Exception $exception, string $logMessage)
     {
         $this->logger->error($logMessage, [
             'exception_message' => $exception->getMessage()

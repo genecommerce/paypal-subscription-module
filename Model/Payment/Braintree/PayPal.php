@@ -6,8 +6,9 @@ namespace PayPal\Subscription\Model\Payment\Braintree;
 
 class PayPal extends AbstractBraintreePayment
 {
-
     /**
+     * Get payment method code
+     *
      * @return string
      */
     public function getPaymentMethodCode(): string
@@ -16,6 +17,8 @@ class PayPal extends AbstractBraintreePayment
     }
 
     /**
+     * Get payment additional information
+     *
      * @param array $paymentData
      * @return array
      */

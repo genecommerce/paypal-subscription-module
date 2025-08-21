@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace PayPal\Subscription\Model\ResourceModel\Report\Report;
 
 use DateTime;
+use Exception;
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
 use Magento\Framework\Data\Collection\EntityFactory;
 use Magento\Framework\DB\Adapter\AdapterInterface;
@@ -20,6 +21,7 @@ use Magento\Sales\Model\ResourceModel\Report;
 use Magento\Store\Model\Store;
 use Psr\Log\LoggerInterface;
 use Zend_Db_Expr;
+use Zend_Db_Select_Exception;
 
 /**
  * @api
@@ -27,21 +29,17 @@ use Zend_Db_Expr;
 class Collection extends Report\Collection\AbstractCollection
 {
     /**
-     * Selected columns
-     *
      * @var array
      */
     private array $selectedColumns = [];
 
     /**
-     * Tables per period
-     *
      * @var array
      */
     protected array $tableForPeriod = [
-        'daily'   => 'paypal_subs_report_aggregated_daily',
+        'daily' => 'paypal_subs_report_aggregated_daily',
         'monthly' => 'paypal_subs_report_aggregated_monthly',
-        'yearly'  => 'paypal_subs_report_aggregated_yearly',
+        'yearly' => 'paypal_subs_report_aggregated_yearly'
     ];
 
     /**
@@ -239,12 +237,13 @@ class Collection extends Report\Collection\AbstractCollection
 
     /**
      * Redeclare parent method for applying filters after parent method
-     * but before adding unions and calculating totals
+     *
+     * But before adding unions and calculating totals
      *
      * @return $this|AbstractCollection
      * @throws LocalizedException
-     * @throws \Zend_Db_Select_Exception
-     * @throws \Exception
+     * @throws Zend_Db_Select_Exception
+     * @throws Exception
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)

@@ -11,6 +11,8 @@ class MessageBroker implements OptionSourceInterface
     public const RABBIT_MQ_BROKER_CONFIG_VALUE = 2;
 
     /**
+     * Retrieve message broker options
+     *
      * @return array
      */
     public function toOptionArray(): array

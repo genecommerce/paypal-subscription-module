@@ -14,6 +14,7 @@ use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\DataObjectFactory;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\CartInterfaceFactory;
@@ -163,7 +164,7 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(
         SubscriptionInterface $subscription
@@ -235,16 +236,21 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
      *
      * @param CartInterface|Quote $quote
      * @param SubscriptionItemInterface|SubscriptionItem[] $subscriptionItems
+     * @param SubscriptionInterface $subscription
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     private function addProductsToQuote(
-        CartInterface $quote,
+        CartInterface|Quote $quote,
         array $subscriptionItems,
         SubscriptionInterface $subscription
     ): void {
         $subscriptionItemProductData = [];
         $productIds = [];
-        $autoUpdate = $this->configuration->getAutoUpdatePrice(ScopeInterface::SCOPE_STORE, $quote->getStoreId());
+        $autoUpdate = $this->configuration->getAutoUpdatePrice(
+            ScopeInterface::SCOPE_STORE,
+            $quote->getStore()->getCode()
+        );
         foreach ($subscriptionItems as $subscriptionItem) {
             $productId = $subscriptionItem->getProductId();
             if (!in_array($productId, $productIds)) {
@@ -311,10 +317,11 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
      * @param SubscriptionInterface $subscription
      * @param ProductInterface $parentProduct
      * @param array $productQuoteData
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     private function addConfigProductToQuote(
-        CartInterface $quote,
+        CartInterface|Quote $quote,
         SubscriptionInterface $subscription,
         ProductInterface $parentProduct,
         array $productQuoteData
@@ -415,6 +422,8 @@ class CreateSubscriptionQuote implements CreateSubscriptionQuoteInterface
     }
 
     /**
+     * Get latest subscription price
+     *
      * @param ProductInterface $product
      * @return float
      * @throws LocalizedException

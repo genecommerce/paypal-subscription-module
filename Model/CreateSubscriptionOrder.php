@@ -7,7 +7,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Api\Data\CartInterface;
-use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\QuoteManagement;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\InvoiceOrderInterface;
@@ -52,8 +51,10 @@ class CreateSubscriptionOrder implements CreateSubscriptionOrderInterface
     /**
      * Convert Subscription Quote to Order
      *
-     * @param CartInterface|Quote $subscriptionQuote
+     * @param CartInterface $subscriptionQuote
+     * @param SubscriptionInterface|null $subscription
      * @return OrderInterface
+     * @throws CommandException
      * @throws LocalizedException
      */
     public function execute(

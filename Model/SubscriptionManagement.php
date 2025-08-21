@@ -141,6 +141,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Create subscription with item
+     *
      * @param OrderInterface $order
      * @param OrderItemInterface $item
      * @param int $frequency
@@ -168,6 +170,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Create subscription
+     *
      * @param OrderInterface $order
      * @param int $frequency
      * @param int|null $frequencyProfileId
@@ -228,6 +232,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change frequency
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @param int $frequency
@@ -276,6 +282,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change status
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @param int $status
@@ -307,6 +315,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change existing address
+     *
      * @param int $customerId
      * @param string $addressType
      * @param int $subscriptionId
@@ -356,6 +366,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change new address
+     *
      * @param int $customerId
      * @param string $addressType
      * @param int $subscriptionId
@@ -412,6 +424,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change payment method
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @param string $paymentPublicHash
@@ -462,6 +476,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Collect releases
+     *
      * @param string $from
      * @param string $to
      * @param bool|null $emailReminder

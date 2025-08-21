@@ -51,6 +51,8 @@ class CreateSubscriptionObserver implements ObserverInterface
     }
 
     /**
+     * Create subscription
+     *
      * @param Observer $observer
      * @throws LocalizedException
      * @return void

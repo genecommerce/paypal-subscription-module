@@ -11,7 +11,7 @@ class Address
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    private SerializerInterface $serializer;
 
     /**
      * Address constructor.
@@ -24,7 +24,9 @@ class Address
     }
 
     /**
-     * @param $address
+     * Format address
+     *
+     * @param string $address
      * @return string|array
      */
     public function format($address): string|array
@@ -33,7 +35,9 @@ class Address
     }
 
     /**
-     * @param $address
+     * Un-serialize and format the address
+     *
+     * @param string $address
      * @return string|array
      */
     private function unserializeAndFormatAddress($address): string|array

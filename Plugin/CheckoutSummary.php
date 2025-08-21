@@ -12,7 +12,7 @@ class CheckoutSummary
     /**
      * @var SubscriptionHelper
      */
-    private $subscriptionHelper;
+    private SubscriptionHelper $subscriptionHelper;
 
     /**
      * @param SubscriptionHelper $subscriptionHelper
@@ -23,6 +23,8 @@ class CheckoutSummary
     }
 
     /**
+     * Get config
+     *
      * @param DefaultConfigProvider $subject
      * @param array $result
      * @return array

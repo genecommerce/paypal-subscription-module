@@ -47,6 +47,8 @@ class SubscriptionObserver implements ObserverInterface
     }
 
     /**
+     * Send subscription email new
+     *
      * @param Observer $observer
      * @throws LocalizedException
      * @return void

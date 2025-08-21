@@ -35,6 +35,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Get by ID
+     *
      * @param int $frequencyProfileId
      * @return FrequencyProfileInterface
      * @throws NoSuchEntityException
@@ -53,6 +55,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Get List
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @return FrequencyProfileSearchResultInterface
      */
@@ -68,6 +72,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Save frequency profile
+     *
      * @param FrequencyProfileInterface $frequencyProfile
      * @return FrequencyProfileInterface
      * @throws AlreadyExistsException
@@ -80,6 +86,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Delete frequency profile
+     *
      * @param FrequencyProfileInterface $frequencyProfile
      * @return void
      * @throws Exception
@@ -90,6 +98,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Add filters to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -108,6 +118,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Add sort orders to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -122,6 +134,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Add paging to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -134,6 +148,8 @@ class FrequencyProfileRepository implements FrequencyProfileRepositoryInterface
     }
 
     /**
+     * Build search result
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      * @return SearchResults

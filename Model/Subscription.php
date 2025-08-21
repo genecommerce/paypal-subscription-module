@@ -24,8 +24,14 @@ use PayPal\Subscription\Model\ResourceModel\SubscriptionItem\CollectionFactory a
 
 class Subscription extends AbstractModel implements SubscriptionInterface
 {
+    /**
+     * @var string
+     */
     public $_eventObject = 'subscription';
 
+    /**
+     * @var string
+     */
     public $_eventPrefix = 'paypal_subscription';
 
     /**
@@ -87,6 +93,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Initialize subscription resource
+     *
      * @return void
      * @throws LocalizedException
      */
@@ -96,6 +104,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get ID
+     *
      * @return int|null
      */
     public function getId(): ?int
@@ -106,6 +116,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set ID
+     *
      * @param mixed $id
      * @return SubscriptionInterface
      */
@@ -118,6 +130,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get customer ID
+     *
      * @return int
      */
     public function getCustomerId(): int
@@ -126,6 +140,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set customer ID
+     *
      * @param int $customerId
      * @return SubscriptionInterface
      */
@@ -138,6 +154,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get order ID
+     *
      * @return int
      */
     public function getOrderId(): int
@@ -146,6 +164,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set order ID
+     *
      * @param int $orderId
      * @return SubscriptionInterface
      */
@@ -158,6 +178,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get status
+     *
      * @return int
      */
     public function getStatus(): int
@@ -166,6 +188,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set status
+     *
      * @param int $statusId
      * @return SubscriptionInterface
      */
@@ -178,6 +202,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get previous release date
+     *
      * @return string|null
      */
     public function getPreviousReleaseDate(): ?string
@@ -186,6 +212,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set previous release date
+     *
      * @param string $releaseDate
      * @return SubscriptionInterface
      */
@@ -198,6 +226,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get next release date
+     *
      * @return string
      */
     public function getNextReleaseDate(): string
@@ -206,6 +236,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set next release date
+     *
      * @param string $releaseDate
      * @return SubscriptionInterface
      */
@@ -218,6 +250,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get frequency profile ID
+     *
      * @return int|null
      */
     public function getFrequencyProfileId(): ?int
@@ -228,6 +262,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set frequency profile ID
+     *
      * @param int|null $frequencyProfileId
      * @return SubscriptionInterface
      */
@@ -240,6 +276,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get frequency
+     *
      * @return int
      */
     public function getFrequency(): int
@@ -248,6 +286,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set frequency
+     *
      * @param int $frequency
      * @return SubscriptionInterface
      */
@@ -260,6 +300,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get billing address
+     *
      * @return string
      */
     public function getBillingAddress(): string
@@ -268,6 +310,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set billing address
+     *
      * @param string $billingAddress
      * @return SubscriptionInterface
      */
@@ -280,6 +324,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get shipping address
+     *
      * @return string
      */
     public function getShippingAddress(): string
@@ -288,6 +334,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set shipping address
+     *
      * @param string $shippingAddress
      * @return SubscriptionInterface
      */
@@ -300,6 +348,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get shipping price
+     *
      * @return float
      */
     public function getShippingPrice(): float
@@ -308,6 +358,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set shipping price
+     *
      * @param float $shippingPrice
      * @return SubscriptionInterface
      */
@@ -320,6 +372,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get shipping method
+     *
      * @return string
      */
     public function getShippingMethod(): string
@@ -328,6 +382,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set shipping method
+     *
      * @param string|null $shippingMethod
      * @return SubscriptionInterface
      */
@@ -340,6 +396,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get payment method
+     *
      * @return string
      */
     public function getPaymentMethod(): string
@@ -348,6 +406,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set payment method
+     *
      * @param string $paymentMethod
      * @return SubscriptionInterface
      */
@@ -360,6 +420,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get payment data
+     *
      * @return string|null
      */
     public function getPaymentData(): ?string
@@ -368,6 +430,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set payment data
+     *
      * @param string $paymentData
      * @return SubscriptionInterface
      */
@@ -380,6 +444,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get created at
+     *
      * @return string|null
      */
     public function getCreatedAt(): ?string
@@ -388,6 +454,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set created at
+     *
      * @param string $createdAt
      * @return SubscriptionInterface
      */
@@ -400,6 +468,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get updated at
+     *
      * @return string|null
      */
     public function getUpdatedAt(): ?string
@@ -408,6 +478,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set updated at
+     *
      * @param string $updatedAt
      * @return SubscriptionInterface
      */
@@ -420,6 +492,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get subscription item
+     *
      * @return SubscriptionItemInterface
      */
     public function getSubscriptionItem(): SubscriptionItemInterface
@@ -433,6 +507,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get product
+     *
      * @return ProductInterface|null
      */
     public function getProduct(): ?ProductInterface
@@ -452,9 +528,11 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
-     * @param $action
-     * @param $actionType
-     * @param $description
+     * Add subscription history
+     *
+     * @param string $action
+     * @param string $actionType
+     * @param string $description
      * @param bool $isVisibleToCustomer
      * @param bool $customerNotified
      * @return SubscriptionHistoryInterface
@@ -486,6 +564,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get failed payments
+     *
      * @return int
      */
     public function getFailedPayments(): int
@@ -494,6 +574,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set failed payments
+     *
      * @param int $failedPayments
      * @return SubscriptionInterface
      */
@@ -506,6 +588,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get stock failures
+     *
      * @return int
      */
     public function getStockFailures(): int
@@ -514,6 +598,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set stock failures
+     *
      * @param int $stockFailures
      * @return SubscriptionInterface
      */
@@ -526,6 +612,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Get reminder email sent
+     *
      * @return bool
      */
     public function getReminderEmailSent(): bool
@@ -534,6 +622,8 @@ class Subscription extends AbstractModel implements SubscriptionInterface
     }
 
     /**
+     * Set reminder email sent
+     *
      * @param bool $emailSent
      * @return SubscriptionInterface
      */

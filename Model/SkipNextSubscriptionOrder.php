@@ -6,23 +6,11 @@ namespace PayPal\Subscription\Model;
 
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Customer\Model\ResourceModel\CustomerRepository;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Model\OrderRepository;
-use Magento\Store\Model\ScopeInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\SkipNextSubscriptionOrderInterface;
 use PayPal\Subscription\Api\SubscriptionRepositoryInterface;
-use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 use PayPal\Subscription\Model\Email\Subscription as SubscriptionEmail;
 
-/**
- * Class SkipNextSubscriptionOrder
- * @package PayPal\Subscription\Model
- */
 class SkipNextSubscriptionOrder implements SkipNextSubscriptionOrderInterface
 {
     /**
@@ -57,7 +45,7 @@ class SkipNextSubscriptionOrder implements SkipNextSubscriptionOrderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(
         int $subscriptionId,

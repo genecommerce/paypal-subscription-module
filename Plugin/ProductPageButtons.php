@@ -11,7 +11,7 @@ class ProductPageButtons
     /**
      * @var CurrentProduct
      */
-    protected $currentProduct;
+    protected CurrentProduct $currentProduct;
 
     /**
      * Product constructor
@@ -24,6 +24,8 @@ class ProductPageButtons
         $this->currentProduct = $currentProduct;
     }
     /**
+     * Is product page buttons active
+     *
      * @param ProductPage $subject
      * @param bool $result
      * @return bool

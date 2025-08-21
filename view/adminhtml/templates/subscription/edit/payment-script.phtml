@@ -1,6 +1,12 @@
 <?php
-/** @var PayPal\Braintree\Block\Payment $block */
-$code = $block->escapeHtml($block->getCode());
+/**
+ * @var PayPal\Braintree\Block\Payment $block
+ * @var Escaper $escaper
+ */
+
+use Magento\Framework\Escaper;
+
+$code = $escaper->escapeHtml($block->getCode());
 ?>
 <script>
     //<![CDATA[
@@ -20,8 +26,6 @@ $code = $block->escapeHtml($block->getCode());
                     $("#payment_form_braintree").trigger('takePayment');
                 });
             });
-
-
         });
     //]]>
 </script>
