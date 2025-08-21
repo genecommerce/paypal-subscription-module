@@ -53,7 +53,7 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {
@@ -64,7 +64,7 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getAliases(): array
     {
@@ -72,10 +72,12 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
+     * Update product subscription attributes
+     *
      * @throws LocalizedException
      * @throws ValidateException
      */
-    public function apply()
+    public function apply(): void
     {
         $this->eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $attributes = [

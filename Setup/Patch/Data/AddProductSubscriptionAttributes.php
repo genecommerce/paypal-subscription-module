@@ -55,7 +55,7 @@ class AddProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {
@@ -63,7 +63,7 @@ class AddProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getAliases(): array
     {
@@ -71,10 +71,12 @@ class AddProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
+     * Add product subscription attributes
+     *
      * @throws LocalizedException
      * @throws ValidateException
      */
-    public function apply()
+    public function apply(): void
     {
         $this->eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $this->eavSetup->addAttribute(Product::ENTITY, self::SUBSCRIPTION_AVAILABLE, [
@@ -160,9 +162,11 @@ class AddProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @param $entityTypeId
-     * @param $attributeSetId
-     * @param $attributeGroupId
+     * Add attributes to group
+     *
+     * @param int|string $entityTypeId
+     * @param int|string $attributeSetId
+     * @param int|string $attributeGroupId
      * @param array $attributes
      */
     private function addAttributesToGroup($entityTypeId, $attributeSetId, $attributeGroupId, array $attributes): void

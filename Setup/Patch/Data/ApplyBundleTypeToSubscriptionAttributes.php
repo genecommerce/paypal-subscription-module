@@ -51,7 +51,7 @@ class ApplyBundleTypeToSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {
@@ -63,7 +63,7 @@ class ApplyBundleTypeToSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getAliases(): array
     {
@@ -71,6 +71,8 @@ class ApplyBundleTypeToSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
+     * Apply bundle type to subscription attributes
+     *
      * @return void
      */
     public function apply(): void
