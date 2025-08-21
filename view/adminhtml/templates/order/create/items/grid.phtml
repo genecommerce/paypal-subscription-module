@@ -4,14 +4,20 @@
  * See COPYING.txt for license details.
  */
 
+use Magento\Catalog\Helper\Data;
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+use Magento\Sales\Block\Adminhtml\Order\Create\Items\Grid;
+
 ?>
 <?php
 /**
- * @var $block \Magento\Sales\Block\Adminhtml\Order\Create\Items\Grid
- * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var Grid $block
+ * @var SecureHtmlRenderer $secureRenderer
+ * @var Escaper $escaper
  */
 
-/** @var \Magento\Catalog\Helper\Data $catalogHelper */
+/** @var Data $catalogHelper */
 $catalogHelper = $block->getData('catalogHelper');
 $viewModel = $block->getViewModel();
 ?>
@@ -23,18 +29,18 @@ $viewModel = $block->getViewModel();
             <table class="data-table admin__table-primary order-tables">
                 <thead>
                 <tr class="headings">
-                    <th class="col-product"><span><?= $block->escapeHtml(__('Product')) ?></span></th>
-                    <th class="col-price"><span><?= $block->escapeHtml(__('Price')) ?></span></th>
-                    <th class="col-qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></th>
-                    <th class="col-subtotal"><span><?= $block->escapeHtml(__('Subtotal')) ?></span></th>
-                    <th class="col-discount"><span><?= $block->escapeHtml(__('Discount')) ?></span></th>
-                    <th class="col-row-total"><span><?= $block->escapeHtml(__('Row Subtotal')) ?></span></th>
-                    <th class="col-action"><span><?= $block->escapeHtml(__('Action')) ?></span></th>
+                    <th class="col-product"><span><?= $escaper->escapeHtml(__('Product')) ?></span></th>
+                    <th class="col-price"><span><?= $escaper->escapeHtml(__('Price')) ?></span></th>
+                    <th class="col-qty"><span><?= $escaper->escapeHtml(__('Qty')) ?></span></th>
+                    <th class="col-subtotal"><span><?= $escaper->escapeHtml(__('Subtotal')) ?></span></th>
+                    <th class="col-discount"><span><?= $escaper->escapeHtml(__('Discount')) ?></span></th>
+                    <th class="col-row-total"><span><?= $escaper->escapeHtml(__('Row Subtotal')) ?></span></th>
+                    <th class="col-action"><span><?= $escaper->escapeHtml(__('Action')) ?></span></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="even">
-                    <td class="empty-text" colspan="100"><?= $block->escapeHtml(__('No ordered items')) ?></td>
+                    <td class="empty-text" colspan="100"><?= $escaper->escapeHtml(__('No ordered items')) ?></td>
                 </tr>
                 </tbody>
             </table>
@@ -44,25 +50,29 @@ $viewModel = $block->getViewModel();
     <div class="admin__table-wrapper" id="order-items_grid">
         <?php if (count($items) > 10): ?>
             <div class="actions update actions-update">
-                <?= $block->getButtonHtml(__('Update Items and Quantities'), 'order.itemsUpdate()', 'action-secondary') ?>
+                <?= $block->getButtonHtml(
+                    __('Update Items and Quantities'),
+                    'order.itemsUpdate()',
+                    'action-secondary'
+                ) ?>
             </div>
         <?php endif; ?>
         <table class="data-table admin__table-primary order-tables">
             <thead>
             <tr class="headings">
-                <th class="col-product"><span><?= $block->escapeHtml(__('Product')) ?></span></th>
-                <th class="col-price"><span><?= $block->escapeHtml(__('Price')) ?></span></th>
-                <th class="col-qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></th>
-                <th class="col-subtotal"><span><?= $block->escapeHtml(__('Subtotal')) ?></span></th>
-                <th class="col-discount"><span><?= $block->escapeHtml(__('Discount')) ?></span></th>
-                <th class="col-row-total"><span><?= $block->escapeHtml(__('Row Subtotal')) ?></span></th>
-                <th class="col-action"><span><?= $block->escapeHtml(__('Action')) ?></span></th>
+                <th class="col-product"><span><?= $escaper->escapeHtml(__('Product')) ?></span></th>
+                <th class="col-price"><span><?= $escaper->escapeHtml(__('Price')) ?></span></th>
+                <th class="col-qty"><span><?= $escaper->escapeHtml(__('Qty')) ?></span></th>
+                <th class="col-subtotal"><span><?= $escaper->escapeHtml(__('Subtotal')) ?></span></th>
+                <th class="col-discount"><span><?= $escaper->escapeHtml(__('Discount')) ?></span></th>
+                <th class="col-row-total"><span><?= $escaper->escapeHtml(__('Row Subtotal')) ?></span></th>
+                <th class="col-action"><span><?= $escaper->escapeHtml(__('Action')) ?></span></th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-                <td class="col-total"><?= $block->escapeHtml(__('Total %1 product(s)', count($items))) ?></td>
-                <td colspan="2" class="col-subtotal"><?= $block->escapeHtml(__('Subtotal:')) ?></td>
+                <td class="col-total"><?= $escaper->escapeHtml(__('Total %1 product(s)', count($items))) ?></td>
+                <td colspan="2" class="col-subtotal"><?= $escaper->escapeHtml(__('Subtotal:')) ?></td>
                 <td class="col-price">
                     <strong><?= /* @noEscape */ $block->formatPrice($block->getSubtotal()) ?></strong>
                 </td>
@@ -80,24 +90,25 @@ $viewModel = $block->getViewModel();
                 <tbody class="<?= /* @noEscape */ ($i%2) ? 'even' : 'odd' ?>">
                 <tr>
                     <td class="col-product">
-                            <span id="order_item_<?= (int) $item->getId() ?>_title"><?=
-                                $block->escapeHtml($item->getName()) ?></span>
+                            <span id="order_item_<?= (int) $item->getId() ?>_title">
+                                <?= $escaper->escapeHtml($item->getName()) ?>
+                            </span>
                         <div class="product-sku-block">
-                            <span><?= $block->escapeHtml(__('SKU')) ?>:</span>
+                            <span><?= $escaper->escapeHtml(__('SKU')) ?>:</span>
                             <?= /* @noEscape */ implode(
                                 '<br />',
-                                $catalogHelper->splitSku($block->escapeHtml($item->getSku()))
+                                $catalogHelper->splitSku($escaper->escapeHtml($item->getSku()))
                             ) ?>
                         </div>
                         <div class="product-configure-block">
                             <?= $block->getConfigureButtonHtml($item) ?>
                         </div>
                         <?php if ($viewModel->isSubscriptionAvailable($item)): ?>
-                            <div><?= $block->escapeHtml(__('Subscription Available')) ?></div>
+                            <div><?= $escaper->escapeHtml(__('Subscription Available')) ?></div>
                             <?php if ($viewModel->isSubscriptionOnly($item)): ?>
-                                <div><?= $block->escapeHtml(__('Subscription Only')) ?></div>
+                                <div><?= $escaper->escapeHtml(__('Subscription Only')) ?></div>
                             <?php endif; ?>
-                            <?= $block->escapeHtml($viewModel->getSubscriptionPrice($item)) ?>
+                            <?= $escaper->escapeHtml($viewModel->getSubscriptionPrice($item)) ?>
                             <?= $viewModel->getFrequencyProfileOptionsHtml($item) ?>
                         <?php endif; ?>
                     </td>
@@ -108,7 +119,7 @@ $viewModel = $block->getViewModel();
                         <?php $isCustomPrice = $block->usedCustomPriceForItem($item) ?>
                         <?php if ($tier = $block->getTierHtml($item)): ?>
                             <div id="item_tier_block_<?= (int) $item->getId() ?>">
-                                <a href="#"><?= $block->escapeHtml(__('Tier Pricing')) ?></a>
+                                <a href="#"><?= $escaper->escapeHtml(__('Tier Pricing')) ?></a>
                                 <div id="item_tier_<?= (int) $item->getId() ?>"><?= /* @noEscape */ $tier ?></div>
                                 <?= /* @noEscape */ $secureRenderer->renderStyleAsTag(
                                     "display:none",
@@ -136,7 +147,7 @@ $viewModel = $block->getViewModel();
                                 <label
                                     class="normal admin__field-label"
                                     for="item_use_custom_price_<?= (int) $item->getId() ?>">
-                                    <span><?= $block->escapeHtml(__('Custom Price')) ?>*</span></label>
+                                    <span><?= $escaper->escapeHtml(__('Custom Price')) ?>*</span></label>
                                 <?= /* @noEscape */ $secureRenderer->renderEventListenerAsTag(
                                     'onclick',
                                     "order.toggleCustomPrice(this, 'item_custom_price_" . (int) $item->getId() .
@@ -178,7 +189,7 @@ $viewModel = $block->getViewModel();
                             <label
                                 for="item_use_discount_<?= (int) $item->getId() ?>"
                                 class="normal admin__field-label">
-                                <span><?= $block->escapeHtml(__('Apply')) ?></span></label>
+                                <span><?= $escaper->escapeHtml(__('Apply')) ?></span></label>
                         </div>
 
                     </td>
@@ -187,20 +198,21 @@ $viewModel = $block->getViewModel();
                     </td>
                     <td class="col-actions last">
                         <select class="admin__control-select" name="item[<?= (int) $item->getId() ?>][action]">
-                            <option value=""><?= $block->escapeHtml(__('Please select')) ?></option>
-                            <option value="remove"><?= $block->escapeHtml(__('Remove')) ?></option>
+                            <option value=""><?= $escaper->escapeHtml(__('Please select')) ?></option>
+                            <option value="remove"><?= $escaper->escapeHtml(__('Remove')) ?></option>
                             <?php if ($block->getCustomerId() && $block->getMoveToCustomerStorage()): ?>
-                                <option value="cart"><?= $block->escapeHtml(__('Move to Shopping Cart')) ?></option>
+                                <option value="cart"><?= $escaper->escapeHtml(__('Move to Shopping Cart')) ?></option>
                                 <?php if ($block->isMoveToWishlistAllowed($item)): ?>
                                     <?php $wishlists = $block->getCustomerWishlists();?>
                                     <?php if (count($wishlists) <= 1): ?>
-                                        <option value="wishlist"><?= $block->escapeHtml(__('Move to Wish List')) ?>
+                                        <option value="wishlist">
+                                            <?= $escaper->escapeHtml(__('Move to Wish List')) ?>
                                         </option>
                                     <?php else: ?>
-                                        <optgroup label="<?= $block->escapeHtml(__('Move to Wish List')) ?>">
+                                        <optgroup label="<?= $escaper->escapeHtml(__('Move to Wish List')) ?>">
                                             <?php foreach ($wishlists as $wishlist):?>
                                                 <option value="wishlist_<?= (int) $wishlist->getId() ?>">
-                                                    <?= $block->escapeHtml($wishlist->getName()) ?>
+                                                    <?= $escaper->escapeHtml($wishlist->getName()) ?>
                                                 </option>
                                             <?php endforeach;?>
                                         </optgroup>
@@ -228,7 +240,7 @@ $viewModel = $block->getViewModel();
                                 ?>
                                 <div class="message <?php if ($item->getHasError()): ?>message-error<?php else:
                                     ?>message-notice<?php endif; ?>">
-                                    <?= $block->escapeHtml($message) ?>
+                                    <?= $escaper->escapeHtml($message) ?>
                                 </div>
                             <?php endforeach; ?>
                         </td>
@@ -239,7 +251,7 @@ $viewModel = $block->getViewModel();
                 </tbody>
             <?php endforeach; ?>
         </table>
-        <p><small><?= $block->escapeHtml($block->getInclExclTaxMessage()) ?></small></p>
+        <p><small><?= $escaper->escapeHtml($block->getInclExclTaxMessage()) ?></small></p>
     </div>
 
     <div class="order-discounts">
