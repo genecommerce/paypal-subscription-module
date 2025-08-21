@@ -5,6 +5,8 @@ namespace PayPal\Subscription\Plugin;
 
 use Magento\Checkout\CustomerData\Cart;
 use Magento\Checkout\Model\Session;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 
 /**
@@ -12,20 +14,18 @@ use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
  */
 class CartData
 {
-
     /**
      * @var Session
      */
-    private $checkoutSession;
+    private Session $checkoutSession;
 
     /**
      * @var QuoteIdToMaskedQuoteIdInterface
      */
-    private $maskedQuote;
+    private QuoteIdToMaskedQuoteIdInterface $maskedQuote;
 
     /**
      * CartData constructor.
-     * @param Cart $cart
      * @param Session $checkoutSession
      * @param QuoteIdToMaskedQuoteIdInterface $maskedQuote
      */
@@ -38,11 +38,13 @@ class CartData
     }
 
     /**
+     * Get section data
+     *
      * @param Cart $subject
      * @param $result
      * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function afterGetSectionData(Cart $subject, $result): array
     {
