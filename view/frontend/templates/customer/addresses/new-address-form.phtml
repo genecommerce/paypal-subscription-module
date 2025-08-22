@@ -70,7 +70,7 @@ $displayAll = $block->getConfig('general/region/display_all');
                     <input type="text"
                            name="street_1"
                            value="<?= $escaper->escapeHtmlAttr($block->getStreetLine(1)) ?>"
-                           title="<?= /* @noEscape */ $escaper->getAttributeData()->getFrontendLabel('street') ?>"
+                           title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('street') ?>"
                            id="street_1"
                            class="input-text <?= $escaper->escapeHtmlAttr($streetValidationClass) ?>" />
 
