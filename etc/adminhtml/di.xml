@@ -13,10 +13,6 @@
                 type="PayPal\Subscription\Plugin\Refresh\Collection"
                 sortOrder="1" />
     </type>
-    <type name="Magento\Config\Model\Config">
-        <plugin name="paypal_subscription_braintree_vault_warning"
-                type="PayPal\Subscription\Plugin\Config\BraintreeVaultWarning"/>
-    </type>
     <type name="Magento\Reports\Controller\Adminhtml\Report\Statistics">
         <arguments>
             <argument name="reportTypes" xsi:type="array">
