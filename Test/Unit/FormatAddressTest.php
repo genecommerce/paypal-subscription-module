@@ -107,7 +107,8 @@ class FormatAddressTest extends TestCase
 
     public function testFormatAddress()
     {
-        $address = '{"street":["Church House", "1 Hanover Street"],"city":"Liverpool","region":"Merseyside","postcode":"L1 3DN","country_id":"GB"}'; // @codingStandardsIgnoreLine
+        $address = '{"street":["Church House", "1 Hanover Street"],"city":"Liverpool","region":"Merseyside",'.
+            '"postcode":"L1 3DN","country_id":"GB"}';
         $expected = 'Church House, 1 Hanover Street, Liverpool, Merseyside, L1 3DN, GB';
         $formattedAddress = $this->subscriptionView->formatAddress($address);
         $this->assertEquals(
