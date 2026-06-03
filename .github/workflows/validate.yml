@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -21,5 +21,11 @@ jobs:
           php-version: '8.5'
           coverage: none
 
-      - name: Run PHP linter
+      - name: PHP linter
         run: find . -path './vendor' -prune -o -type f -name '*.php' -print0 | xargs -0 -n 1 php -l
+
+      - name: Magento Coding Standards
+        run: vendor/bin/phpcs --extensions=php,phtml
+
+      - name: Tests
+        run: vendor/bin/phpunit
