@@ -1,4 +1,4 @@
-name: PHP Lint
+name: Validation checks
 
 on:
   pull_request:
@@ -7,8 +7,8 @@ permissions:
   contents: read
 
 jobs:
-  php-lint:
-    name: PHP syntax check
+  module-validate:
+    name: Validate syntax, coding-standards and tests pass
     runs-on: ubuntu-latest
 
     steps:
