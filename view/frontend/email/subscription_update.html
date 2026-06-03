@@ -2,7 +2,7 @@
 <!--@vars {
 "var customer_name":"Customer Name",
 "var update.action":"Update Action",
-"var update.description":"Update Description"
+"var update.description":"Update Description",
 "var subscription.getFrequency()":"Subscription Frequency (in days)",
 "var subscription.getNextReleaseDate()":"Next Release Date",
 "var formattedBillingAddress":"Billing Address",
@@ -24,13 +24,13 @@
 
 <p><strong>{{trans "Products:"}}</strong></p>
 {{layout handle="subscription_items" items=$items area="frontend"}}
-<br/>
+<br>
 <p><strong>{{trans "Next Dispatch Date is:"}}</strong> {{var formatted_next_release}}</p>
 <p><strong>{{trans "Order Frequency:"}}</strong> {{var subscription.getFrequency()}} Days</p>
 
 <p><strong>{{trans "Shipping Address:"}}</strong></p>
 {{var formattedShippingAddress}}
-<br/>
+<br>
 
 {{layout handle="subscription_payment" payment=$payment area="frontend"}}
 

@@ -177,13 +177,13 @@ define([
             // Return formatted addresses
             let sortedAddressData = [
                 address['firstname'] + ' ' + address['lastname'],
-                address['street'].join(',<br/>'),
+                address['street'].join(',<br>'),
                 address['city'],
                 address['postcode'],
                 address['country_id'],
                 address['telephone']
             ];
-            return sortedAddressData.join(',<br/>');
+            return sortedAddressData.join(',<br>');
         },
 
         showNewAddress: function (element) {
