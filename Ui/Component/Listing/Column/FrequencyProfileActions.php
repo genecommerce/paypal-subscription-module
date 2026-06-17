@@ -16,7 +16,7 @@ class FrequencyProfileActions extends Column
     /**
      * @var UrlInterface
      */
-    private $urlBuilder;
+    private UrlInterface $urlBuilder;
 
     /**
      * FrequencyProfileActions constructor.
@@ -39,6 +39,8 @@ class FrequencyProfileActions extends Column
     }
 
     /**
+     * Prepare data source
+     *
      * @param array $dataSource
      * @return array
      */

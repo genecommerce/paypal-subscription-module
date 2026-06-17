@@ -8,67 +8,73 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Api;
 
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResults;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use PayPal\Subscription\Api\Data\SubscriptionInterface;
+
 /**
  * Interface SubscriptionRepositoryInterface
  */
 interface SubscriptionRepositoryInterface
 {
     /**
-     * Get subscription by Id
+     * Get subscription by ID
      *
      * @param int $subscriptionId
-     * @return \PayPal\Subscription\Api\Data\SubscriptionInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return SubscriptionInterface
+     * @throws NoSuchEntityException
      */
-    public function getById(int $subscriptionId);
+    public function getById(int $subscriptionId): SubscriptionInterface;
 
     /**
-     * Get subscription by Order Id
+     * Get subscription by Order ID
      *
      * @param int $orderId
-     * @return \PayPal\Subscription\Api\Data\SubscriptionInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return SubscriptionInterface
+     * @throws NoSuchEntityException
      */
-    public function getByOrderId(int $orderId);
+    public function getByOrderId(int $orderId): SubscriptionInterface;
 
     /**
      * Get customer subscription
      *
      * @param int $customerId
      * @param int $subscriptionId
-     * @return \PayPal\Subscription\Api\Data\SubscriptionInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @return SubscriptionInterface
+     * @throws NoSuchEntityException
      */
     public function getCustomerSubscription(
         int $customerId,
         int $subscriptionId
-    );
+    ): SubscriptionInterface;
 
     /**
      * Get subscription list
      *
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     * @return \Magento\Framework\Api\SearchResults
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return SearchResults
      * @todo change this to be custom search interface
      */
     public function getList(
-        \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-    );
+        SearchCriteriaInterface $searchCriteria
+    ): SearchResults;
 
     /**
      * Save subscription
      *
-     * @param \PayPal\Subscription\Api\Data\SubscriptionInterface $subscription
-     * @return \PayPal\Subscription\Api\Data\SubscriptionInterface
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @param SubscriptionInterface $subscription
+     * @return SubscriptionInterface
+     * @throws AlreadyExistsException
      */
-    public function save(\PayPal\Subscription\Api\Data\SubscriptionInterface $subscription);
+    public function save(SubscriptionInterface $subscription): SubscriptionInterface;
 
     /**
      * Delete subscription
      *
-     * @param \PayPal\Subscription\Api\Data\SubscriptionInterface $subscription
+     * @param SubscriptionInterface $subscription
      * @return void
      */
-    public function delete(\PayPal\Subscription\Api\Data\SubscriptionInterface $subscription);
+    public function delete(SubscriptionInterface $subscription): void;
 }

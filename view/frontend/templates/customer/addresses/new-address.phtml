@@ -5,13 +5,19 @@
  *
  * @var Magento\Customer\Block\Address\Edit $block
  * @var PayPal\Subscription\ViewModel\Customer\Address $addressHelper
+ * @var Escaper $escaper
  */
+
+use Magento\Customer\Block\Widget\Company;
+use Magento\Customer\Block\Widget\Fax;
+use Magento\Customer\Block\Widget\Telephone;
+use Magento\Framework\Escaper;
 
 $addressHelper = $block->getAddressHelper();
 
-$company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class);
-$telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class);
-$fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class);
+$company = $block->getLayout()->createBlock(Company::class);
+$telephone = $block->getLayout()->createBlock(Telephone::class);
+$fax = $block->getLayout()->createBlock(Fax::class);
 
 $streetLines = $addressHelper->getCustomerAddress()->getStreetLines();
 $streetValidationClass = $addressHelper->getValidationClass('street');
@@ -23,13 +29,13 @@ $displayAll = $block->getConfig('general/region/display_all');
 
 <div class="block" data-bind="scope: 'addAddress'">
     <h3 class="block-title">
-        <span><?= $block->escapeHtml(__('Add New Address')) ?></span>
+        <span><?= $escaper->escapeHtml(__('Add New Address')) ?></span>
     </h3>
 
     <div class="block-content">
         <button class="action primary"
                 data-bind="click: openAddressForm">
-            <span><?= $block->escapeHtml(__('Add a new address')) ?></span>
+            <span><?= $escaper->escapeHtml(__('Add a new address')) ?></span>
         </button>
 
         <div data-edit-address-modal
@@ -48,7 +54,7 @@ $displayAll = $block->getConfig('general/region/display_all');
                 "components": {
                     "addAddress": {
                         "component": "PayPal_Subscription/js/view/customer/addresses/new-address",
-                        "subscriptionId": <?= $block->escapeJs($addressHelper->getSubscriptionId()); ?>,
+                        "subscriptionId": <?= $escaper->escapeJs($addressHelper->getSubscriptionId()); ?>,
                         "postcodes": <?= /* @noEscape */ $block->getPostCodeConfig()->getSerializedPostCodes(); ?>
                     }
                 }

@@ -36,12 +36,13 @@ class AddNoteToRecommendedFrequencyAttribute implements DataPatchInterface
     }
 
     /**
-     * Add Note to Reecommended Frequency attribute to tell user to save product
-     * when change frequency profile in order ot see new option
+     * Add Note to Recommended Frequency attribute to tell user to save product
+     *
+     * When change frequency profile in order ot see new option
      *
      * @return void
      */
-    public function apply()
+    public function apply(): void
     {
         $this->moduleDataSetup->getConnection()->startSetup();
         /** @var EavSetup $eavSetup */
@@ -58,7 +59,7 @@ class AddNoteToRecommendedFrequencyAttribute implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {
@@ -69,7 +70,7 @@ class AddNoteToRecommendedFrequencyAttribute implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAliases(): array
     {

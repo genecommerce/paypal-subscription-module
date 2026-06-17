@@ -3,22 +3,37 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
 use PayPal\Subscription\Api\Data\SubscriptionHistoryInterface;
 use PayPal\Subscription\Model\ResourceModel\SubscriptionHistory as SubscriptionHistoryResource;
 
 class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryInterface
 {
+    /**
+     * @var string
+     */
     public $_eventObject = 'subscriptionHistory';
 
+    /**
+     * @var string
+     */
     public $_eventPrefix = 'paypal_subscription_history';
 
-    protected function _construct()
+    /**
+     * Initialize subscription history resource model
+     *
+     * @return void
+     * @throws LocalizedException
+     */
+    protected function _construct(): void
     {
         $this->_init(SubscriptionHistoryResource::class);
     }
 
     /**
+     * Get subscription ID
+     *
      * @return int
      */
     public function getSubscriptionId(): int
@@ -27,6 +42,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set subscription ID
+     *
      * @param int $id
      * @return SubscriptionHistoryInterface
      */
@@ -36,6 +53,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Get action
+     *
      * @return string
      */
     public function getAction(): string
@@ -44,6 +63,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set action
+     *
      * @param string $action
      * @return SubscriptionHistoryInterface
      */
@@ -53,6 +74,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Get action type
+     *
      * @return string
      */
     public function getActionType(): string
@@ -61,6 +84,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set action type
+     *
      * @param string $actionType
      * @return SubscriptionHistoryInterface
      */
@@ -70,6 +95,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Get description
+     *
      * @return string
      */
     public function getDescription(): string
@@ -78,6 +105,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set description
+     *
      * @param string $description
      * @return SubscriptionHistoryInterface
      */
@@ -87,6 +116,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Get admin ID
+     *
      * @return int
      */
     public function getAdminId(): int
@@ -95,6 +126,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set admin ID
+     *
      * @param int $adminId
      * @return SubscriptionHistoryInterface
      */
@@ -104,6 +137,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Get customer notified
+     *
      * @return bool
      */
     public function getCustomerNotified(): bool
@@ -112,6 +147,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set customer notified
+     *
      * @param int $customerNotified
      * @return SubscriptionHistoryInterface
      */
@@ -121,6 +158,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Get visible to customer
+     *
      * @return bool
      */
     public function getVisibleToCustomer(): bool
@@ -129,6 +168,8 @@ class SubscriptionHistory extends AbstractModel implements SubscriptionHistoryIn
     }
 
     /**
+     * Set visible to customer
+     *
      * @param int $visible
      * @return SubscriptionHistoryInterface
      */

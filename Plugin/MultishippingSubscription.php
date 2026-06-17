@@ -24,6 +24,8 @@ class MultishippingSubscription
     }
 
     /**
+     * Is multi shipping checkout available
+     *
      * @param Data $subject
      * @param bool $result
      * @return bool

@@ -11,7 +11,7 @@ class ReleaseConsumer
 {
     /**
      * Intercept before Release is created to reset subscription failures
-     * at this point subscription has been converted to quote and order has been created
+     * At this point subscription has been converted to quote and order has been created
      *
      * @param Subject $subject
      * @param SubscriptionInterface $subscription

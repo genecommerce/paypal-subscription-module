@@ -17,6 +17,8 @@ class Collection extends SearchResult
     ];
 
     /**
+     * Initialize select
+     *
      * @return Collection|void
      */
     protected function _initSelect()

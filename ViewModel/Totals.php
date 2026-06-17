@@ -6,14 +6,9 @@ namespace PayPal\Subscription\ViewModel;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
-use Magento\Framework\UrlInterface;
-use Magento\Framework\View\Asset\Repository;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Vault\Api\Data\PaymentTokenInterface;
-use Magento\Vault\Api\PaymentTokenManagementInterface;
-use Magento\Vault\Api\PaymentTokenRepositoryInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 use PayPal\Subscription\Model\Subscription;
@@ -62,7 +57,7 @@ class Totals implements ArgumentInterface
      * Return Subtotal from Original Order
      *
      * @param SubscriptionInterface $subscription
-     * @return float
+     * @return string
      */
     public function getSubtotal(
         SubscriptionInterface $subscription
@@ -75,8 +70,10 @@ class Totals implements ArgumentInterface
     }
 
     /**
-     * @param SubscriptionInterface|Subscription $subscription
-     * @return float
+     * Get saving
+     *
+     * @param SubscriptionInterface $subscription
+     * @return string
      */
     public function getSaving(
         SubscriptionInterface $subscription
@@ -111,7 +108,7 @@ class Totals implements ArgumentInterface
      * Return Shipping total from Original Order
      *
      * @param SubscriptionInterface $subscription
-     * @return float
+     * @return string
      */
     public function getDelivery(
         SubscriptionInterface $subscription
@@ -127,7 +124,7 @@ class Totals implements ArgumentInterface
      * Return Grand total from Original Order
      *
      * @param SubscriptionInterface $subscription
-     * @return float
+     * @return string
      */
     public function getTotal(
         SubscriptionInterface $subscription

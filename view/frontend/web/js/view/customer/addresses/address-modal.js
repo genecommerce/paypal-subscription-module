@@ -126,7 +126,7 @@ define([
             $('body').trigger('processStart');
 
             postAddressForm('.ps-new-address-modal #form-validate', subscriptionId, addressId)
-                .success(function (response) {
+                .done(function (response) {
                     var address = that.removeUnusedValues(response);
                     addressBuilder.shippingAddress(Object.values(address));
                     // Add address to the default addresses
@@ -140,7 +140,7 @@ define([
                         ]
                     });
                 })
-                .error(function () {
+                .fail(function () {
                     customerData.set('messages', {
                         messages: [
                             {

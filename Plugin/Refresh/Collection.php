@@ -16,12 +16,12 @@ class Collection extends \Magento\Framework\Data\Collection
     /**
      * @var TimezoneInterface
      */
-    protected $localeDate;
+    protected TimezoneInterface $localeDate;
 
     /**
      * @var FlagFactory
      */
-    private $reportsFlagFactory;
+    private FlagFactory $reportsFlagFactory;
 
     /**
      * @param EntityFactory $entityFactory
@@ -45,7 +45,7 @@ class Collection extends \Magento\Framework\Data\Collection
      * @return string
      * @throws LocalizedException
      */
-    protected function getUpdatedAt($reportCode)
+    protected function getUpdatedAt($reportCode): string
     {
         $flag = $this->reportsFlagFactory->create()->setReportFlagCode($reportCode)->loadSelf();
         return $flag->hasData() ? $flag->getLastUpdate() : '';
@@ -55,7 +55,7 @@ class Collection extends \Magento\Framework\Data\Collection
      * Load data
      *
      * @param ReportsRefreshCollection $subject
-     * @param $result
+     * @param ReportsRefreshCollection $result
      * @return ReportsRefreshCollection
      * @throws LocalizedException
      */

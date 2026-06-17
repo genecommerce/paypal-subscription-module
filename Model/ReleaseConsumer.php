@@ -9,10 +9,12 @@ use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\Data\SubscriptionReleaseInterface;
@@ -87,6 +89,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     /**
      * ReleaseConsumer constructor
      *
+     * @param ConfigurationInterface $configuration
      * @param SubscriptionReleaseInterfaceFactory $subscriptionReleaseInterfaceFactory
      * @param SubscriptionReleaseResource $subscriptionReleaseResource
      * @param SubscriptionResource $subscriptionResource
@@ -97,6 +100,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
      * @param CreateSubscriptionOrderInterface $createSubscriptionOrder
      * @param State $appState
      * @param CustomerRepositoryInterface $customerRepository
+     * @param OrderRepositoryInterface $orderRepository
      */
     public function __construct(
         ConfigurationInterface $configuration,
@@ -109,7 +113,8 @@ class ReleaseConsumer implements ReleaseConsumerInterface
         CreateSubscriptionQuoteInterface $createSubscriptionQuote,
         CreateSubscriptionOrderInterface $createSubscriptionOrder,
         State $appState,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        private readonly OrderRepositoryInterface $orderRepository
     ) {
         $this->configuration = $configuration;
         $this->subscriptionReleaseInterfaceFactory = $subscriptionReleaseInterfaceFactory;
@@ -125,7 +130,12 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     }
 
     /**
+     * Process subscription release
+     *
      * @param SubscriptionInterface $subscription
+     * @throws AlreadyExistsException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute(
         SubscriptionInterface $subscription
@@ -137,6 +147,7 @@ class ReleaseConsumer implements ReleaseConsumerInterface
         }
         $quote = null;
         $errorMessage = null;
+        $originalOrderId = $subscription->getOrderId();
         try {
             $originalStockFailures = (int) $subscription->getStockFailures();
             $originalFailedPayments = (int) $subscription->getFailedPayments();
@@ -157,6 +168,11 @@ class ReleaseConsumer implements ReleaseConsumerInterface
                 $quote,
                 $subscription
             );
+            $priceChanged = (bool) $subscription->getData('price_changed');
+            if ($priceChanged === true) {
+                // Update original order ID with latest order.
+                $subscription->setOrderId((int) $order->getId());
+            }
             $this->createRelease(
                 $subscription,
                 $order
@@ -167,99 +183,21 @@ class ReleaseConsumer implements ReleaseConsumerInterface
                     $subscription
                 );
             }
-        } catch (LocalizedException | CommandException $e) {
-            $errorMessage = $e->getMessage();
-            $sendFailureToCustomer = false;
-            if ($originalStockFailures >= $subscription->getStockFailures() &&
-                $originalFailedPayments >= $subscription->getFailedPayments()) {
-                $this->subscriptionManagement->changeStatus(
-                    $subscription->getCustomerId(),
-                    $subscription->getId(),
-                    SubscriptionInterface::STATUS_CANCELLED
-                );
-                $subscription->setStatus(
-                    SubscriptionInterface::STATUS_CANCELLED
-                );
-                $subscription->addHistory(
-                    "Release",
-                    "customer",
-                    "Subscription automatically paused: " . $e->getMessage(),
-                    true,
-                    false
-                );
-            } else {
-                $pauseSubscription = false;
-                if ($originalStockFailures < $subscription->getStockFailures()) {
-                    $errorMessage = 'Product Out of Stock';
-                    $sendFailureToCustomer = true;
-                    $stockFailureLimit = $this->configuration->getStockFailuresAllowed();
-                    if ($stockFailureLimit != null) {
-                        $resetAndCancel = $subscription->getStockFailures() >= $stockFailureLimit;
-                        if ($resetAndCancel === true) {
-                            $pauseSubscription = true;
-                            $subscription->setStockFailures(0);
-                            $errorMessage .= ' - Limit reached';
-                        }
-                    }
-                }
-                if ($originalFailedPayments < $subscription->getFailedPayments()) {
-                    $errorMessage = 'Failed Payment';
-                    $sendFailureToCustomer = true;
-                    $failedPaymentLimit = $this->configuration->getFailedPaymentsAllowed();
-                    if ($failedPaymentLimit != null) {
-                        $resetAndCancel = $subscription->getFailedPayments() >= $failedPaymentLimit;
-                        if ($resetAndCancel === true) {
-                            $subscription->setFailedPayments(0);
-                            if ($pauseSubscription !== true) {
-                                $pauseSubscription = true;
-                                $errorMessage .= ' - Limit reached';
-                            }
-                        }
-                    }
-                }
-                if ($pauseSubscription === true) {
-                    $this->subscriptionManagement->changeStatus(
-                        $subscription->getCustomerId(),
-                        $subscription->getId(),
-                        SubscriptionInterface::STATUS_CANCELLED
-                    );
-                    $subscription->setStatus(
-                        SubscriptionInterface::STATUS_CANCELLED
-                    );
-                    $subscription->addHistory(
-                        "Release",
-                        "customer",
-                        "Subscription automatically paused: " . $errorMessage,
-                        true,
-                        false
-                    );
-                } else {
-                    $oldNextReleaseDate = $subscription->getNextReleaseDate();
-                    $subscription->setNextReleaseDate(
-                        date(
-                            'Y-m-d H:i:s',
-                            strtotime($oldNextReleaseDate . ' +1 day')
-                        )
-                    );
-                    $subscription->addHistory(
-                        "Release",
-                        "customer",
-                        "Subscription Release Failed: " . $errorMessage,
-                        true,
-                        false
-                    );
-                }
-            }
-            $this->subscriptionResource->save($subscription);
-            if ($sendFailureToCustomer === true) {
-                $customerId = $subscription->getCustomerId();
-                $customer = $this->customerRepository->getById($customerId);
-                $this->releaseEmail->failure(
-                    $customer,
+            if ($priceChanged === true) {
+                $this->releaseEmail->priceChanged(
+                    $quote->getCustomer(),
                     $subscription,
-                    $errorMessage
+                    $this->orderRepository->get($originalOrderId),
+                    $order
                 );
             }
+        } catch (LocalizedException|CommandException $exception) {
+            $this->handleLocalizedAndCommandExceptionCatch(
+                $exception,
+                $subscription,
+                $originalStockFailures,
+                $originalFailedPayments
+            );
         } catch (\Exception $e) {
             $errorMessage = 'Subscription Release Error - ' . $e->getMessage();
             $this->logger->error($errorMessage);
@@ -274,6 +212,120 @@ class ReleaseConsumer implements ReleaseConsumerInterface
     }
 
     /**
+     * Handle Localized and Command exception catch
+     *
+     * @param LocalizedException|CommandException $exception
+     * @param SubscriptionInterface $subscription
+     * @param int $originalStockFailures
+     * @param int $originalFailedPayments
+     * @return void
+     * @throws AlreadyExistsException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    private function handleLocalizedAndCommandExceptionCatch(
+        LocalizedException|CommandException $exception,
+        SubscriptionInterface $subscription,
+        int $originalStockFailures,
+        int $originalFailedPayments
+    ): void {
+        $errorMessage = $exception->getMessage();
+        $sendFailureToCustomer = false;
+        if ($originalStockFailures >= $subscription->getStockFailures() &&
+            $originalFailedPayments >= $subscription->getFailedPayments()) {
+            $this->subscriptionManagement->changeStatus(
+                $subscription->getCustomerId(),
+                $subscription->getId(),
+                SubscriptionInterface::STATUS_CANCELLED
+            );
+            $subscription->setStatus(
+                SubscriptionInterface::STATUS_CANCELLED
+            );
+            $subscription->addHistory(
+                "Release",
+                "customer",
+                "Subscription automatically paused: " . $e->getMessage(),
+                true,
+                false
+            );
+        } else {
+            $pauseSubscription = false;
+            if ($originalStockFailures < $subscription->getStockFailures()) {
+                $errorMessage = 'Product Out of Stock';
+                $sendFailureToCustomer = true;
+                $stockFailureLimit = $this->configuration->getStockFailuresAllowed();
+                if ($stockFailureLimit != null) {
+                    $resetAndCancel = $subscription->getStockFailures() >= $stockFailureLimit;
+                    if ($resetAndCancel === true) {
+                        $pauseSubscription = true;
+                        $subscription->setStockFailures(0);
+                        $errorMessage .= ' - Limit reached';
+                    }
+                }
+            }
+            if ($originalFailedPayments < $subscription->getFailedPayments()) {
+                $errorMessage = 'Failed Payment';
+                $sendFailureToCustomer = true;
+                $failedPaymentLimit = $this->configuration->getFailedPaymentsAllowed();
+                if ($failedPaymentLimit != null) {
+                    $resetAndCancel = $subscription->getFailedPayments() >= $failedPaymentLimit;
+                    if ($resetAndCancel === true) {
+                        $subscription->setFailedPayments(0);
+                        if ($pauseSubscription !== true) {
+                            $pauseSubscription = true;
+                            $errorMessage .= ' - Limit reached';
+                        }
+                    }
+                }
+            }
+            if ($pauseSubscription === true) {
+                $this->subscriptionManagement->changeStatus(
+                    $subscription->getCustomerId(),
+                    $subscription->getId(),
+                    SubscriptionInterface::STATUS_CANCELLED
+                );
+                $subscription->setStatus(
+                    SubscriptionInterface::STATUS_CANCELLED
+                );
+                $subscription->addHistory(
+                    "Release",
+                    "customer",
+                    "Subscription automatically paused: " . $errorMessage,
+                    true,
+                    false
+                );
+            } else {
+                $oldNextReleaseDate = $subscription->getNextReleaseDate();
+                $subscription->setNextReleaseDate(
+                    date(
+                        'Y-m-d H:i:s',
+                        strtotime($oldNextReleaseDate . ' +1 day')
+                    )
+                );
+                $subscription->addHistory(
+                    "Release",
+                    "customer",
+                    "Subscription Release Failed: " . $errorMessage,
+                    true,
+                    false
+                );
+            }
+        }
+        $this->subscriptionResource->save($subscription);
+        if ($sendFailureToCustomer === true) {
+            $customerId = $subscription->getCustomerId();
+            $customer = $this->customerRepository->getById($customerId);
+            $this->releaseEmail->failure(
+                $customer,
+                $subscription,
+                $errorMessage
+            );
+        }
+    }
+
+    /**
+     * Create subscription release
+     *
      * @param SubscriptionInterface $subscription
      * @param Order $order
      * @throws LocalizedException

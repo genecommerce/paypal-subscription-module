@@ -36,6 +36,8 @@ class ShippingMethod implements OptionSourceInterface
     }
 
     /**
+     * Shipping method options array
+     *
      * @return array
      */
     public function toOptionArray(): array
@@ -61,6 +63,8 @@ class ShippingMethod implements OptionSourceInterface
     }
 
     /**
+     * Get list of shipping methods
+     *
      * @return array
      */
     private function getShippingMethods(): array

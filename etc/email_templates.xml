@@ -5,7 +5,8 @@
  * See COPYING.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
     <template id="paypal_subscriptions_email_configuration_subscription_new"
               label="Subscription Created Email"
               file="subscription_new.html"
@@ -51,6 +52,12 @@
     <template id="paypal_subscriptions_email_configuration_release_failure_admin"
               label="Subscription Release Failure Email (Admin)"
               file="release_failure_admin.html"
+              type="html"
+              module="PayPal_Subscription"
+              area="frontend"/>
+    <template id="paypal_subscriptions_email_configuration_price_changed"
+              label="Subscription Price Changed Email"
+              file="subscription_price_changed.html"
               type="html"
               module="PayPal_Subscription"
               area="frontend"/>

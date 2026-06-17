@@ -42,6 +42,8 @@ class AdminOrderProcessItemObserver implements ObserverInterface
     }
 
     /**
+     * Process order item from admin
+     *
      * @param Observer $observer
      * @return void
      * @throws AlreadyExistsException

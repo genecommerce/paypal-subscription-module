@@ -32,7 +32,8 @@
             "created_at": true,
             "updated_at": true,
             "stock_failures": true,
-            "failed_payments": true
+            "failed_payments": true,
+            "reminder_email_sent": true
         },
         "constraint": {
             "PRIMARY": true,

@@ -36,6 +36,8 @@ class OrderActions extends Column
     }
 
     /**
+     * Prepare data source
+     *
      * @param array $dataSource
      * @return array
      */
@@ -47,8 +49,9 @@ class OrderActions extends Column
                 if (isset($item['order_id'])) {
                     $url = $this->urlBuilder->getUrl(
                         'sales/order/view/',
-                        array('order_id' => $item['order_id']));
-                    $item['order_id'] = html_entity_decode('<a href="'.$url.'">'.$item['order_id'].'</a>');
+                        ['order_id' => $item['order_id']]
+                    );
+                    $item['order_id'] = '<a href="'.$url.'">'.$item['order_id'].'</a>';
                 }
             }
         }

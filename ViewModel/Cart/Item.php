@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\ViewModel\Cart;
 
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
@@ -35,6 +36,11 @@ class Item implements ArgumentInterface
     private $pricingHelper;
 
     /**
+     * @var Product|null
+     */
+    private ?Product $product = null;
+
+    /**
      * Item constructor.
      * @param FrequencyProfileRepositoryInterface $frequencyProfile
      * @param SerializerInterface $serializer
@@ -54,6 +60,8 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Has subscription?
+     *
      * @param QuoteItem $item
      * @return bool
      */
@@ -64,6 +72,8 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Get frequency interval
+     *
      * @param QuoteItem $item
      * @return mixed
      */
@@ -74,6 +84,8 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Get frequency interval name
+     *
      * @param QuoteItem $item
      * @return mixed
      */
@@ -90,6 +102,8 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Get frequency profile options
+     *
      * @param QuoteItem $item
      * @return array
      */
@@ -106,8 +120,10 @@ class Item implements ArgumentInterface
     }
 
     /**
-     * @param $item
-     * @param $option
+     * Get selected frequency
+     *
+     * @param QuoteItem $item
+     * @param array $option
      * @return bool
      */
     public function getSelectedFrequency(QuoteItem $item, $option): bool
@@ -118,6 +134,9 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Is product subscription only?
+     *
+     * @param QuoteItem $item
      * @return bool
      */
     public function isSubscriptionOnly(QuoteItem $item): bool
@@ -126,6 +145,8 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Format price
+     *
      * @param float $price
      * @return string
      */
@@ -137,6 +158,8 @@ class Item implements ArgumentInterface
     /**
      * 0 - Fixed Price e.g 9.99
      * 1 - Discount off of base price e.g. 75% off 10.00 is 2.50
+     *
+     * @param QuoteItem $item
      * @return int|null
      */
     public function getSubscriptionPriceType(QuoteItem $item): ?int
@@ -149,6 +172,8 @@ class Item implements ArgumentInterface
 
     /**
      * Returns the saving amount for a user.
+     *
+     * @param QuoteItem $item
      * @return string
      */
     public function getSubscriptionPriceSaving(
@@ -181,6 +206,9 @@ class Item implements ArgumentInterface
     }
 
     /**
+     * Get subscription price value
+     *
+     * @param QuoteItem $item
      * @return float|null
      */
     public function getSubscriptionPriceValue(QuoteItem $item): ?float
@@ -195,6 +223,8 @@ class Item implements ArgumentInterface
 
     /**
      * Returns the percentage saved
+     *
+     * @param QuoteItem $item
      * @return float
      */
     public function getPercentageSaved(QuoteItem $item): float
@@ -206,5 +236,4 @@ class Item implements ArgumentInterface
 
         return 0;
     }
-
 }

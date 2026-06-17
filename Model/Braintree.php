@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model;
 
+use Braintree\Exception\NotFound;
 use Braintree\PaymentMethod;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\InputException;
@@ -79,6 +80,8 @@ class Braintree implements BraintreeInterface
     }
 
     /**
+     * Get client token
+     *
      * @return BraintreeDataInterface
      */
     public function getClientToken(): BraintreeDataInterface
@@ -102,9 +105,11 @@ class Braintree implements BraintreeInterface
     }
 
     /**
+     * Get Braintree Customer ID
+     *
      * @param Subscription $subscription
      * @return string
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|NotFound
      */
     public function getBraintreeCustomerId(Subscription $subscription): string
     {
@@ -119,6 +124,8 @@ class Braintree implements BraintreeInterface
     }
 
     /**
+     * Store in vault
+     *
      * @param string $nonce
      * @param string $braintreeCustomerId
      * @return mixed
@@ -136,6 +143,8 @@ class Braintree implements BraintreeInterface
     }
 
     /**
+     * Initialize credentials
+     *
      * @return void
      */
     private function initCredentials(): void

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model;
 
+use DateMalformedStringException;
 use Magento\Customer\Api\Data\AddressInterface;
 use Magento\Customer\Helper\Address;
 use Magento\Customer\Model\ResourceModel\AddressRepository;
@@ -140,6 +141,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Create subscription with item
+     *
      * @param OrderInterface $order
      * @param OrderItemInterface $item
      * @param int $frequency
@@ -151,7 +154,7 @@ class SubscriptionManagement implements SubscriptionManagementInterface
         OrderInterface $order,
         OrderItemInterface $item,
         int $frequency,
-        int $frequencyProfileId = null
+        ?int $frequencyProfileId = null
     ): SubscriptionInterface {
         $subscription = $this->createSubscription(
             $order,
@@ -167,16 +170,18 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Create subscription
+     *
      * @param OrderInterface $order
      * @param int $frequency
-     * @param null $frequencyProfileId
+     * @param int|null $frequencyProfileId
      * @return SubscriptionInterface
      * @throws LocalizedException
      */
     public function createSubscription(
         OrderInterface $order,
         int $frequency,
-        $frequencyProfileId = null
+        ?int $frequencyProfileId = null
     ): SubscriptionInterface {
         if (!$order->getCustomerId()) {
             throw new LocalizedException(__('Customer ID missing.'));
@@ -227,12 +232,14 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change frequency
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @param int $frequency
      * @return SubscriptionInterface
      * @throws AlreadyExistsException
-     * @throws LocalizedException
+     * @throws LocalizedException|DateMalformedStringException
      */
     public function changeFrequency(
         int $customerId,
@@ -275,6 +282,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change status
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @param int $status
@@ -306,6 +315,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change existing address
+     *
      * @param int $customerId
      * @param string $addressType
      * @param int $subscriptionId
@@ -355,6 +366,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change new address
+     *
      * @param int $customerId
      * @param string $addressType
      * @param int $subscriptionId
@@ -411,6 +424,8 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Change payment method
+     *
      * @param int $customerId
      * @param int $subscriptionId
      * @param string $paymentPublicHash
@@ -461,13 +476,17 @@ class SubscriptionManagement implements SubscriptionManagementInterface
     }
 
     /**
+     * Collect releases
+     *
      * @param string $from
      * @param string $to
+     * @param bool|null $emailReminder
      * @return SubscriptionInterface[]
      */
     public function collectReleases(
         string $from,
-        string $to
+        string $to,
+        ?bool $emailReminder = null
     ): array {
         $filterFrom = $this->filterBuilder
             ->setField(SubscriptionInterface::NEXT_RELEASE_DATE)
@@ -493,11 +512,23 @@ class SubscriptionManagement implements SubscriptionManagementInterface
         $filterGroupStatus = $this->filterGroupBuilder
             ->addFilter($filterStatus)
             ->create();
-        $this->searchCriteriaBuilder->setFilterGroups([
+        $filterGroups = [
             $filterGroupFrom,
             $filterGroupTo,
             $filterGroupStatus
-        ]);
+        ];
+        if ($emailReminder !== null && is_bool($emailReminder)) {
+            $filterEmailReminder = $this->filterBuilder
+                ->setField(SubscriptionInterface::REMINDER_EMAIL_SENT)
+                ->setConditionType('eq')
+                ->setValue((int) $emailReminder)
+                ->create();
+            $filterEmailReminder = $this->filterGroupBuilder
+                ->addFilter($filterEmailReminder)
+                ->create();
+            $filterGroups[] = $filterEmailReminder;
+        }
+        $this->searchCriteriaBuilder->setFilterGroups($filterGroups);
         $searchCriteria = $this->searchCriteriaBuilder->create();
         return $this->subscriptionRepository->getList(
             $searchCriteria

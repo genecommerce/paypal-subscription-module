@@ -32,6 +32,7 @@ interface SubscriptionInterface
     public const UPDATED_AT = 'updated_at';
     public const FAILED_PAYMENTS = 'failed_payments';
     public const STOCK_FAILURES = 'stock_failures';
+    public const REMINDER_EMAIL_SENT = 'reminder_email_sent';
 
     public const STATUS_ACTIVE = 1;
     public const STATUS_PAUSED = 2;
@@ -325,4 +326,19 @@ interface SubscriptionInterface
      * @return SubscriptionInterface
      */
     public function setStockFailures(int $stockFailures): SubscriptionInterface;
+
+    /**
+     * Get reminder email sent flag
+     *
+     * @return bool
+     */
+    public function getReminderEmailSent(): bool;
+
+    /**
+     * Set reminder email sent flag
+     *
+     * @param bool $emailSent
+     * @return SubscriptionInterface
+     */
+    public function setReminderEmailSent(bool $emailSent): SubscriptionInterface;
 }

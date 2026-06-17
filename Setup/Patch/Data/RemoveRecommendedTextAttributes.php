@@ -15,7 +15,7 @@ use PayPal\Subscription\Setup\Patch\Data\AddProductSubscriptionAttributes;
 
 class RemoveRecommendedTextAttributes implements DataPatchInterface
 {
-    const RECOMMENDED_FREQUENCY_REASON_ATTRIBUTE_CODE = 'recommended_frequency_reason';
+    public const RECOMMENDED_FREQUENCY_REASON_ATTRIBUTE_CODE = 'recommended_frequency_reason';
 
     /**
      * @var EavSetupFactory
@@ -42,9 +42,9 @@ class RemoveRecommendedTextAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function apply()
+    public function apply(): void
     {
         $this->moduleDataSetup->getConnection()->startSetup();
         /** @var EavSetup $eavSetup */
@@ -56,7 +56,7 @@ class RemoveRecommendedTextAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAliases(): array
     {
@@ -64,7 +64,7 @@ class RemoveRecommendedTextAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {

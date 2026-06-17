@@ -11,7 +11,7 @@ use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Zend_Validate_Exception;
+use Magento\Framework\Validator\ValidateException;
 
 /**
  * Class UpdateProductSubscriptionAttributes
@@ -53,7 +53,7 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {
@@ -64,7 +64,7 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
-     * @return string[]
+     * @inheritDoc
      */
     public function getAliases(): array
     {
@@ -72,10 +72,12 @@ class UpdateProductSubscriptionAttributes implements DataPatchInterface
     }
 
     /**
+     * Update product subscription attributes
+     *
      * @throws LocalizedException
-     * @throws Zend_Validate_Exception
+     * @throws ValidateException
      */
-    public function apply()
+    public function apply(): void
     {
         $this->eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
         $attributes = [

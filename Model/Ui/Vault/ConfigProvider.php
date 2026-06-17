@@ -11,7 +11,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class ConfigProvider implements ConfigProviderInterface
 {
-    const CODE = 'braintree_paypal_vault';
+    public const CODE = 'braintree_paypal_vault';
 
     /**
      * @var Cart

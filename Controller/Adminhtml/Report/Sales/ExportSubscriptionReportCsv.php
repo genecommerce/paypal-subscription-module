@@ -18,7 +18,10 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Reports\Controller\Adminhtml\Report\Sales;
 use PayPal\Subscription\Block\Adminhtml\Sales\Report\Grid;
 
-class ExportSubscriptionReportCsv extends Sales implements ActionInterface, HttpGetActionInterface, HttpPostActionInterface
+class ExportSubscriptionReportCsv extends Sales implements
+    ActionInterface,
+    HttpGetActionInterface,
+    HttpPostActionInterface
 {
     /**
      * Export subscription report csv
@@ -32,6 +35,10 @@ class ExportSubscriptionReportCsv extends Sales implements ActionInterface, Http
         $grid = $this->_view->getLayout()->createBlock(Grid::class);
         $this->_initReportAction($grid);
 
-        return $this->_fileFactory->create($fileName, $grid->getCsvFile(), DirectoryList::VAR_DIR);
+        return $this->_fileFactory->create(
+            $fileName,
+            $grid->getCsvFile(),
+            DirectoryList::VAR_DIR
+        );
     }
 }

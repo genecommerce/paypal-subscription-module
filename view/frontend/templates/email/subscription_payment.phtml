@@ -7,7 +7,7 @@
 $paymentToken = $block->getPayment() ?: null;
 $viewModel = $block->getViewModel();
 ?>
-<?php if ($paymentToken !== null) : ?>
+<?php if ($paymentToken !== null): ?>
     <p><strong><?= 'Payment Details' ?>:</strong></p>
     <?= $viewModel->getTokenHtml($paymentToken); ?>
 <?php endif; ?>

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\ViewModel\Customer;
 
+use Exception;
+use Magento\Bundle\Model\Product\Type;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Helper\Image as ImageHelper;
 use Magento\Catalog\Model\Product;
@@ -14,17 +16,16 @@ use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Framework\View\LayoutInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Vault\Api\Data\PaymentTokenInterface;
 use Magento\Vault\Api\PaymentTokenManagementInterface;
 use PayPal\Subscription\Api\Data\SubscriptionInterface;
 use PayPal\Subscription\Api\FrequencyProfileRepositoryInterface;
+use PayPal\Subscription\Block\Customer\Index;
 use PayPal\Subscription\Helper\Data as SubscriptionHelper;
 use PayPal\Subscription\Model\ResourceModel\Subscription\Collection;
 use PayPal\Subscription\Model\ResourceModel\Subscription\CollectionFactory;
-use PayPal\Subscription\Model\Subscription;
 use PayPal\Subscription\Setup\Patch\Data\AddProductSubscriptionAttributes;
 use PayPal\Subscription\ViewModel\PaymentDetails;
 use PayPal\Subscription\ViewModel\PaymentDetailsFactory;
@@ -140,18 +141,18 @@ class SubscriptionList implements ArgumentInterface
      */
     public function getActiveSubscriptions(): array
     {
-        $cancelledSubscriptions = [];
+        $activeSubscriptions = [];
         try {
             $customerSubscriptions = $this->getCustomerSubscriptionsCollection();
             $customerSubscriptions->addFieldToFilter(
                 SubscriptionInterface::STATUS,
                 SubscriptionInterface::STATUS_ACTIVE
             );
-            $cancelledSubscriptions = $customerSubscriptions->getItems() ?: [];
+            $activeSubscriptions = $customerSubscriptions->getItems() ?: [];
         } catch (LocalizedException $e) {
             return [];
         }
-        return $cancelledSubscriptions;
+        return $activeSubscriptions;
     }
 
     /**
@@ -271,9 +272,13 @@ class SubscriptionList implements ArgumentInterface
     }
 
     /**
+     * Get subscription list json config
+     *
      * @return string
+     * @throws LocalizedException
      */
-    public function getSubscriptionListJsonConfig(): string {
+    public function getSubscriptionListJsonConfig(): string
+    {
         /** @var SubscriptionInterface[] $subscriptions */
         $subscriptions = array_merge_recursive(
             $this->getActiveSubscriptions(),
@@ -295,7 +300,8 @@ class SubscriptionList implements ArgumentInterface
      * @return array
      * @throws LocalizedException
      */
-    private function getCustomerPaymentMethods(): array {
+    private function getCustomerPaymentMethods(): array
+    {
         $customerId = $this->getCustomerId();
         if ($customerId === null) {
             throw new LocalizedException(
@@ -323,19 +329,25 @@ class SubscriptionList implements ArgumentInterface
     }
 
     /**
-     * @param SubscriptionInterface|Subscription $subscription
-     * @return string
+     * Get subscription data
+     *
+     * @param SubscriptionInterface $subscription
+     * @return array
+     * @throws Exception
      */
     private function getSubscriptionData(
         SubscriptionInterface $subscription
     ): array {
         $subscriptionData = $subscription->getData();
-        $subscriptionProduct = $subscription->getProduct();
+        $product = $subscription->getProduct();
         $subscriptionItem = $subscription->getSubscriptionItem();
         $subscriptionData['product'] = [
-            'name' => $subscriptionProduct->getName(),
-            'image' => $this->getProductImageUrl($subscriptionProduct),
-            'price' => $this->pricingHelper->currency($subscriptionItem->getPrice())
+            'name' => $product->getName(),
+            'image' => $this->getProductImageUrl($product),
+            'price' => $this->pricingHelper->currency($subscriptionItem->getPrice()),
+            'bundle_options' => $product->getTypeId() === Type::TYPE_CODE ?
+                $this->subscriptionHelper->getBundleData($product) :
+                []
         ];
         $subscriptionData[SubscriptionInterface::NEXT_RELEASE_DATE] = $this->formatDate(
             $subscription->getNextReleaseDate()
@@ -352,7 +364,7 @@ class SubscriptionList implements ArgumentInterface
             null;
         $subscriptionData['frequency_label'] = $this->getFrequencyOptionLabel(
             $subscription,
-            $subscriptionProduct
+            $product
         );
         $subscriptionData['available_frequencies'] = $this->getFrequencyProfileOptions($subscription);
         $subscriptionData['item'] = $subscriptionItem->getData();
@@ -404,7 +416,7 @@ class SubscriptionList implements ArgumentInterface
      * Return Subtotal from Original Order
      *
      * @param SubscriptionInterface $subscription
-     * @return float
+     * @return string
      */
     private function getSubtotal(
         SubscriptionInterface $subscription
@@ -420,7 +432,7 @@ class SubscriptionList implements ArgumentInterface
      * Return Grand total from Original Order
      *
      * @param SubscriptionInterface $subscription
-     * @return float
+     * @return string
      */
     private function getTotal(
         SubscriptionInterface $subscription
@@ -436,10 +448,11 @@ class SubscriptionList implements ArgumentInterface
      * Return Subscription Saving
      *
      * @param SubscriptionInterface $subscription
+     * @return float|string
      */
     private function getSaving(
         SubscriptionInterface $subscription
-    ) {
+    ): float|string {
         $order = $this->getOriginalOrder(
             (int) $subscription->getOrderId()
         );
@@ -487,7 +500,7 @@ class SubscriptionList implements ArgumentInterface
      * Return Shipping total from Original Order
      *
      * @param SubscriptionInterface $subscription
-     * @return float
+     * @return string
      */
     private function getShipping(
         SubscriptionInterface $subscription
@@ -520,7 +533,7 @@ class SubscriptionList implements ArgumentInterface
      *
      * @param string $date
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     private function formatDate(
         string $date
@@ -549,7 +562,7 @@ class SubscriptionList implements ArgumentInterface
             $imageUrl = $this->imageHelper
                 ->init(
                     $product,
-                    \PayPal\Subscription\Block\Customer\Index::IMAGE_TYPE,
+                    Index::IMAGE_TYPE,
                     []
                 )->setImageFile($imagePath)
                 ->getUrl();

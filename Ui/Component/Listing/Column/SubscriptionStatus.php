@@ -8,6 +8,8 @@ use Magento\Ui\Component\Listing\Columns\Column;
 class SubscriptionStatus extends Column
 {
     /**
+     * Prepare data source
+     *
      * @param array $dataSource
      * @return array
      */

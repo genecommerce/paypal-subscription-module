@@ -43,6 +43,8 @@ class ConvertItemOptionsObserver implements ObserverInterface
     }
 
     /**
+     * Convert item options
+     *
      * @param Observer $observer
      * @return void
      */
@@ -71,7 +73,9 @@ class ConvertItemOptionsObserver implements ObserverInterface
     }
 
     /**
-     * @param $id
+     * Get quote item by ID
+     *
+     * @param int $id
      * @return Item|null
      */
     private function getQuoteItemById($id): ?Item

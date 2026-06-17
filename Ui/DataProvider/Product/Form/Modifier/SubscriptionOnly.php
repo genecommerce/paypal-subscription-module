@@ -21,7 +21,7 @@ class SubscriptionOnly extends AbstractModifier
     /**
      * @var ArrayManager
      */
-    private $arrayManager;
+    private ArrayManager $arrayManager;
 
     /**
      * SubscriptionOnly constructor.
@@ -35,6 +35,8 @@ class SubscriptionOnly extends AbstractModifier
     }
 
     /**
+     * Modify data
+     *
      * @param array $data
      * @return array
      */
@@ -44,6 +46,8 @@ class SubscriptionOnly extends AbstractModifier
     }
 
     /**
+     * Modify meta
+     *
      * @param array $meta
      * @return array
      */
@@ -56,6 +60,8 @@ class SubscriptionOnly extends AbstractModifier
     }
 
     /**
+     * Customize field
+     *
      * @param array $meta
      * @param string $option
      * @return array

@@ -1,11 +1,21 @@
 <?php
-    /** @var \Magento\Vault\Api\Data\PaymentTokenInterface $paymentToken */
-    $paymentToken = $block->getPayment() ?: null;
-    $tokenDetails = json_decode(
-        $paymentToken->getTokenDetails(),
-        true
-    );
+/**
+ * @var PaymentTokenInterface $paymentToken
+ * @var Escaper $escaper
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Vault\Api\Data\PaymentTokenInterface;
+
+$paymentToken = $block->getPayment() ?: null;
+$tokenDetails = json_decode(
+    $paymentToken->getTokenDetails(),
+    true
+);
 ?>
 <?php if ($paymentToken !== null): ?>
-    <p><?= __('Paypal Account') ?>: <?= $tokenDetails['payerEmail'] ?? 'N/A'  ?></p>
+    <p>
+        <?= $escaper->escapeHtml(__('Paypal Account')) ?>:
+        <?= $tokenDetails['payerEmail'] ?? $escaper->escapeHtml(__('N/A')) ?>
+    </p>
 <?php endif; ?>

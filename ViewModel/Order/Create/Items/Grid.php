@@ -160,7 +160,9 @@ class Grid implements ArgumentInterface
             return '';
         }
 
-        $html = '<select id="paypal-subscription-frequency-option" name="item[' . $item->getId() . '][frequency_option]">';
+        $html = '<select
+            id="paypal-subscription-frequency-option"
+            name="item[' . $item->getId() . '][frequency_option]">';
         $html .= '<option value="">No Thanks</option>';
 
         foreach ($options as $option) {

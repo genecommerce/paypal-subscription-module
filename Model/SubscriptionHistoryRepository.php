@@ -6,6 +6,7 @@ namespace PayPal\Subscription\Model;
 use Exception;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use PayPal\Subscription\Api\Data\SubscriptionHistoryInterface;
 use PayPal\Subscription\Api\Data\SubscriptionHistoryInterfaceFactory;
@@ -59,6 +60,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Get by ID
+     *
      * @param int $subscriptionHistoryId
      * @return SubscriptionHistoryInterface
      * @throws NoSuchEntityException
@@ -79,6 +82,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Get list
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @return SubscriptionHistorySearchResultInterface
      */
@@ -94,9 +99,11 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Save subscription history
+     *
      * @param SubscriptionHistoryInterface $subscriptionHistory
      * @return SubscriptionHistoryInterface
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @throws AlreadyExistsException
      */
     public function save(SubscriptionHistoryInterface $subscriptionHistory): SubscriptionHistoryInterface
     {
@@ -105,6 +112,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Delete subscription history
+     *
      * @param SubscriptionHistoryInterface $subscriptionHistory
      * @return void
      * @throws Exception
@@ -115,6 +124,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Add filters to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -131,6 +142,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Add sort orders to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -143,6 +156,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Add paging to collection
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      */
@@ -153,6 +168,8 @@ class SubscriptionHistoryRepository implements SubscriptionHistoryRepositoryInte
     }
 
     /**
+     * Build search result
+     *
      * @param SearchCriteriaInterface $searchCriteria
      * @param Collection $collection
      * @return mixed

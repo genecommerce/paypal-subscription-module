@@ -39,7 +39,7 @@ class UpdateSubscriptionItemQty implements UpdateSubscriptionItemQtyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function execute(
         int $subscriptionItemId,
@@ -69,6 +69,7 @@ class UpdateSubscriptionItemQty implements UpdateSubscriptionItemQtyInterface
                 'new_qty' => $quantity
             ]
         );
+
         return $subscriptionItem;
     }
 }

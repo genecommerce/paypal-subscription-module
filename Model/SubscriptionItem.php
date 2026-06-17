@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Model;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Model\AbstractModel;
 use PayPal\Subscription\Api\Data\SubscriptionItemInterface;
 use PayPal\Subscription\Model\ResourceModel\SubscriptionItem as SubscriptionItemResource;
@@ -10,7 +11,10 @@ use PayPal\Subscription\Model\ResourceModel\SubscriptionItem as SubscriptionItem
 class SubscriptionItem extends AbstractModel implements SubscriptionItemInterface
 {
     /**
+     * Initialize subscription item resource
+     *
      * @return void
+     * @throws LocalizedException
      */
     protected function _construct(): void
     {
@@ -18,6 +22,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Get subscription ID
+     *
      * @return int
      */
     public function getSubscriptionId(): int
@@ -26,6 +32,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Set subscription ID
+     *
      * @param int $id
      * @return SubscriptionItemInterface
      */
@@ -35,6 +43,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Get SKU
+     *
      * @return string
      */
     public function getSku(): string
@@ -43,6 +53,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Set SKU
+     *
      * @param string $sku
      * @return SubscriptionItemInterface
      */
@@ -52,6 +64,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Get price
+     *
      * @return float
      */
     public function getPrice(): float
@@ -60,6 +74,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Set price
+     *
      * @param float $price
      * @return SubscriptionItemInterface
      */
@@ -69,6 +85,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Get qty
+     *
      * @return int
      */
     public function getQty(): int
@@ -77,6 +95,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Set qty
+     *
      * @param int $quantity
      * @return SubscriptionItemInterface
      */
@@ -86,6 +106,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Get product ID
+     *
      * @return int
      */
     public function getProductId(): int
@@ -94,6 +116,8 @@ class SubscriptionItem extends AbstractModel implements SubscriptionItemInterfac
     }
 
     /**
+     * Set product ID
+     *
      * @param int $productId
      * @return SubscriptionItemInterface
      */

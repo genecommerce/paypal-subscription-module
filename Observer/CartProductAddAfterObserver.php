@@ -55,6 +55,8 @@ class CartProductAddAfterObserver implements ObserverInterface
     }
 
     /**
+     * Cart product add after observer
+     *
      * @param Observer $observer
      * @return void
      * @throws LocalizedException

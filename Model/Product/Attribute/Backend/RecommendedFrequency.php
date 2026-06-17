@@ -26,6 +26,7 @@ class RecommendedFrequency extends AbstractBackend
      * RecommendedFrequency constructor
      *
      * @param FrequencyProfileRepositoryInterface $frequencyProfileRepository
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         FrequencyProfileRepositoryInterface $frequencyProfileRepository,
@@ -36,7 +37,7 @@ class RecommendedFrequency extends AbstractBackend
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function beforeSave($object)
     {

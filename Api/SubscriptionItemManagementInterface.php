@@ -8,14 +8,20 @@ declare(strict_types=1);
 
 namespace PayPal\Subscription\Api;
 
+use Magento\Sales\Api\Data\OrderItemInterface;
+use PayPal\Subscription\Api\Data\SubscriptionInterface;
+
 interface SubscriptionItemManagementInterface
 {
     /**
      * Create subscription item
      *
-     * @param \PayPal\Subscription\Api\Data\SubscriptionInterface $subscription
-     * @param \Magento\Sales\Api\Data\OrderItemInterface $item
+     * @param SubscriptionInterface $subscription
+     * @param OrderItemInterface $item
      * @return mixed
      */
-    public function createSubscriptionItem(\PayPal\Subscription\Api\Data\SubscriptionInterface $subscription, \Magento\Sales\Api\Data\OrderItemInterface $item);
+    public function createSubscriptionItem(
+        SubscriptionInterface $subscription,
+        OrderItemInterface $item
+    );
 }

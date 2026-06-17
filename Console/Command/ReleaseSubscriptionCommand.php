@@ -12,7 +12,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\MessageQueue\PublisherInterface;
 use PayPal\Subscription\Api\SubscriptionRepositoryInterface;
 use PayPal\Subscription\Cron\Release;
-use PayPal\Subscription\Model\Config\Source\Subscription\MessageBroker;
 use PayPal\Subscription\Model\ConfigurationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,21 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReleaseSubscriptionCommand extends Command
 {
     /**
-     * @var SubscriptionRepositoryInterface
-     */
-    private $subscriptionRepository;
-
-    /**
-     * @var PublisherInterface
-     */
-    private $publisher;
-
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
-
-    /**
      * ReleaseSubscriptionCommand constructor.
      *
      * @param SubscriptionRepositoryInterface $subscriptionRepository
@@ -45,15 +29,12 @@ class ReleaseSubscriptionCommand extends Command
      * @param string|null $name
      */
     public function __construct(
-        SubscriptionRepositoryInterface $subscriptionRepository,
-        PublisherInterface $publisher,
-        ConfigurationInterface $configuration,
-        string $name = null
+        private readonly SubscriptionRepositoryInterface $subscriptionRepository,
+        private readonly PublisherInterface $publisher,
+        private readonly ConfigurationInterface $configuration,
+        ?string $name = null
     ) {
         parent::__construct($name);
-        $this->subscriptionRepository = $subscriptionRepository;
-        $this->publisher = $publisher;
-        $this->configuration = $configuration;
     }
 
     /**
@@ -85,9 +66,6 @@ class ReleaseSubscriptionCommand extends Command
 
         try {
             $configuredMessageBroker = $this->configuration->getMessageBroker();
-            $topic = $configuredMessageBroker === MessageBroker::RABBIT_MQ_BROKER_CONFIG_VALUE ?
-                Release::TOPIC_NAME :
-                Release::TOPIC_NAME_DB;
             $subscription = $this->subscriptionRepository->getById(
                 (int) $input->getOption('id')
             );

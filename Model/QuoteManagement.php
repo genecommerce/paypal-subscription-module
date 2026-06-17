@@ -87,6 +87,8 @@ class QuoteManagement implements QuoteManagementInterface
     }
 
     /**
+     * Change frequency
+     *
      * @param int $cartId
      * @param int $quoteItemId
      * @param int $frequency

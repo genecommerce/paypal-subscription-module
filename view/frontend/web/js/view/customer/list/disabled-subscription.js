@@ -65,7 +65,7 @@ define([
             setSubscriptionStatus(
                 this.subscription().subscriptionId,
                 1
-            ).error(function () {
+            ).fail(function () {
                 $("body").trigger('processStop');
                 customerData.set('messages', {
                     messages: [{
@@ -73,7 +73,7 @@ define([
                         type: 'error'
                     }]
                 });
-            }).success(function (subscription) {
+            }).done(function (subscription) {
                 that.handleReActivationSubsriptionListChanges(subscription);
                 $("body").trigger('processStop');
                 customerData.set('messages', {

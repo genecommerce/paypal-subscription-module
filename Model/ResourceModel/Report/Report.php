@@ -160,7 +160,12 @@ class Report extends AbstractReport
         return $this;
     }
 
-    public function truncateTable()
+    /**
+     * Truncate tables
+     *
+     * @return void
+     */
+    public function truncateTable(): void
     {
         $tables = [
             $this->resource->getTableName(self::AGGREGATION_DAILY),
@@ -175,6 +180,8 @@ class Report extends AbstractReport
     }
 
     /**
+     * Update monthly and yearly report
+     *
      * @param AdapterInterface $connection
      * @param string $type
      * @param string $column

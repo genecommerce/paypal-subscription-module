@@ -24,6 +24,8 @@ class CartButtons
     }
 
     /**
+     * Is cart buttons active
+     *
      * @param Button $subject
      * @param bool $result
      * @return bool

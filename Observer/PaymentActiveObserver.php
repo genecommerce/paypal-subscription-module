@@ -33,6 +33,8 @@ class PaymentActiveObserver implements ObserverInterface
     }
 
     /**
+     * Get active subscription payment
+     *
      * @param Observer $observer
      * @return void
      */
@@ -57,7 +59,7 @@ class PaymentActiveObserver implements ObserverInterface
             }
         }
         $acceptedMethods = $this->configuration->getAllowedPaymentMethods();
-        $acceptedMethodsArray = explode(',', $acceptedMethods);
+        $acceptedMethodsArray = explode(',', $acceptedMethods ?? '');
         if ($this->hasSubscriptionItem && !in_array($method_instance->getCode(), $acceptedMethodsArray, true)) {
             $result->setData('is_available', false);
         }

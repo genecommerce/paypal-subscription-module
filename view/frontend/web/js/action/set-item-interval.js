@@ -31,7 +31,7 @@ define([
             url,
             JSON.stringify(urlParams),
             false
-        ).success(
+        ).done(
             function (response) {
                 customerData.reload(['cart'], false);
                 // Return Response

@@ -47,6 +47,8 @@ class SubscriptionHistoryObserver implements ObserverInterface
     }
 
     /**
+     * Update subscription email and history
+     *
      * @param Observer $observer
      * @throws LocalizedException
      * @return void

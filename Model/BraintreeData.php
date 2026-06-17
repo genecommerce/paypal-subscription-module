@@ -10,6 +10,8 @@ use PayPal\Subscription\Api\Data\BraintreeDataInterface;
 class BraintreeData extends AbstractModel implements BraintreeDataInterface
 {
     /**
+     * Get token
+     *
      * @return string
      */
     public function getToken(): string
@@ -18,6 +20,8 @@ class BraintreeData extends AbstractModel implements BraintreeDataInterface
     }
 
     /**
+     * Set token
+     *
      * @param string $token
      * @return BraintreeDataInterface
      */
@@ -27,6 +31,8 @@ class BraintreeData extends AbstractModel implements BraintreeDataInterface
     }
 
     /**
+     * Get error
+     *
      * @return string
      */
     public function getError(): string
@@ -35,6 +41,8 @@ class BraintreeData extends AbstractModel implements BraintreeDataInterface
     }
 
     /**
+     * Set error
+     *
      * @param string $error
      * @return BraintreeDataInterface
      */

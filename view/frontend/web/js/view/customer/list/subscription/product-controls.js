@@ -63,14 +63,14 @@ define([
             setSubscriptionItemQty(
                 this.subscription().item.id,
                 this.qty()
-            ).success(function () {
+            ).done(function () {
                 customerData.set('messages', {
                     messages: [{
                         text: 'Your subscription quantity has been updated.',
                         type: 'success'
                     }]
                 });
-            }).error(function () {
+            }).fail(function () {
                 customerData.set('messages', {
                     messages: [{
                         text: 'Unable to update qty, please try again.',
@@ -88,7 +88,7 @@ define([
             setSubscriptionInterval(
                 this.subscription().subscriptionId,
                 newInterval
-            ).success(function (response) {
+            ).done(function (response) {
                 var nextReleaseDate = dateFormatter(response['next_release_date']);
                 that.subscription().nextReleaseDate(nextReleaseDate);
                 customerData.set('messages', {
@@ -97,7 +97,7 @@ define([
                         type: 'success'
                     }]
                 });
-            }).error(function () {
+            }).fail(function () {
                 customerData.set('messages', {
                     messages: [{
                         text: 'Unable to update your subscription frequency. Please try again.',

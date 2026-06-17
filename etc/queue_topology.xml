@@ -5,11 +5,18 @@
  * See COPYING.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
     <exchange name="paypal.subscription" type="topic" connection="amqp">
-        <binding id="PayPalSubscriptionRelease" topic="paypal.subscription.release" destinationType="queue" destination="paypal_subscription_release"/>
+        <binding id="PayPalSubscriptionRelease"
+                 topic="paypal.subscription.release"
+                 destinationType="queue"
+                 destination="paypal_subscription_release"/>
     </exchange>
     <exchange name="magento-db" type="topic" connection="db">
-        <binding id="PayPalSubscriptionReleaseDbBinding" topic="paypal.subscription.release.db" destinationType="queue" destination="paypal_subscription_release_db"/>
+        <binding id="PayPalSubscriptionReleaseDbBinding"
+                 topic="paypal.subscription.release.db"
+                 destinationType="queue"
+                 destination="paypal_subscription_release_db"/>
     </exchange>
 </config>

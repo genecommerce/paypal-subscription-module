@@ -15,8 +15,8 @@ use PayPal\Subscription\Setup\Patch\Data\AddProductSubscriptionAttributes;
 
 class InstallRecommendedFrequencyAttributes implements DataPatchInterface
 {
-    const RECOMMENDED_FREQUENCY_ATTRIBUTE_CODE = 'recommended_frequency';
-    const RECOMMENDED_FREQUENCY_REASON_ATTRIBUTE_CODE = 'recommended_frequency_reason';
+    public const RECOMMENDED_FREQUENCY_ATTRIBUTE_CODE = 'recommended_frequency';
+    public const RECOMMENDED_FREQUENCY_REASON_ATTRIBUTE_CODE = 'recommended_frequency_reason';
 
     /**
      * @var EavSetupFactory
@@ -43,9 +43,9 @@ class InstallRecommendedFrequencyAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function apply()
+    public function apply(): void
     {
         $this->moduleDataSetup->getConnection()->startSetup();
         /** @var EavSetup $eavSetup */
@@ -118,7 +118,7 @@ class InstallRecommendedFrequencyAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getAliases(): array
     {
@@ -126,7 +126,7 @@ class InstallRecommendedFrequencyAttributes implements DataPatchInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public static function getDependencies(): array
     {

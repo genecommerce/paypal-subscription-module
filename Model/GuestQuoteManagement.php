@@ -45,6 +45,8 @@ class GuestQuoteManagement implements GuestQuoteManagementInterface
     }
 
     /**
+     * Change frequency
+     *
      * @param string $cartId
      * @param int $quoteItemId
      * @param int $frequency
@@ -60,6 +62,10 @@ class GuestQuoteManagement implements GuestQuoteManagementInterface
             throw new LocalizedException(__('Unable to fetch quote.'));
         }
 
-        return $this->quoteManagement->changeFrequency($quoteIdMask->getData('quote_id'), $quoteItemId, $frequency);
+        return $this->quoteManagement->changeFrequency(
+            (int) $quoteIdMask->getData('quote_id'),
+            $quoteItemId,
+            $frequency
+        );
     }
 }

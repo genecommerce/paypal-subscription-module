@@ -9,6 +9,9 @@ declare(strict_types=1);
 namespace PayPal\Subscription\Helper;
 
 use InvalidArgumentException;
+use Magento\Bundle\Model\Option;
+use Magento\Bundle\Model\Product\Type;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterface;
@@ -188,16 +191,16 @@ class Data extends AbstractHelper
     {
         return $this->serializer->serialize(
             [
-                'firstname' => !is_null($address) ? $address->getFirstname() : '',
-                'lastname' => !is_null($address) ? $address->getLastname() : '',
-                'company' => !is_null($address) ? $address->getCompany() : '',
-                'street' => !is_null($address) ? $address->getStreet() : '',
-                'city' => !is_null($address) ? $address->getCity() : '',
-                'region' => !is_null($address) ? $address->getRegion() : '',
-                'region_id' => !is_null($address) ? $address->getRegionId() : '',
-                'postcode' => !is_null($address) ? $address->getPostcode() : '',
-                'country_id' => !is_null($address) ? $address->getCountryId() : '',
-                'telephone' => !is_null($address) ? $address->getTelephone() : '',
+                'firstname' => $address !== null ? $address->getFirstname() : '',
+                'lastname' => $address !== null ? $address->getLastname() : '',
+                'company' => $address !== null ? $address->getCompany() : '',
+                'street' => $address !== null ? $address->getStreet() : '',
+                'city' => $address !== null ? $address->getCity() : '',
+                'region' => $address !== null ? $address->getRegion() : '',
+                'region_id' => $address !== null ? $address->getRegionId() : '',
+                'postcode' => $address !== null ? $address->getPostcode() : '',
+                'country_id' => $address !== null ? $address->getCountryId() : '',
+                'telephone' => $address !== null ? $address->getTelephone() : '',
             ]
         );
     }
@@ -212,7 +215,7 @@ class Data extends AbstractHelper
     {
         try {
             $address = $this->serializer->unserialize($address);
-            if($address['telephone']) {
+            if ($address['telephone']) {
                 $address['telephone'] = 'T: ' . $address['telephone'];
             }
             unset($address['region_id']);
@@ -267,7 +270,7 @@ class Data extends AbstractHelper
     /**
      * Get Status Label from value
      *
-     * @param $status
+     * @param int $status
      * @return string
      */
     public function getStatusLabel($status): string
@@ -345,6 +348,47 @@ class Data extends AbstractHelper
     public function formatPrice(float $price)
     {
         return $this->pricingHelper->currency($price, true, false);
+    }
+
+    /**
+     * Get bundle data
+     *
+     * @param ProductInterface $subscriptionProduct
+     * @return array
+     */
+    public function getBundleData(ProductInterface $subscriptionProduct): array
+    {
+        $optionData = [];
+        if ($subscriptionProduct->getTypeId() !== Type::TYPE_CODE) {
+            return $optionData;
+        }
+
+        /** @var Type $typeInstance */
+        $typeInstance = $subscriptionProduct->getTypeInstance();
+        $optionMap = $typeInstance->getOptions($subscriptionProduct);
+        $bundleSelections = $typeInstance->getSelectionsCollection(
+            $typeInstance->getOptionsIds($subscriptionProduct),
+            $subscriptionProduct
+        );
+
+        if (empty($bundleSelections->getItems()) || $optionMap === null) {
+            return $optionData;
+        }
+
+        foreach ($bundleSelections->getItems() as $childData) {
+            $bundleOption = $optionMap[(int)$childData->getOptionId()] ?? null;
+            if (!$bundleOption instanceof Option) {
+                continue;
+            }
+            $optionData[$bundleOption->getTitle()][] = [
+                'quantity' => $childData->getData('selection_qty') ?? '',
+                'sku' => $childData->getSku(),
+                'name' => $childData->getName(),
+                'selection_price' =>  $this->formatPrice((float)$childData->getData('selection_price_value'))
+            ];
+        }
+
+        return $optionData;
     }
 
     /**
