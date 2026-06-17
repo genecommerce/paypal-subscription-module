@@ -14,7 +14,9 @@
             <block class="Magento\Framework\View\Element\Template"
                    name="paypal.subscription.product"
                    template="PayPal_Subscription::product/view.phtml"
-                   as="form_top">
+                   as="form_top"
+                   ifconfig="paypal/subscriptions/active"
+            >
                 <arguments>
                     <argument name="view_model" xsi:type="object">PayPal\Subscription\ViewModel\Product</argument>
                 </arguments>

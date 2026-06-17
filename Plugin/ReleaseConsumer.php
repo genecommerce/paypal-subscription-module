@@ -10,6 +10,8 @@ use PayPal\Subscription\Model\ReleaseConsumer as Subject;
 class ReleaseConsumer
 {
     /**
+     * BeforeCreateRelease plugin
+     *
      * Intercept before Release is created to reset subscription failures
      * At this point subscription has been converted to quote and order has been created
      *

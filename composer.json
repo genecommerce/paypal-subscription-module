@@ -3,7 +3,7 @@
     "description": "Enable products to be purchased as a subscription.",
     "type": "magento2-module",
     "license": "proprietary",
-    "version": "3.5.0",
+    "version": "3.6.0",
     "authors": [
         {
             "email": "hello@gene.co.uk",
@@ -14,10 +14,6 @@
         {
             "type": "composer",
             "url": "https://repo.magento.com/"
-        },
-        {
-            "type": "composer",
-            "url": "https://repo.packagist.com/gene/"
         }
     ],
     "require": {
@@ -49,9 +45,9 @@
         "magento/module-multishipping": "100.4.*"
     },
     "require-dev": {
-        "magento/magento-coding-standard": "^6.0",
-        "phpstan/phpstan": "^0.12.92",
-        "bitexpert/phpstan-magento": "^0.8.0",
+        "bitexpert/phpstan-magento": "^0.42.0",
+        "magento/magento-coding-standard": "^40",
+        "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
@@ -63,7 +59,11 @@
         ]
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "magento/composer-dependency-version-audit-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

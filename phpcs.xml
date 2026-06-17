@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ruleset name="Magento Module Coding Standard">
+    <rule ref="Magento2">
+        <exclude name="Magento2.Less.ClassNaming"/>
+        <exclude name="Magento2.Less.Variables"/>
+        <exclude name="Magento2.Less.PropertiesSorting"/>
+        <exclude name="Magento2.Less.ColonSpacing"/>
+        <exclude name="Magento2.Less.PropertiesLineBreak"/>
+        <exclude name="Magento2.Less.ZeroUnits"/>
+        <exclude name="Magento2.Less.AvoidId"/>
+        <exclude name="Magento2.Less.TypeSelectors"/>
+        <exclude name="Magento2.Less.ImportantProperty"/>
+        <exclude name="Magento2.Less.CommentLevels"/>
+        <exclude name="Magento2.Less.CombinatorIndentation"/>
+        <exclude name="Magento2.Less.SelectorDelimiter"/>
+        <exclude name="Magento2.Less.TypeSelectorConcatenation"/>
+        <exclude name="Magento2.Less.ColourDefinition"/>
+        <exclude name="Magento2.Less.Quotes"/>
+        <exclude name="Magento2.Less.SemicolonSpacing"/>
+        <exclude name="Magento2.Less.BracesFormatting"/>
+        <exclude name="Magento2.Less.Indentation"/>
+        <exclude name="Magento2.GraphQL.ValidArgumentName"/>
+        <exclude name="Magento2.GraphQL.ValidFieldName"/>
+        <exclude name="Magento2.GraphQL.ValidTopLevelFieldName"/>
+        <exclude name="Magento2.GraphQL.ValidTypeName"/>
+        <exclude name="Magento2.GraphQL.ValidEnumValue"/>
+        <exclude name="Squiz.CSS.NamedColours"/>
+    </rule>
+    <file>.</file>
+    <arg name="error-severity" value="10"/>
+    <arg name="ignore-annotations"/>
+    <arg value="s"/><!-- Show rule next to failure in report -->
+    <arg value="p"/><!-- Show progress -->
+    <exclude-pattern>vendor/*</exclude-pattern>
+</ruleset>

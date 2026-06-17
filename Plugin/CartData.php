@@ -41,7 +41,7 @@ class CartData
      * Get section data
      *
      * @param Cart $subject
-     * @param $result
+     * @param array $result
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -62,4 +62,3 @@ class CartData
         return $result;
     }
 }
-
