@@ -5,7 +5,7 @@ define([], function () {
      * Quote Item Data
      * @type {Window.checkoutConfig.quoteItemData}
      */
-    var quoteItemData = window.checkoutConfig.quoteItemData ?? [];
+    let quoteItemData = window.checkoutConfig.quoteItemData ?? [];
 
     return function (originalHostedFields) {
         return originalHostedFields.extend({
@@ -40,9 +40,9 @@ define([], function () {
             getData: function () {
                 let data = this._super();
 
-                data['additional_data']['is_active_payment_token_enabler'] = this.cartContainsSubscriptions() === true
-                    ? true
-                    : this.isActivePaymentTokenEnabler();
+                if (this.cartContainsSubscriptions() === true) {
+                    data['additional_data']['is_active_payment_token_enabler'] = true;
+                }
 
                 return data;
             }
