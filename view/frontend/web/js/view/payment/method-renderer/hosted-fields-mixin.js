@@ -5,7 +5,7 @@ define([], function () {
      * Quote Item Data
      * @type {Window.checkoutConfig.quoteItemData}
      */
-    var quoteItemData = window.checkoutConfig.quoteItemData ?? [];
+    let quoteItemData = window.checkoutConfig.quoteItemData ?? [];
 
     return function (originalHostedFields) {
         return originalHostedFields.extend({
@@ -14,7 +14,9 @@ define([], function () {
             },
 
             /**
-             * @returns {Bool}
+             * Is vault enabled
+             *
+             * @returns {boolean|*}
              */
             isVaultEnabled: function () {
                 // If cart contains any subscription item, vault must be enabled.
@@ -22,10 +24,27 @@ define([], function () {
             },
 
             /**
-             * @returns {Bool}
+             * Check whether cart contains subscription products or not
+             *
+             * @returns {*}
              */
             cartContainsSubscriptions: function () {
                 return quoteItemData.some(item => item.is_subscription === "1");
+            },
+
+            /**
+             * Get data
+             *
+             * @returns {*}
+             */
+            getData: function () {
+                let data = this._super();
+
+                if (this.cartContainsSubscriptions() === true) {
+                    data['additional_data']['is_active_payment_token_enabler'] = true;
+                }
+
+                return data;
             }
         });
     };

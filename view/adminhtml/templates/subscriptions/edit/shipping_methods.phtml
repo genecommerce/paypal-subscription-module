@@ -1,6 +1,7 @@
 <?php
 /**
  * @var \PayPal\Subscription\Block\Adminhtml\Subscriptions\Edit\ShippingMethods $block
+ * @var \Magento\Framework\Escaper $escaper
  */
 // @codingStandardsIgnoreFile
 
@@ -16,23 +17,29 @@ $shippingRates = $block->getShipping((int) $subscriptionId);
 </div>
 
 <div class="admin__field-control"
-     data-bind="css: {'_with-tooltip': $data.tooltip, '_with-reset': $data.showFallbackReset &amp;&amp; $data.isDifferedFromDefault}">
+     data-bind="
+        css: {
+            '_with-tooltip': $data.tooltip,
+            '_with-reset': $data.showFallbackReset &amp;&amp; $data.isDifferedFromDefault
+        }
+     ">
 <?php foreach ($shippingRates as $rate): ?>
-    <input id="<?= $block->escapeHtmlAttr($rate->getCode()) ?>"
+    <?php
+    $shippingMethodLabel = sprintf(
+        '%s - %s %s',
+        $rate->getCarrierTitle(),
+        $rate->getMethodTitle(),
+        $block->formatPrice($rate->getPrice())
+    );
+    ?>
+
+    <input id="<?= $escaper->escapeHtmlAttr($rate->getCode()) ?>"
            name="shipping_method"
            type="radio"
-           value="<?= $block->escapeHtmlAttr($rate->getCode()) ?>"/>
+           value="<?= $escaper->escapeHtmlAttr($rate->getCode()) ?>"/>
 
-    <label for="<?= $block->escapeHtmlAttr($rate->getCode()) ?>">
-        <?= $block->escapeHtml(
-            sprintf(
-                '%s - %s %s',
-                $rate->getCarrierTitle(),
-                $rate->getMethodTitle(),
-                $block->formatPrice($rate->getPrice())
-            ),
-            ['span']
-        ) ?>
+    <label for="<?= $escaper->escapeHtmlAttr($rate->getCode()) ?>">
+        <?= $escaper->escapeHtml($shippingMethodLabel, ['span']) ?>
     </label>
     <br/>
 <?php endforeach; ?>

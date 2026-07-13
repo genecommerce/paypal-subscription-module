@@ -11,15 +11,15 @@
 <p>Hi {{var customer_name}},</p>
 
 <p>{{trans "We're getting your next Subscribe to Save order ready! If you want to change the quantity, skip a delivery or send it sooner, you can do so today by going to your Account."}}</p>
-<br/>
+<br>
 <p>{{trans "Here's a reminder of the upcoming items in your Subscribe to Save order:"}}</p>
 
 <p><strong>{{trans "Products:"}}</strong></p>
 {{layout handle="subscription_items" items=$items area="frontend"}}
-<br/>
+<br>
 
 <p>{{trans "Unless you make any changes today, we'll dispatch your items on %formatted_next_release" formatted_next_release=$formatted_next_release}}.</p>
-<br/>
+<br>
 <p>{{trans "If you have any questions, please contact us"}}.</p>
 
 {{template config_path="design/email/footer_template"}}

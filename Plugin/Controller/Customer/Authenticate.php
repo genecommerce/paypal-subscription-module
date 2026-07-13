@@ -33,6 +33,8 @@ class Authenticate
     }
 
     /**
+     * BeforeDispatch plugin
+     *
      * @param ActionInterface $subject
      * @param RequestInterface $request
      */

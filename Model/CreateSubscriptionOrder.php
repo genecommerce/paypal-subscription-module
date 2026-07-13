@@ -81,12 +81,8 @@ class CreateSubscriptionOrder implements CreateSubscriptionOrderInterface
             ));
         }
         foreach ($order->getItems() as $orderItem) {
-            // @codingStandardsIgnoreStart
-            $productOptions = array_merge(
-                $orderItem->getProductOptions(),
-                ['is_subscription' => true]
-            );
-            // @codingStandardsIgnoreEnd
+            $productOptions = $orderItem->getProductOptions() ?: [];
+            $productOptions['is_subscription'] = true;
             $orderItem->setProductOptions($productOptions);
         }
         $order->setData(

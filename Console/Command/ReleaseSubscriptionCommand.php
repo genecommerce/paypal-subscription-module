@@ -58,9 +58,9 @@ class ReleaseSubscriptionCommand extends Command
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|void|null
+     * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln("Searching for Subscription ID #{$input->getOption('id')}...");
 
@@ -72,8 +72,10 @@ class ReleaseSubscriptionCommand extends Command
             $output->writeln("Found Subscription ID #{$input->getOption('id')}");
             $this->publisher->publish(Release::TOPIC_NAME_DB, $subscription);
             $output->writeln("Subscription ID #{$input->getOption('id')} published to Message Queue");
+            return Command::SUCCESS;
         } catch (NoSuchEntityException $e) {
             $output->writeln($e->getMessage());
+            return Command::FAILURE;
         }
     }
 }

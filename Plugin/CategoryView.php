@@ -29,6 +29,8 @@ class CategoryView
     }
 
     /**
+     * AfterIsSaleable plugin
+     *
      * Products that are configured as `subscription_only` should not have the
      * Add to Cart button shown in products listings.
      *

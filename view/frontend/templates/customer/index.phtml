@@ -47,7 +47,9 @@ script;
                "components": {
                     "disabledSubscriptionsList": {
                         "component": "customerDisabledSubscriptionList",
-                        "cancelledMessage":"<?= $escaper->escapeJs($block->getChildHtml('paypal.subscription.cancelled.content')); ?>"
+                        "cancelledMessage":"<?= $escaper->escapeJs(
+                            $block->getChildHtml('paypal.subscription.cancelled.content')
+                        ); ?>"
                     }
                 }
             }

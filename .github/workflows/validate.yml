@@ -1,0 +1,36 @@
+name: Validation checks
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  module-validate:
+    name: Validate syntax, coding-standards and tests pass
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: PHP linter
+        run: find . -path './vendor' -prune -o -type f -name '*.php' -print0 | xargs -0 -n 1 php -l
+
+      - name: Install Composer dependencies
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Magento Coding Standards
+        run: vendor/bin/phpcs --extensions=php,phtml
+
+      - name: Tests
+        run: vendor/bin/phpunit
